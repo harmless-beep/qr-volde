@@ -327,7 +327,20 @@
         await navigator.clipboard.writeText(shareText);
         state.textContent = "Share text copied.";
       } catch {
-        state.textContent = "Copy unavailable - use a share link.";
+        const field = document.createElement("textarea");
+        field.value = shareText;
+        field.setAttribute("readonly", "");
+        field.style.position = "fixed";
+        field.style.opacity = "0";
+        document.body.appendChild(field);
+        field.select();
+        try {
+          document.execCommand("copy");
+          state.textContent = "Share text copied.";
+        } catch {
+          state.textContent = "Copy unavailable - use a share link.";
+        }
+        field.remove();
       }
     });
   </script>
