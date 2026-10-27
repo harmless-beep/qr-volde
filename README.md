@@ -123,7 +123,7 @@ Opening `index.html` directly with `file://` will not work because the app uses 
 ## How it works
 
 - **One canvas, one scroll space.** A fixed WebGL canvas sits over a tall scroll spacer. Section weights map scroll progress to camera and reveal timing.
-- **One QR matrix, two outputs.** `qrcode-generator` produces the matrix once. The same matrix drives the 3D module wall, the ground texture, and the flat Studio preview.
+- **One QR matrix, three outputs.** `qrcode-generator` produces the matrix once. The same matrix drives the 3D module wall, the ground texture, and the flat Studio preview.
 - **Instanced geometry.** The QR wall is built from instanced modules; the city is procedural low-poly geometry. No external models or image textures are loaded.
 - **Wall-to-ground morph.** Modules lift, drift, and land as the QR plaza. City props fade in as the camera rises over the chowk.
 - **Responsive camera.** Portrait screens pull back and lower the look target; wide screens shift the artwork to make room for the copy card.
