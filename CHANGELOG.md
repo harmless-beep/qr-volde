@@ -6,16 +6,16 @@ All notable changes to QR Volde are recorded here.
 
 ### Marketing
 
-- Added a 20-second launch film built from real app captures with the [brag](https://github.com/latent-spaces/brag) + [HyperFrames](https://hyperframes.heygen.com) workflow.
-- Added `launch.html`, a poster, MP4 download, share copy, and social sharing links.
-- Added the editable composition, brag plan, composition brief, and render notes under `brag-output/`.
+- Added a 20-second launch film built from real app captures and rendered with [HyperFrames](https://hyperframes.heygen.com).
+- Added `launch.html`, an animated GIF preview, poster, MP4 download, share copy, and social sharing links.
+- Added the editable composition, launch plan, composition brief, and render notes under `launch-film/`.
 
 ### Documentation
 
 - Rebuilt the README with a project overview, screenshot gallery, architecture, QA, deployment, safety, and license sections.
 - Added desktop, mode, QR Studio, and mobile screenshots under `docs/screenshots/`.
 - Improved scene-rail label legibility over the QR artwork.
-- Added launch-film credits and third-party notices for the music, SFX, GSAP, HyperFrames, and brag workflow.
+- Added launch-film credits and third-party notices for the music, SFX, GSAP, and HyperFrames.
 
 ## [0.1.0] — 2026-10-27
 

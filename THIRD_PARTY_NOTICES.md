@@ -69,14 +69,13 @@ SOFTWARE.
 
 ## Launch film assets
 
-The launch film and its editable composition are under `brag-output/`. They are separate from the QR Volde app runtime.
+The launch film and its editable composition are under `launch-film/`. They are separate from the QR Volde app runtime.
 
 - **Music:** “Happy Beats / Business Moves, Vol. 10” by Sascha Ende, [ende.app](https://ende.app/en), licensed under [CC BY 4.0](https://ende.app/en/standard-license). Credit: “Music: Sascha Ende, ende.app (CC BY 4.0).”
 - **Sound effects:** `whoosh-short.mp3`, `click-soft.mp3`, and `sparkle.mp3` from the HyperFrames media-use library, under the [Pixabay Content License](https://pixabay.com/service/license-summary/).
 - **Fonts in the film:** Inter, EB Garamond, and IBM Plex Mono, under the SIL Open Font License 1.1. They are loaded by HyperFrames for the composition and are not used by the QR Volde app runtime.
-- **GSAP 3.14.2:** `brag-output/composition/assets/gsap.min.js`, Copyright GreenSock. Used under the [GSAP Standard License](https://gsap.com/standard-license). A copy of the upstream notice is included at `brag-output/composition/assets/GSAP-NOTICE.txt`.
+- **GSAP 3.14.2:** `launch-film/composition/assets/gsap.min.js`, Copyright GreenSock. Used under the [GSAP Standard License](https://gsap.com/standard-license). A copy of the upstream notice is included at `launch-film/composition/assets/GSAP-NOTICE.txt`.
 - **HyperFrames 0.8.208:** [hyperframes.heygen.com](https://hyperframes.heygen.com), Apache-2.0. Used to render the film locally.
-- **brag:** [github.com/latent-spaces/brag](https://github.com/latent-spaces/brag), MIT. Used as the launch-film workflow; no brag source is redistributed.
 
 ## Other assets
 

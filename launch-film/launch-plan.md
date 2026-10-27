@@ -1,4 +1,4 @@
-# Brag Plan: QR Volde
+# Launch Plan: QR Volde
 
 ## What is this app?
 

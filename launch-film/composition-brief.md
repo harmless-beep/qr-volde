@@ -6,8 +6,8 @@ Create a short, polished launch film for QR Volde: a 3D QR code that unfolds int
 
 ## Output
 
-- Composition directory: `brag-output/composition/`
-- Rendered video: `brag-output/brag.mp4`
+- Composition directory: `launch-film/composition/`
+- Rendered video: `launch-film/launch-film.mp4`
 - Format: landscape — 1920x1080
 - Duration: 20.0 seconds
 - FPS: 30
@@ -67,7 +67,7 @@ Create a short, polished launch film for QR Volde: a 3D QR code that unfolds int
 
 ## Storyboard
 
-Use the storyboard in `brag-output/brag-plan.md` as the creative contract.
+Use the storyboard in `launch-film/launch-plan.md` as the creative contract.
 
 Scene summary:
 
@@ -90,11 +90,11 @@ Scene summary:
   - final CTA/wordmark — soft sparkle or low chime
 - SFX selection guidance: use short, low-risk sounds from the Hyperframes media-use set; keep them under the music; do not add a hit on every text line.
 - SFX analysis guidance: `C:\Users\kroas\AppData\Local\Temp\opencode\hyperframes\skills\media-use\audio\assets\sfx\manifest.json` if available; exact filenames, timestamps, density, and volume are Hyperframes' choice.
-- Audio files: copy chosen music and SFX into `brag-output/composition/assets/`
+- Audio files: copy chosen music and SFX into `launch-film/composition/assets/`
 
 ## Hyperframes Instructions
 
-Load the composition-building Hyperframes skills — `hyperframes` (composition contract + `data-*` timing, `references/format.md`; motion, eases and seek-safe keyframes in `references/motion.md`; look in `references/look.md`), `hyperframes-registry` (ready-made effects, transitions, titles), `media-use` (music, SFX, audio-reactive data), and `hyperframes-cli` (lint/check/render). /brag is its own workflow: skip the `hyperframes` storyline step; don't read `references/types/*` or `references/story.md`, don't propose storylines, and don't write a `SPEC.md`. The brag plan and composition brief replace them, including the LOOK line `references/look.md` asks for. Also skip its `usage`, `history`, `feedback` and REVIEW.md steps; `check` is brag's gate. Do not route into its generic launch-video workflow.
+Load the composition-building HyperFrames skills ? `hyperframes` (composition contract + `data-*` timing, `references/format.md`; motion, eases and seek-safe keyframes in `references/motion.md`; look in `references/look.md`), `hyperframes-registry` (ready-made effects, transitions, titles), `media-use` (music, SFX, audio-reactive data), and `hyperframes-cli` (lint/check/render). Use the launch plan and composition brief as the creative contract, including the LOOK line `references/look.md` asks for. Keep the composition to the existing single root and use `check` as the render gate.
 
 Requirements:
 

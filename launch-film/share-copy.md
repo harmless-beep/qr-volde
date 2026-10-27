@@ -26,4 +26,4 @@ A warm cream launch-film frame. On the left, the serif headline “Every square 
 
 ## Credit line
 
-Music: Sascha Ende, ende.app (CC BY 4.0). Film made with brag and HyperFrames.
+Music: Sascha Ende, ende.app (CC BY 4.0). Film made with HyperFrames.

@@ -4,6 +4,6 @@ Thumbs.db
 *.log
 _qa-*.html
 .hyperframes/
-brag-output/composition/.hyperframes/
-brag-output/composition/renders/
-brag-output/composition/node_modules/
+launch-film/composition/.hyperframes/
+launch-film/composition/renders/
+launch-film/composition/node_modules/

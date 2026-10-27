@@ -18,13 +18,13 @@ The 3D code is the artwork. The flat QR in **QR Studio** is the code you scan.
 
 ## Launch film
 
-[![Watch the 20-second QR Volde launch film](brag-output/brag.jpg)](https://harmless-beep.github.io/qr-volde/launch.html)
+[![QR Volde launch film — animated 20-second preview](launch-film/launch-film.gif)](https://harmless-beep.github.io/qr-volde/launch.html)
 
-A 20-second launch film made from real captures of the scroll experience and the QR Studio, using [brag](https://github.com/latent-spaces/brag) and [HyperFrames](https://hyperframes.heygen.com). The 3D QR is the artwork; the flat Studio code is the one to scan.
+The film loops above. It is made from real captures of the scroll experience and the QR Studio, and rendered with [HyperFrames](https://hyperframes.heygen.com). The 3D QR is the artwork; the flat Studio code is the one to scan.
 
-[**Watch with sound →**](https://harmless-beep.github.io/qr-volde/launch.html) · [Download MP4](https://harmless-beep.github.io/qr-volde/brag-output/brag.mp4) · [Share copy](./brag-output/share-copy.md)
+[**Watch with sound →**](https://harmless-beep.github.io/qr-volde/launch.html) · [Download MP4](https://harmless-beep.github.io/qr-volde/launch-film/launch-film.mp4) · [Share copy](./launch-film/share-copy.md)
 
-<sub>Music: Sascha Ende, ende.app (CC BY 4.0). Film source and render notes: [`brag-output/`](./brag-output/).</sub>
+<sub>Music: Sascha Ende, ende.app (CC BY 4.0). Film source and render notes: [`launch-film/`](./launch-film/).</sub>
 
 ## Contents
 
@@ -158,7 +158,7 @@ Opening `index.html` directly with `file://` will not work because the app uses 
 | `qr.js` | QR generation, canvas rendering, PNG download, 3D texture drawing. |
 | `vendor/` | Vendored Three.js r186 and `qrcode-generator` 2.0.4. |
 | `launch.html` | Launch-film page with the 20-second film, poster, share copy, and social links. |
-| `brag-output/` | Launch-film plan, brief, editable HyperFrames composition, MP4, poster, and credits. |
+| `launch-film/` | Launch-film plan, brief, editable HyperFrames composition, MP4, poster, and credits. |
 | `docs/screenshots/` | README screenshots. |
 | `RESEARCH.md` | References and design decisions. |
 | `THIRD_PARTY_NOTICES.md` | Third-party licenses and MIT text. |
@@ -194,7 +194,7 @@ GitHub Pages serves the repository root from the `main` branch.
 - No QR payload history is stored; only the selected visual mode is saved in `localStorage`.
 - No real bank, merchant, wallet, or authenticator payloads are included.
 - The app uses no stock images, photography, maps, external fonts, 3D models, or AI-generated assets. All geometry and Canvas textures are original procedural work.
-- The launch film uses licensed music, SFX, and fonts; see [`THIRD_PARTY_NOTICES.md`](./THIRD_PARTY_NOTICES.md) and [`brag-output/README.md`](./brag-output/README.md).
+- The launch film uses licensed music, SFX, and fonts; see [`THIRD_PARTY_NOTICES.md`](./THIRD_PARTY_NOTICES.md) and [`launch-film/README.md`](./launch-film/README.md).
 - The city is a Kathmandu-inspired composition, not a survey-accurate reconstruction.
 
 ## Roadmap
@@ -211,7 +211,7 @@ Open inputs for the next version: final tagline/brand copy, CTA destination, mus
 
 Original code, procedural geometry, copy, and art direction: QR Volde project, 2026.
 
-- Launch film: brag (MIT) + HyperFrames (Apache-2.0); music by Sascha Ende, ende.app (CC BY 4.0); SFX under the Pixabay Content License; GSAP under the GSAP Standard License.
+- Launch film: HyperFrames (Apache-2.0); music by Sascha Ende, ende.app (CC BY 4.0); SFX under the Pixabay Content License; GSAP under the GSAP Standard License.
 
 - Three.js r186 — MIT, Three.js Authors.
 - `qrcode-generator` 2.0.4 and UTF-8 helper — MIT, Kazuhiko Arase.
