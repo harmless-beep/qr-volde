@@ -16,8 +16,19 @@ The 3D code is the artwork. The flat QR in **QR Studio** is the code you scan.
 **Built with:** Three.js r186 · `qrcode-generator` 2.0.4 · vanilla ES modules · Canvas 2D · GitHub Pages.  
 **No build step, no backend, no analytics, no paid APIs.**
 
+## Launch film
+
+[![Watch the 20-second QR Volde launch film](brag-output/brag.jpg)](https://harmless-beep.github.io/qr-volde/launch.html)
+
+A 20-second launch film made from real captures of the scroll experience and the QR Studio, using [brag](https://github.com/latent-spaces/brag) and [HyperFrames](https://hyperframes.heygen.com). The 3D QR is the artwork; the flat Studio code is the one to scan.
+
+[**Watch with sound →**](https://harmless-beep.github.io/qr-volde/launch.html) · [Download MP4](https://harmless-beep.github.io/qr-volde/brag-output/brag.mp4) · [Share copy](./brag-output/share-copy.md)
+
+<sub>Music: Sascha Ende, ende.app (CC BY 4.0). Film source and render notes: [`brag-output/`](./brag-output/).</sub>
+
 ## Contents
 
+- [Launch film](#launch-film)
 - [Screenshots](#screenshots)
 - [The experience](#the-experience)
 - [QR Studio](#qr-studio)
@@ -146,6 +157,8 @@ Opening `index.html` directly with `file://` will not work because the app uses 
 | `city-life.js` | People, dog, pigeons, bus, scooter, prayer flags, wires, lamps. |
 | `qr.js` | QR generation, canvas rendering, PNG download, 3D texture drawing. |
 | `vendor/` | Vendored Three.js r186 and `qrcode-generator` 2.0.4. |
+| `launch.html` | Launch-film page with the 20-second film, poster, share copy, and social links. |
+| `brag-output/` | Launch-film plan, brief, editable HyperFrames composition, MP4, poster, and credits. |
 | `docs/screenshots/` | README screenshots. |
 | `RESEARCH.md` | References and design decisions. |
 | `THIRD_PARTY_NOTICES.md` | Third-party licenses and MIT text. |
@@ -153,10 +166,13 @@ Opening `index.html` directly with `file://` will not work because the app uses 
 
 ## Testing and QA
 
-- Lighthouse: **100 accessibility, 100 best practices, 100 SEO** (v0.1.0 local audit).
+- App Lighthouse: **100 accessibility, 100 best practices, 100 SEO** (v0.1.0 local audit).
+- Launch-page Lighthouse: **100 accessibility, 100 best practices, 100 SEO** (local audit).
+- Launch page verified at **1280 x 900** and **390 x 844**; no horizontal overflow or console errors.
 - Verified at **1280 × 800**, **785 × 932**, and **390 × 844**.
 - Tested all three modes, real scrolling, rail navigation, CTA, QR generation, PNG download, “Use in world”, Devanagari input, invalid input, maximum length, reduced motion, and no-WebGL fallback.
 - Downloaded QR checked for high contrast, finder patterns, and a four-module quiet zone.
+- Launch film checked at 20.0s, 1920x1080, 30fps, stereo AAC; key frames and transitions inspected.
 - No console errors on the live site.
 
 There is no automated visual-regression suite in v0.1. Scan the flat code with a physical phone before using it in print.
@@ -166,6 +182,7 @@ There is no automated visual-regression suite in v0.1. Scan the flat code with a
 GitHub Pages serves the repository root from the `main` branch.
 
 - Live: <https://harmless-beep.github.io/qr-volde/>
+- Launch film: <https://harmless-beep.github.io/qr-volde/launch.html>
 - `.nojekyll` keeps the static paths intact.
 - Pushing to `main` triggers a new Pages build.
 - No build step, environment variables, or secrets are required.
@@ -176,7 +193,8 @@ GitHub Pages serves the repository root from the `main` branch.
 - No accounts, backend, database, analytics, or tracking.
 - No QR payload history is stored; only the selected visual mode is saved in `localStorage`.
 - No real bank, merchant, wallet, or authenticator payloads are included.
-- No stock images, photography, maps, external fonts, 3D models, or AI-generated assets are used. All geometry and Canvas textures are original procedural work.
+- The app uses no stock images, photography, maps, external fonts, 3D models, or AI-generated assets. All geometry and Canvas textures are original procedural work.
+- The launch film uses licensed music, SFX, and fonts; see [`THIRD_PARTY_NOTICES.md`](./THIRD_PARTY_NOTICES.md) and [`brag-output/README.md`](./brag-output/README.md).
 - The city is a Kathmandu-inspired composition, not a survey-accurate reconstruction.
 
 ## Roadmap
@@ -193,6 +211,8 @@ Open inputs for the next version: final tagline/brand copy, CTA destination, mus
 
 Original code, procedural geometry, copy, and art direction: QR Volde project, 2026.
 
+- Launch film: brag (MIT) + HyperFrames (Apache-2.0); music by Sascha Ende, ende.app (CC BY 4.0); SFX under the Pixabay Content License; GSAP under the GSAP Standard License.
+
 - Three.js r186 — MIT, Three.js Authors.
 - `qrcode-generator` 2.0.4 and UTF-8 helper — MIT, Kazuhiko Arase.
 - “QR Code” is a registered trademark of DENSO WAVE INCORPORATED.
@@ -202,4 +222,4 @@ Research references: [`RESEARCH.md`](./RESEARCH.md).
 
 ## License
 
-Original QR Volde code and procedural art: **license TBD**. Third-party components remain under their respective MIT licenses; see [`THIRD_PARTY_NOTICES.md`](./THIRD_PARTY_NOTICES.md).
+Original QR Volde code and procedural art: **license TBD**. Third-party components and launch-film assets remain under their respective licenses; see [`THIRD_PARTY_NOTICES.md`](./THIRD_PARTY_NOTICES.md).
