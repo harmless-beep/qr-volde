@@ -4,7 +4,7 @@
 
 [Live demo](https://harmless-beep.github.io/qr-volde/) · [Release v0.1.0](https://github.com/harmless-beep/qr-volde/releases/tag/v0.1.0) · [Research notes](./RESEARCH.md) · [Changelog](./CHANGELOG.md)
 
-![QR Volde — a giant 3D QR code facing the viewer](docs/screenshots/signal-desktop.webp)
+[![QR Volde launch film ? animated preview](launch-film/launch-film.gif)](https://harmless-beep.github.io/qr-volde/launch.html)
 
 ## Overview
 
@@ -17,8 +17,6 @@ The 3D code is the artwork. The flat QR in **QR Studio** is the code you scan.
 **No build step, no backend, no analytics, no paid APIs.**
 
 ## Launch film
-
-[![QR Volde launch film — animated 20-second preview](launch-film/launch-film.gif)](https://harmless-beep.github.io/qr-volde/launch.html)
 
 The film loops above. It is made from real captures of the scroll experience and the QR Studio, and rendered with [HyperFrames](https://hyperframes.heygen.com). The 3D QR is the artwork; the flat Studio code is the one to scan.
 
