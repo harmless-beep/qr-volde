@@ -2,6 +2,14 @@
 
 All notable changes to QR Volde are recorded here.
 
+## [Unreleased]
+
+### Documentation
+
+- Rebuilt the README with a project overview, screenshot gallery, architecture, QA, deployment, safety, and license sections.
+- Added desktop, mode, QR Studio, and mobile screenshots under `docs/screenshots/`.
+- Improved scene-rail label legibility over the QR artwork.
+
 ## [0.1.0] — 2026-10-27
 
 ### Added

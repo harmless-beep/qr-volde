@@ -510,6 +510,7 @@ button {
 .qv__rail-label {
   opacity: 0;
   transform: translateX(4px);
+  text-shadow: 0 1px 8px var(--qv-bg), 0 0 3px var(--qv-bg);
   transition: opacity 200ms ease, transform 200ms ease;
 }
 
