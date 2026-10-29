@@ -57,7 +57,7 @@
 
     <nav class="qv__rail" id="rail" aria-label="Scenes"></nav>
     <div class="qv__progress" aria-hidden="true"><span id="progress"></span></div>
-    <div class="qv__hint" id="hint">Scroll to unfold <span aria-hidden="true">↓</span></div>
+    <div class="qv__hint" id="hint" role="complementary" aria-label="Scroll hint">Scroll to unfold <span aria-hidden="true">↓</span></div>
 
     <div class="qv__fallback" id="fallback" hidden>
       <div>
@@ -91,19 +91,51 @@
             <button type="button" class="studio__preset" data-preset="auth">Authenticator</button>
           </div>
           <p class="studio__note" id="qr-note">A demo link. Works for websites, Google Sites, and any URL.</p>
+
+          <section class="studio__atelier" aria-labelledby="atelier-label">
+            <div class="studio__atelier-head">
+              <span class="studio__label" id="atelier-label">Atelier style</span>
+              <span class="studio__style-name" id="qr-style-name">Everest Nocturne</span>
+            </div>
+            <div class="studio__styles" id="qr-styles" role="group" aria-label="Art QR styles"></div>
+
+            <div class="studio__fields">
+              <label class="studio__field" for="qr-name">
+                <span>Name or monogram</span>
+                <input id="qr-name" type="text" maxlength="24" placeholder="AARAV" autocomplete="off" spellcheck="false">
+              </label>
+              <label class="studio__field" for="qr-caption">
+                <span>Caption</span>
+                <input id="qr-caption" type="text" maxlength="36" value="SCAN TO ENTER" autocomplete="off" spellcheck="false">
+              </label>
+            </div>
+
+            <div class="studio__custom" id="qr-custom" hidden>
+              <div class="studio__custom-group">
+                <span class="studio__label">Palette</span>
+                <div class="studio__swatches" id="qr-palettes" role="group" aria-label="Custom palette"></div>
+              </div>
+              <div class="studio__custom-group">
+                <span class="studio__label">Motif</span>
+                <div class="studio__motifs" id="qr-motifs" role="group" aria-label="Custom motif"></div>
+              </div>
+            </div>
+          </section>
+
           <div class="studio__actions">
-            <button class="studio__primary" id="apply-qr" type="button">Use in world</button>
-            <button class="studio__secondary" id="download-qr" type="button">Download PNG</button>
+            <button class="studio__primary" id="download-qr" type="button">Download art PNG</button>
+            <button class="studio__secondary" id="apply-qr" type="button">Use in world</button>
           </div>
-          <p class="studio__privacy">Client-side only. Nothing leaves your browser.</p>
+          <button class="studio__text-button" id="download-plain" type="button">Download plain QR fallback</button>
+          <p class="studio__privacy">Client-side only. No photos required. Nothing leaves your browser.</p>
         </div>
 
         <div class="studio__preview">
-          <div class="studio__canvas-wrap">
-            <canvas id="qr-canvas" width="512" height="512" aria-label="Generated scannable QR code"></canvas>
+          <div class="studio__canvas-wrap studio__canvas-wrap--art">
+            <canvas id="qr-canvas" width="640" height="800" aria-label="Generated scannable art QR code"></canvas>
           </div>
-          <p class="studio__preview-label">Scannable code</p>
-          <p class="studio__preview-note">The 3D code is the artwork. This flat code is the one to scan.</p>
+          <p class="studio__preview-label">Collectible art QR</p>
+          <p class="studio__preview-note">2048 x 2560 PNG. Scannable, personal, and made to keep. Scan it with your phone before printing or minting.</p>
         </div>
       </div>
     </div>

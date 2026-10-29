@@ -1,4 +1,12 @@
 import { createQR, drawQR, downloadCanvas, QR_DEFAULT } from './qr.js';
+import {
+  ART_MOTIFS,
+  ART_PALETTES,
+  ART_STYLES,
+  DEFAULT_ART_OPTIONS,
+  artFileName,
+  renderQRArt,
+} from './qr-art.js';
 import { initScene, sectionAt, sectionStart } from './scene.js';
 import { clamp } from './scene-world.js';
 
@@ -83,9 +91,17 @@ const closeStudioButton = document.getElementById('close-studio');
 const qrInput = document.getElementById('qr-input');
 const qrCanvas = document.getElementById('qr-canvas');
 const qrNote = document.getElementById('qr-note');
+const qrNameInput = document.getElementById('qr-name');
+const qrCaptionInput = document.getElementById('qr-caption');
+const qrStyleList = document.getElementById('qr-styles');
+const qrStyleName = document.getElementById('qr-style-name');
+const qrCustomPanel = document.getElementById('qr-custom');
+const qrPaletteList = document.getElementById('qr-palettes');
+const qrMotifList = document.getElementById('qr-motifs');
 const presetButtons = [...document.querySelectorAll('.studio__preset')];
 const applyQrButton = document.getElementById('apply-qr');
 const downloadQrButton = document.getElementById('download-qr');
+const downloadPlainButton = document.getElementById('download-plain');
 
 let sceneAPI = null;
 let currentQR = null;
@@ -94,6 +110,15 @@ let currentMode = 'dawn';
 let lastSection = -1;
 let lastFocus = null;
 let previewTimer = null;
+let artTimer = null;
+let styleButtons = [];
+let paletteButtons = [];
+let motifButtons = [];
+let artStyleId = DEFAULT_ART_OPTIONS.styleId;
+let artName = DEFAULT_ART_OPTIONS.name;
+let artCaption = DEFAULT_ART_OPTIONS.caption;
+let customPaletteId = DEFAULT_ART_OPTIONS.paletteId;
+let customMotifId = DEFAULT_ART_OPTIONS.motifId;
 let reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const startTime = performance.now();
@@ -237,27 +262,221 @@ function setPresetState(value) {
   }
 }
 
+function getArtOptions(overrides = {}) {
+  return {
+    styleId: artStyleId,
+    name: artName,
+    caption: artCaption,
+    paletteId: customPaletteId,
+    motifId: customMotifId,
+    text: previewQR?.text ?? qrInput.value,
+    ...overrides,
+  };
+}
+
+function persistArtState() {
+  try {
+    window.localStorage.setItem('qrvolde-art', JSON.stringify({
+      styleId: artStyleId,
+      name: artName,
+      caption: artCaption,
+      paletteId: customPaletteId,
+      motifId: customMotifId,
+    }));
+  } catch {
+    // Private browsing or storage limits should never break the Studio.
+  }
+}
+
+function loadArtState() {
+  try {
+    const saved = JSON.parse(window.localStorage.getItem('qrvolde-art') ?? 'null');
+    if (!saved || typeof saved !== 'object') return;
+    if (ART_STYLES.some((style) => style.id === saved.styleId)) artStyleId = saved.styleId;
+    if (typeof saved.name === 'string') artName = saved.name.slice(0, 24);
+    if (typeof saved.caption === 'string') artCaption = saved.caption.slice(0, 36);
+    if (ART_PALETTES.some((palette) => palette.id === saved.paletteId)) customPaletteId = saved.paletteId;
+    if (ART_MOTIFS.some((motif) => motif.id === saved.motifId)) customMotifId = saved.motifId;
+  } catch {
+    // Ignore malformed local preferences.
+  }
+}
+
+function refreshArtPreview() {
+  if (!previewQR) return;
+  renderQRArt(qrCanvas, previewQR.qr, getArtOptions());
+}
+
+function renderStyleThumbs() {
+  if (!previewQR) return;
+  for (const item of styleButtons) {
+    renderQRArt(item.canvas, previewQR.qr, getArtOptions({
+      styleId: item.style.id,
+      compact: true,
+    }));
+  }
+}
+
+function clearStyleThumbs() {
+  for (const item of styleButtons) {
+    const context = item.canvas.getContext('2d');
+    if (!context) continue;
+    context.save();
+    context.fillStyle = item.style.palette.bg;
+    context.fillRect(0, 0, item.canvas.width, item.canvas.height);
+    context.fillStyle = item.style.palette.accent;
+    context.font = '600 22px "Segoe UI", sans-serif';
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+    context.fillText('—', item.canvas.width / 2, item.canvas.height / 2);
+    context.restore();
+  }
+}
+
+function updateArtControls() {
+  const selected = ART_STYLES.find((style) => style.id === artStyleId) ?? ART_STYLES[0];
+  qrStyleName.textContent = selected.name;
+  qrCustomPanel.hidden = selected.id !== 'custom';
+
+  for (const item of styleButtons) {
+    const active = item.style.id === selected.id;
+    item.button.classList.toggle('is-active', active);
+    item.button.setAttribute('aria-pressed', String(active));
+  }
+  for (const item of paletteButtons) {
+    const active = item.palette.id === customPaletteId;
+    item.button.classList.toggle('is-active', active);
+    item.button.setAttribute('aria-pressed', String(active));
+  }
+  for (const item of motifButtons) {
+    const active = item.motif.id === customMotifId;
+    item.button.classList.toggle('is-active', active);
+    item.button.setAttribute('aria-pressed', String(active));
+  }
+}
+
+function setArtStyle(styleId) {
+  if (!ART_STYLES.some((style) => style.id === styleId)) return;
+  artStyleId = styleId;
+  updateArtControls();
+  refreshArtPreview();
+  persistArtState();
+}
+
+function setCustomPalette(paletteId) {
+  if (!ART_PALETTES.some((palette) => palette.id === paletteId)) return;
+  customPaletteId = paletteId;
+  updateArtControls();
+  refreshArtPreview();
+  renderStyleThumbs();
+  persistArtState();
+}
+
+function setCustomMotif(motifId) {
+  if (!ART_MOTIFS.some((motif) => motif.id === motifId)) return;
+  customMotifId = motifId;
+  updateArtControls();
+  refreshArtPreview();
+  renderStyleThumbs();
+  persistArtState();
+}
+
+function buildArtControls() {
+  styleButtons = ART_STYLES.map((style) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'studio__style';
+    button.dataset.style = style.id;
+    button.setAttribute('aria-pressed', 'false');
+    button.setAttribute('aria-label', `${style.name}: ${style.blurb}`);
+    button.title = style.blurb;
+
+    const canvas = document.createElement('canvas');
+    canvas.width = 144;
+    canvas.height = 180;
+    canvas.className = 'studio__style-thumb';
+    canvas.setAttribute('aria-hidden', 'true');
+
+    const label = document.createElement('span');
+    label.className = 'studio__style-label';
+    label.textContent = style.name;
+
+    button.append(canvas, label);
+    button.addEventListener('click', () => setArtStyle(style.id));
+    qrStyleList.append(button);
+    return { button, canvas, style };
+  });
+
+  paletteButtons = ART_PALETTES.map((palette) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'studio__swatch';
+    button.dataset.palette = palette.id;
+    button.setAttribute('aria-pressed', 'false');
+    button.setAttribute('aria-label', `${palette.name} palette`);
+    button.title = palette.name;
+
+    const chip = document.createElement('span');
+    chip.className = 'studio__swatch-chip';
+    chip.style.background = `linear-gradient(135deg, ${palette.palette.bg} 0 38%, ${palette.palette.accent} 38% 64%, ${palette.palette.accent2} 64%)`;
+    chip.setAttribute('aria-hidden', 'true');
+
+    const label = document.createElement('span');
+    label.className = 'studio__swatch-label';
+    label.textContent = palette.name;
+
+    button.append(chip, label);
+    button.addEventListener('click', () => setCustomPalette(palette.id));
+    qrPaletteList.append(button);
+    return { button, palette };
+  });
+
+  motifButtons = ART_MOTIFS.map((motif) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'studio__motif';
+    button.dataset.motif = motif.id;
+    button.setAttribute('aria-pressed', 'false');
+    button.textContent = motif.name;
+    button.addEventListener('click', () => setCustomMotif(motif.id));
+    qrMotifList.append(button);
+    return { button, motif };
+  });
+
+  updateArtControls();
+}
+
 function updatePreview(text, options = {}) {
   try {
     const result = createQR(text);
     previewQR = result;
-    drawQR(qrCanvas, result.qr);
+    refreshArtPreview();
+    renderStyleThumbs();
     qrNote.classList.remove('is-error');
     qrNote.textContent = options.note ?? 'This code is generated locally. Nothing leaves your browser.';
     applyQrButton.disabled = false;
     downloadQrButton.disabled = false;
+    downloadPlainButton.disabled = false;
     setPresetState(result.text);
     return result;
   } catch (error) {
     previewQR = null;
     drawQrPlaceholder('Check the input');
+    clearStyleThumbs();
     qrNote.classList.add('is-error');
     qrNote.textContent = error instanceof Error ? error.message : 'Could not build that QR.';
     applyQrButton.disabled = true;
     downloadQrButton.disabled = true;
+    downloadPlainButton.disabled = true;
     setPresetState(null);
     return null;
   }
+}
+
+function ensureCurrentPreview() {
+  const value = qrInput.value;
+  if (previewQR && previewQR.text === value.trim()) return previewQR;
+  return updatePreview(value);
 }
 
 function openStudio() {
@@ -265,6 +484,9 @@ function openStudio() {
   lastFocus = document.activeElement;
   const value = currentQR?.text ?? QR_DEFAULT;
   qrInput.value = value;
+  qrNameInput.value = artName;
+  qrCaptionInput.value = artCaption;
+  updateArtControls();
   updatePreview(value, {
     note: sceneAPI
       ? 'This is the code currently in the world. Edit it to make a new one.'
@@ -284,7 +506,7 @@ function closeStudio() {
 }
 
 function applyStudioQR() {
-  if (!previewQR) return;
+  if (!ensureCurrentPreview()) return;
   currentQR = previewQR;
   if (sceneAPI) sceneAPI.setQR(currentQR);
   closeStudio();
@@ -301,6 +523,11 @@ function applyStudioQR() {
 
 function initStudio() {
   if (!studio) return;
+
+  loadArtState();
+  buildArtControls();
+  qrNameInput.value = artName;
+  qrCaptionInput.value = artCaption;
 
   openStudioButton?.addEventListener('click', openStudio);
   cta.addEventListener('click', (event) => {
@@ -322,6 +549,19 @@ function initStudio() {
     previewTimer = window.setTimeout(() => updatePreview(qrInput.value), 180);
   });
 
+  const updateArtFields = () => {
+    artName = qrNameInput.value.slice(0, 24);
+    artCaption = qrCaptionInput.value.slice(0, 36);
+    refreshArtPreview();
+    window.clearTimeout(artTimer);
+    artTimer = window.setTimeout(() => {
+      renderStyleThumbs();
+      persistArtState();
+    }, 120);
+  };
+  qrNameInput.addEventListener('input', updateArtFields);
+  qrCaptionInput.addEventListener('input', updateArtFields);
+
   for (const button of presetButtons) {
     button.addEventListener('click', () => {
       const preset = PRESETS[button.dataset.preset];
@@ -334,14 +574,39 @@ function initStudio() {
   applyQrButton.addEventListener('click', applyStudioQR);
 
   downloadQrButton.addEventListener('click', async () => {
-    if (!previewQR) return;
+    if (!ensureCurrentPreview()) return;
     try {
-      await downloadCanvas(qrCanvas, 'qr-volde.png');
       qrNote.classList.remove('is-error');
-      qrNote.textContent = 'PNG downloaded. Check the code with your phone before printing.';
+      qrNote.textContent = 'Preparing your art PNG...';
+      const options = getArtOptions({ text: previewQR.text });
+      const exportCanvas = document.createElement('canvas');
+      exportCanvas.width = 2048;
+      exportCanvas.height = 2560;
+      const result = renderQRArt(exportCanvas, previewQR.qr, options);
+      await downloadCanvas(exportCanvas, artFileName(options, previewQR.text));
+      qrNote.classList.remove('is-error');
+      qrNote.textContent = `Art PNG downloaded${result?.edition ? ` (edition ${result.edition})` : ''}. Scan it with your phone before printing or minting.`;
     } catch (error) {
       qrNote.classList.add('is-error');
-      qrNote.textContent = error instanceof Error ? error.message : 'Could not download the PNG.';
+      qrNote.textContent = error instanceof Error ? error.message : 'Could not download the art PNG.';
+    }
+  });
+
+  downloadPlainButton.addEventListener('click', async () => {
+    if (!ensureCurrentPreview()) return;
+    try {
+      qrNote.classList.remove('is-error');
+      qrNote.textContent = 'Preparing your plain QR...';
+      const plainCanvas = document.createElement('canvas');
+      plainCanvas.width = 1024;
+      plainCanvas.height = 1024;
+      drawQR(plainCanvas, previewQR.qr, { quiet: 4 });
+      await downloadCanvas(plainCanvas, 'qr-volde-plain.png');
+      qrNote.classList.remove('is-error');
+      qrNote.textContent = 'Plain QR downloaded. Use it when a printer or scanner needs the simplest code.';
+    } catch (error) {
+      qrNote.classList.add('is-error');
+      qrNote.textContent = error instanceof Error ? error.message : 'Could not download the plain QR.';
     }
   });
 
@@ -390,8 +655,6 @@ function boot() {
   maxScroll = getMaxScroll();
   updateUI(smoothProgress);
 
-  if (!sceneAPI) return;
-
   const loop = (now) => {
     const dt = Math.min(0.05, (now - lastFrame) / 1000);
     lastFrame = now;
@@ -409,12 +672,16 @@ function boot() {
     window.requestAnimationFrame(loop);
   };
 
-  window.requestAnimationFrame(loop);
+  if (sceneAPI) window.requestAnimationFrame(loop);
 
   window.addEventListener(
     'scroll',
     () => {
       targetProgress = readProgress();
+      if (!sceneAPI) {
+        smoothProgress = targetProgress;
+        updateUI(smoothProgress);
+      }
     },
     { passive: true },
   );
@@ -423,7 +690,7 @@ function boot() {
     maxScroll = getMaxScroll();
     sceneAPI?.resize();
     targetProgress = readProgress();
-    if (reduceMotion) {
+    if (reduceMotion || !sceneAPI) {
       smoothProgress = targetProgress;
       updateUI(smoothProgress);
     }
@@ -439,7 +706,7 @@ function boot() {
       window.scrollTo(0, value * getMaxScroll());
       targetProgress = value;
       smoothProgress = value;
-      sceneAPI.update(value, (performance.now() - startTime) / 1000, reduceMotion);
+      sceneAPI?.update(value, (performance.now() - startTime) / 1000, reduceMotion);
       updateUI(value);
     },
     state() {
@@ -452,11 +719,25 @@ function boot() {
         local,
         mode: currentMode,
         qr: currentQR?.text ?? null,
+        artStyle: artStyleId,
+        artName,
+        artCaption,
         webgl: Boolean(sceneAPI),
         reduceMotion,
         scrollY: window.scrollY,
         maxScroll: getMaxScroll(),
       };
+    },
+    renderArt(options = {}) {
+      if (!previewQR) return null;
+      const canvas = document.createElement('canvas');
+      canvas.width = 2048;
+      canvas.height = 2560;
+      renderQRArt(canvas, previewQR.qr, getArtOptions({
+        ...options,
+        text: previewQR.text,
+      }));
+      return canvas.toDataURL('image/png');
     },
     freeze(fraction) {
       const value = clamp(Number(fraction) || 0, 0, 1);
@@ -464,7 +745,7 @@ function boot() {
       window.scrollTo(0, value * getMaxScroll());
       targetProgress = value;
       smoothProgress = value;
-      sceneAPI.update(value, (performance.now() - startTime) / 1000, reduceMotion);
+      sceneAPI?.update(value, (performance.now() - startTime) / 1000, reduceMotion);
       updateUI(value);
     },
     unfreeze() {

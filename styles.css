@@ -1,4 +1,4 @@
-/* QR Volde — v0.1 "Signal"
+/* QR Volde — v0.2 "QR Atelier"
    A single continuous world, three visual modes, one client-side QR studio. */
 
 :root {
@@ -824,6 +824,247 @@ body.no-webgl .qv__progress {
   color: #ff9a8a;
 }
 
+/* Atelier style picker ---------------------------------------------------- */
+
+.studio__atelier {
+  margin: 0.15rem 0 0.9rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--qv-line);
+}
+
+.studio__atelier-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.45rem;
+}
+
+.studio__atelier-head .studio__label {
+  margin: 0;
+}
+
+.studio__style-name {
+  color: var(--qv-accent);
+  font-family: var(--qv-display);
+  font-size: 0.82rem;
+  line-height: 1.1;
+  text-align: right;
+}
+
+.studio__styles {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.42rem;
+}
+
+.studio__style {
+  appearance: none;
+  min-width: 0;
+  padding: 0.24rem;
+  border: 1px solid var(--qv-line);
+  border-radius: 0.65rem;
+  background: color-mix(in srgb, var(--qv-panel-strong) 38%, transparent);
+  color: var(--qv-muted);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
+}
+
+.studio__style:hover {
+  border-color: var(--qv-line-strong);
+  transform: translateY(-1px);
+}
+
+.studio__style.is-active {
+  border-color: var(--qv-accent);
+  background: color-mix(in srgb, var(--qv-accent) 9%, var(--qv-panel-strong));
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--qv-accent) 14%, transparent);
+}
+
+.studio__style-thumb {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  border-radius: 0.46rem;
+  background: #fffdf8;
+}
+
+.studio__style-label {
+  display: block;
+  min-height: 2.1em;
+  margin: 0.3rem 0.08rem 0.05rem;
+  overflow: hidden;
+  color: var(--qv-muted);
+  font-size: 0.58rem;
+  font-weight: 650;
+  letter-spacing: 0.015em;
+  line-height: 1.12;
+  text-overflow: ellipsis;
+}
+
+.studio__style.is-active .studio__style-label {
+  color: var(--qv-ink);
+}
+
+.studio__fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin: 0.75rem 0 0.55rem;
+}
+
+.studio__field {
+  display: block;
+  min-width: 0;
+}
+
+.studio__field > span {
+  display: block;
+  margin-bottom: 0.28rem;
+  color: var(--qv-muted);
+  font-size: 0.52rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.studio__field input {
+  width: 100%;
+  min-height: 2.45rem;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--qv-line-strong);
+  border-radius: 0.65rem;
+  background: color-mix(in srgb, var(--qv-panel-strong) 70%, transparent);
+  color: var(--qv-ink);
+  font-size: 0.76rem;
+  outline: none;
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.studio__field input:focus {
+  border-color: var(--qv-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--qv-accent) 14%, transparent);
+}
+
+.studio__custom {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: 0.65rem;
+  margin-top: 0.55rem;
+  padding: 0.65rem;
+  border: 1px solid var(--qv-line);
+  border-radius: 0.75rem;
+  background: color-mix(in srgb, var(--qv-panel-strong) 34%, transparent);
+}
+
+.studio__custom[hidden] {
+  display: none;
+}
+
+.studio__custom-group {
+  min-width: 0;
+}
+
+.studio__swatches,
+.studio__motifs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.3rem;
+}
+
+.studio__swatch {
+  appearance: none;
+  display: flex;
+  align-items: center;
+  gap: 0.32rem;
+  min-width: 0;
+  padding: 0.22rem 0.34rem 0.22rem 0.22rem;
+  border: 1px solid var(--qv-line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--qv-muted);
+  cursor: pointer;
+  transition: border-color 180ms ease, background 180ms ease;
+}
+
+.studio__swatch:hover,
+.studio__swatch.is-active {
+  border-color: var(--qv-accent);
+}
+
+.studio__swatch.is-active {
+  background: color-mix(in srgb, var(--qv-accent) 9%, transparent);
+}
+
+.studio__swatch-chip {
+  display: block;
+  width: 1.25rem;
+  height: 1.25rem;
+  flex: none;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 50%;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+}
+
+.studio__swatch-label {
+  overflow: hidden;
+  font-size: 0.55rem;
+  font-weight: 650;
+  line-height: 1.1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.studio__motif {
+  appearance: none;
+  padding: 0.3rem 0.46rem;
+  border: 1px solid var(--qv-line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--qv-muted);
+  font-size: 0.56rem;
+  font-weight: 650;
+  cursor: pointer;
+  transition: color 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.studio__motif:hover,
+.studio__motif.is-active {
+  color: var(--qv-ink);
+  border-color: var(--qv-accent);
+}
+
+.studio__motif.is-active {
+  background: color-mix(in srgb, var(--qv-accent) 9%, transparent);
+}
+
+.studio__text-button {
+  appearance: none;
+  display: inline-block;
+  margin: 0 0 0.75rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--qv-muted);
+  font-size: 0.6rem;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  cursor: pointer;
+}
+
+.studio__text-button:hover {
+  color: var(--qv-accent);
+}
+
+.studio__text-button:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
 .studio__actions {
   display: flex;
   flex-wrap: wrap;
@@ -907,6 +1148,12 @@ body.has-dialog {
   box-shadow: 0 12px 36px rgba(40, 26, 12, 0.14);
 }
 
+.studio__canvas-wrap--art {
+  max-width: 19rem;
+  padding: 0.38rem;
+  border-radius: 1rem;
+}
+
 .studio__canvas-wrap canvas {
   display: block;
   width: 100%;
@@ -953,6 +1200,32 @@ body.has-dialog {
 
   .studio__canvas-wrap {
     max-width: 14rem;
+  }
+
+  .studio__canvas-wrap--art {
+    max-width: 15rem;
+  }
+
+  .studio__styles {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .studio__fields {
+    grid-template-columns: 1fr;
+  }
+
+  .studio__custom {
+    grid-template-columns: 1fr;
+  }
+
+  .studio__styles {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .studio__style-label {
+    font-size: 0.55rem;
   }
 }
 

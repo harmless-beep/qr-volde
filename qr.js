@@ -9,11 +9,11 @@ export const QR_MAX_LENGTH = 160;
 export const QR_DEFAULT = 'https://example.com/qr-volde';
 
 /**
- * Build a QR code. We use error correction Q (25%) so the code remains
- * readable on screens, in screenshots, and at an angle. The 3D wall uses the
- * same matrix, which keeps the art and the functional code in sync.
+ * Build a QR code. The flat art export uses error correction H (30%) so the
+ * central seal and the decorative panel have more recovery room. The 3D wall
+ * uses the same matrix, which keeps the art and the functional code in sync.
  */
-export function createQR(text) {
+export function createQR(text, options = {}) {
   const value = String(text ?? '').trim();
   if (!value) {
     throw new Error('Enter a destination or some text first.');
@@ -22,7 +22,8 @@ export function createQR(text) {
     throw new Error(`Keep it under ${QR_MAX_LENGTH} characters so the 3D code stays readable.`);
   }
 
-  const qr = qrcode(0, 'Q');
+  const errorCorrection = options.errorCorrection ?? 'H';
+  const qr = qrcode(0, errorCorrection);
   qr.addData(value);
   qr.make();
 

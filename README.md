@@ -2,17 +2,17 @@
 
 **A giant 3D QR code that unfolds into a living Himalayan chowk.**
 
-[Live demo](https://harmless-beep.github.io/qr-volde/) · [Release v0.1.0](https://github.com/harmless-beep/qr-volde/releases/tag/v0.1.0) · [Research notes](./RESEARCH.md) · [Changelog](./CHANGELOG.md)
+[Live demo](https://harmless-beep.github.io/qr-volde/) · [Release v0.2.0](https://github.com/harmless-beep/qr-volde/releases/tag/v0.2.0) · [Research notes](./RESEARCH.md) · [Changelog](./CHANGELOG.md)
 
-[![QR Volde launch film ? animated preview](launch-film/launch-film.gif)](https://harmless-beep.github.io/qr-volde/launch.html)
+[![QR Volde launch film — animated preview](launch-film/launch-film.gif)](https://harmless-beep.github.io/qr-volde/launch.html)
 
 ## Overview
 
 QR Volde is a scroll-driven 3D web experience. A dark-square QR monolith faces you, then breaks apart into a Kathmandu-style courtyard: a tiered pagoda, a shop row, a tea stall, a stone spout, a stupa, prayer flags, trees, people, a bus, a scooter, and the Himalayas behind it.
 
-The 3D code is the artwork. The flat QR in **QR Studio** is the code you scan.
+The 3D code is the artwork. **QR Studio** turns the flat code into a collectible, scan-tested art card, or a plain fallback QR when a printer needs the simplest possible mark.
 
-**Status:** v0.1.0 vertical slice, published 2026-10-27.  
+**Status:** v0.2.0 QR Atelier, published 2026-10-29.  
 **Built with:** Three.js r186 · `qrcode-generator` 2.0.4 · vanilla ES modules · Canvas 2D · GitHub Pages.  
 **No build step, no backend, no analytics, no paid APIs.**
 
@@ -30,6 +30,7 @@ The film loops above. It is made from real captures of the scroll experience and
 - [Screenshots](#screenshots)
 - [The experience](#the-experience)
 - [QR Studio](#qr-studio)
+- [QR Atelier](#qr-atelier)
 - [Visual modes](#visual-modes)
 - [Quick start](#quick-start)
 - [How it works](#how-it-works)
@@ -52,10 +53,19 @@ The film loops above. It is made from real captures of the scroll experience and
 
 | The Studio | QR Studio |
 |:--:|:--:|
-| ![The final city view with the Create your QR call to action](docs/screenshots/studio-desktop.webp) | ![The QR Studio dialog with a high-contrast scannable QR preview](docs/screenshots/qr-studio.webp) |
-| *Make your own way in.* | *The flat code is the one to scan.* |
+| ![The final city view with the Create your QR call to action](docs/screenshots/studio-desktop.webp) | ![The QR Studio dialog with a collectible art QR preview and seven Atelier style samples](docs/screenshots/qr-studio.webp) |
+| *Make your own way in.* | *The flat code becomes a collectible object.* |
 
-### Visual modes
+### Atelier art
+
+| Newari Heirloom | Custom Atelier |
+|:--:|:--:|
+| ![Newari Heirloom art QR with a pagoda motif, terracotta palette, and a scannable cream QR panel](docs/screenshots/atelier-newari.webp) | ![Custom Atelier art QR with a rose palette, lotus motif, and a scannable cream QR panel](docs/screenshots/atelier-custom.webp) |
+| *A sample edition: AARAV, Kathmandu every day.* | *Custom palette, motif, name, and caption.* |
+
+The art is generated locally from type, color, and procedural geometry. The QR stays on an opaque, high-contrast paper panel with a four-module quiet zone; the motifs live outside it, with only a small central seal over the data area.
+
+### Mode gallery
 
 | Himalayan Dawn | Neon Kathmandu | Minimal Gallery |
 |:--:|:--:|:--:|
@@ -67,9 +77,10 @@ The film loops above. It is made from real captures of the scroll experience and
 <p align="center">
   <img src="docs/screenshots/mobile-signal.webp" width="280" alt="QR Volde on a mobile screen showing the QR monolith">
   <img src="docs/screenshots/mobile-studio.webp" width="280" alt="QR Volde on a mobile screen showing the final city and call to action">
+  <img src="docs/screenshots/mobile-atelier.webp" width="280" alt="QR Volde QR Studio on a mobile screen showing a collectible Newari Heirloom art QR preview">
 </p>
 
-<p align="center"><em>Responsive framing, full-width copy, and a touch-friendly QR Studio.</em></p>
+<p align="center"><em>Responsive framing, full-width copy, and a touch-friendly QR Studio with a collectible art preview.</em></p>
 
 ## The experience
 
@@ -78,7 +89,7 @@ Four scenes share one continuous camera flight:
 1. **The Signal** — the QR monolith. Every square is a door.
 2. **The Unfold** — modules lift from the wall and land as the city plan.
 3. **The Chowk** — the block assembles: Newari roofs, brick, timber, tea steam, prayer flags, and small errands.
-4. **The Studio** — make a QR for a link, video, payment demo, or app.
+4. **The Studio** — make a QR for a link, video, payment demo, or app, then export it as a collectible art card.
 
 Scroll progress is weighted by scene, so the QR reveal and the city reveal each get room to breathe. The camera adapts to portrait, tablet, and wide screens instead of simply cropping the artwork.
 
@@ -87,13 +98,30 @@ Scroll progress is weighted by scene, so the QR reveal and the city reveal each 
 - Client-side QR generation. Nothing leaves the browser.
 - Default payload: `https://example.com/qr-volde` (demo only).
 - Presets: **Website** (also works for Google Sites), **Video**, **Payment demo**, **Authenticator**.
+- **Atelier style** picker: **Everest Nocturne**, **Newari Heirloom**, **Lotus Rosé**, **Neon Bazaar**, **Pashmina Light**, **Tiger Guardian**, and **Custom Atelier**.
+- Custom Atelier: name or monogram, caption, one of four palettes, and one of five procedural motifs. No photo upload is required.
+- **Download art PNG** exports a **2048 x 2560** collectible card with a gallery plinth, deterministic edition number, and a four-module quiet zone.
+- **Download plain QR fallback** exports a **1024 x 1024** high-contrast code.
 - **Use in world** updates the 3D matrix and the QR ground pattern.
-- **Download PNG** exports a 512 × 512 high-contrast QR with a four-module quiet zone.
-- Error correction: **Q (25%)**.
+- Error correction: **H (30%)**. The same matrix drives the 3D wall, the ground texture, the art card, and the plain fallback.
 - UTF-8 / Devanagari input supported.
 - Maximum input: 160 characters, so the 3D code stays readable.
+- The art PNG is a normal image suitable for printing or minting. No wallet, chain, marketplace, or on-chain uniqueness claim is built in; the edition code is a deterministic design detail.
 
-> **The 3D QR is not a scanning target.** Use the flat preview or the downloaded PNG. Scan it with your phone before printing or sharing.
+> **The 3D QR is not a scanning target.** Use the Atelier preview, the downloaded art PNG, or the plain fallback. Scan it with your phone before printing or sharing.
+
+## QR Atelier
+
+The Atelier turns the scannable code into a small edition object: a paper panel, a gallery plinth, a style name, a personal inscription, and a deterministic edition number. Six sample styles are included, plus a custom style for names, palettes, and motifs.
+
+### How the art stays scannable
+
+- The QR is drawn on an **opaque paper panel** with a **four-module quiet zone**.
+- Data modules are rounded, but the three finder patterns keep the nested **7 / 5 / 3** square silhouette scanners expect.
+- Artwork and texture stay outside the panel; a **small central seal** is the only overlay on data modules.
+- Error correction is **H (30%)**, so the central seal and the decorative panel have recovery room.
+- Every sample and custom variant was decoded with a QR reader at **2048 x 2560** and at **640 x 800**.
+- The **plain QR fallback** is available when a printer or older scanner needs the simplest possible code.
 
 ### Demo safety
 
@@ -108,7 +136,7 @@ Scroll progress is weighted by scene, so the QR reveal and the city reveal each 
 - **Neon Kathmandu** — midnight blue, cyan modules, magenta signage, and wet-street glow.
 - **Minimal Gallery** — chalk, stone, charcoal, and a single teal accent.
 
-The mode persists in `localStorage` under `qrvolde-mode`. The QR Studio preview stays high-contrast black-on-cream in every mode; only the 3D artwork is themed.
+The mode persists in `localStorage` under `qrvolde-mode`. The 3D artwork is themed by mode; Atelier palettes are independent and always keep the QR on a high-contrast paper panel.
 
 ## Quick start
 
@@ -132,10 +160,11 @@ Opening `index.html` directly with `file://` will not work because the app uses 
 ## How it works
 
 - **One canvas, one scroll space.** A fixed WebGL canvas sits over a tall scroll spacer. Section weights map scroll progress to camera and reveal timing.
-- **One QR matrix, three outputs.** `qrcode-generator` produces the matrix once. The same matrix drives the 3D module wall, the ground texture, and the flat Studio preview.
+- **One QR matrix, four outputs.** `qrcode-generator` produces the matrix once. The same matrix drives the 3D module wall, the ground texture, the Atelier art card, and the plain fallback.
 - **Instanced geometry.** The QR wall is built from instanced modules; the city is procedural low-poly geometry. No external models or image textures are loaded.
 - **Wall-to-ground morph.** Modules lift, drift, and land as the QR plaza. City props fade in as the camera rises over the chowk.
 - **Responsive camera.** Portrait screens pull back and lower the look target; wide screens shift the artwork to make room for the copy card.
+- **Procedural Atelier.** A Canvas 2D renderer draws original motifs, paper texture, typography, and a gallery plinth around the high-contrast QR panel. No photos, external images, or fonts are loaded.
 - **Theme switching.** CSS custom properties re-theme the UI while Three.js palettes, materials, lights, and fog re-theme the scene.
 - **Graceful fallback.** If WebGL is unavailable, the page shows a clear fallback and keeps QR Studio usable.
 - **Reduced motion.** `prefers-reduced-motion` switches section changes to instant and keeps scene props static.
@@ -154,6 +183,7 @@ Opening `index.html` directly with `file://` will not work because the app uses 
 | `city-buildings.js` | Pagoda, shop row, tea stall, dhunge dhara, stupa, trees, signs. |
 | `city-life.js` | People, dog, pigeons, bus, scooter, prayer flags, wires, lamps. |
 | `qr.js` | QR generation, canvas rendering, PNG download, 3D texture drawing. |
+| `qr-art.js` | QR Atelier: six styles, custom palettes/motifs, and 2048 x 2560 art-card rendering. |
 | `vendor/` | Vendored Three.js r186 and `qrcode-generator` 2.0.4. |
 | `launch.html` | Launch-film page with the 20-second film, poster, share copy, and social links. |
 | `launch-film/` | Launch-film plan, brief, editable HyperFrames composition, MP4, poster, and credits. |
@@ -164,16 +194,18 @@ Opening `index.html` directly with `file://` will not work because the app uses 
 
 ## Testing and QA
 
-- App Lighthouse: **100 accessibility, 100 best practices, 100 SEO** (v0.1.0 local audit).
+- App Lighthouse: **100 accessibility, 100 best practices, 100 SEO** (v0.2.0 local audit).
 - Launch-page Lighthouse: **100 accessibility, 100 best practices, 100 SEO** (local audit).
-- Launch page verified at **1280 x 900** and **390 x 844**; no horizontal overflow or console errors.
-- Verified at **1280 × 800**, **785 × 932**, and **390 × 844**.
-- Tested all three modes, real scrolling, rail navigation, CTA, QR generation, PNG download, “Use in world”, Devanagari input, invalid input, maximum length, reduced motion, and no-WebGL fallback.
-- Downloaded QR checked for high contrast, finder patterns, and a four-module quiet zone.
+- Axe-core: **no violations** with QR Studio open at desktop width; the only base-page note was a missing landmark on the scroll hint, now fixed.
+- Verified at **1440 x 1100**, **1280 x 800**, **785 x 932**, and **390 x 844**.
+- Tested all three visual modes, real scrolling, rail navigation, CTA, QR generation, Atelier style switching, custom palette/motif selection, name and caption personalization, art PNG download, plain fallback download, Use in world, Devanagari input, invalid input, maximum length, reduced motion, and no-WebGL fallback.
+- All six sample styles plus custom variants decoded with a QR reader at **2048 x 2560** and **640 x 800**.
+- Long 160-character payloads, one-character monograms, long names/captions, and the plain 1024 x 1024 fallback decoded successfully.
+- Downloaded art checked for finder patterns, a four-module quiet zone, opaque paper, and high contrast.
 - Launch film checked at 20.0s, 1920x1080, 30fps, stereo AAC; key frames and transitions inspected.
 - No console errors on the live site.
 
-There is no automated visual-regression suite in v0.1. Scan the flat code with a physical phone before using it in print.
+There is no automated visual-regression suite. Scan the flat art or plain fallback with a physical phone before using it in print.
 
 ## Deployment
 
@@ -189,18 +221,20 @@ GitHub Pages serves the repository root from the `main` branch.
 
 - QR generation is entirely client-side.
 - No accounts, backend, database, analytics, or tracking.
-- No QR payload history is stored; only the selected visual mode is saved in `localStorage`.
+- No QR payload history is stored. The selected visual mode and Atelier preferences are saved in `localStorage` under `qrvolde-mode` and `qrvolde-art`; payloads, names, and captions are not sent anywhere.
 - No real bank, merchant, wallet, or authenticator payloads are included.
-- The app uses no stock images, photography, maps, external fonts, 3D models, or AI-generated assets. All geometry and Canvas textures are original procedural work.
+- The app uses no stock images, photography, maps, external fonts, 3D models, or AI-generated assets. All geometry, Atelier motifs, and Canvas textures are original procedural work.
+- The Atelier never asks for a photo or file upload. Personalization is limited to text, palette, and motif.
 - The launch film uses licensed music, SFX, and fonts; see [`THIRD_PARTY_NOTICES.md`](./THIRD_PARTY_NOTICES.md) and [`launch-film/README.md`](./launch-film/README.md).
 - The city is a Kathmandu-inspired composition, not a survey-accurate reconstruction.
 
 ## Roadmap
 
 - **v0.1** — Signal vertical slice: QR monolith, unfold, chowk, Studio. **Published.**
-- **v0.2** — City: more streets, depth, and life.
-- **v0.3** — Districts: switchable neighbourhoods and landmarks.
-- **v0.4** — Launch: final brand copy, CTA destination, real demo payloads.
+- **v0.2** — QR Atelier: six collectible art styles, custom palettes/motifs, and scan-tested 2048 x 2560 exports. **Published.**
+- **v0.3** — City: more streets, depth, and life.
+- **v0.4** — Districts: switchable neighbourhoods and landmarks.
+- **v0.5** — Launch: final brand copy, CTA destination, real demo payloads.
 - **v1.0** — Stable release.
 
 Open inputs for the next version: final tagline/brand copy, CTA destination, must-have landmarks, real QR payloads, and the license choice for the original code.

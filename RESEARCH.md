@@ -1,10 +1,10 @@
 # Research Notes
 
 **Project:** QR Volde  
-**Version:** v0.1.0  
-**Research date:** 2026-10-27
+**Version:** v0.2.0  
+**Research date:** 2026-10-27; updated 2026-10-29
 
-This document records the references and decisions behind the v0.1 vertical slice. The goal was recognition, not reconstruction. All geometry, textures, signs, and characters are original procedural work; no photos, maps, stock models, or third-party visual assets were copied into the scene.
+This document records the references and decisions behind the v0.1 vertical slice and the v0.2 QR Atelier. The goal is recognition, not reconstruction. All geometry, textures, signs, characters, and Atelier motifs are original procedural work; no photos, maps, stock models, third-party visual assets, or AI-generated images were copied into the project.
 
 ## 1. Kathmandu Valley and Newar architecture
 
@@ -44,15 +44,17 @@ This document records the references and decisions behind the v0.1 vertical slic
 - ISO/IEC 18004:2015 — QR Code bar code symbology specification: <https://www.iso.org/standard/62021.html>
 - DENSO WAVE — QR Code essentials and trademark notice: <https://www.denso-wave.com/en/technology/qrcode/>
 - `qrcode-generator` by Kazuhiko Arase: <https://github.com/kazuhikoarase/qrcode-generator>
+- Thonky — QR Code error correction table (background): <https://www.thonky.com/qr-code-tutorial/error-correction-table>
+- jsQR — JavaScript QR decoder used for local verification: <https://github.com/cozmo/jsQR>
 - Three.js documentation: <https://threejs.org/docs/>
 
 ### Implementation notes
 
-- The flat QR is generated client-side with `qrcode-generator` and rendered to a 512 × 512 canvas.
-- Error correction is **Q (25%)**, a practical balance for screens, screenshots, and angled scans.
+- The flat QR is generated client-side with `qrcode-generator`. The v0.1 preview and download were 512 × 512; v0.2 renders a live Atelier preview and exports at 2048 × 2560, with a 1024 × 1024 plain fallback.
+- Error correction is **H (30%)** in v0.2, up from Q (25%) in v0.1. H provides recovery room for the central seal and for print or screen imperfections while keeping the 160-character payload limit practical.
 - The flat QR uses a high-contrast dark-on-cream palette and a **four-module quiet zone**.
 - The 3D wall uses the **same matrix** as the flat code, so the artwork and the functional code stay in sync.
-- The 3D QR is intentionally **not** a scanning target: modules are extruded, spaced, lit, and later scattered into the city. The Studio preview and PNG are the scannable artifacts.
+- The 3D QR is intentionally **not** a scanning target: modules are extruded, spaced, lit, and later scattered into the city. The Atelier art PNG and the plain fallback are the scannable artifacts.
 - The QR Code word mark is a registered trademark of DENSO WAVE INCORPORATED. The project uses the term descriptively.
 
 ## 3. Nepalese payment QR context
@@ -89,6 +91,7 @@ This document records the references and decisions behind the v0.1 vertical slic
 - W3C WAI — Dialog (modal) pattern: <https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/>
 - MDN — `prefers-reduced-motion`: <https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion>
 - MDN — `<dialog>`: <https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog>
+- Deque — Axe-core: <https://github.com/dequelabs/axe-core>
 
 ### Decisions
 
@@ -98,12 +101,43 @@ This document records the references and decisions behind the v0.1 vertical slic
 - Respect reduced motion with instant section changes and static scene props.
 - Keep touch targets at least 2rem where practical; rail controls use larger transparent hit areas.
 - Provide `aria-pressed` on visual mode buttons and `aria-current` on scene rail buttons.
-- Lighthouse v0.1.0: 100 accessibility, 100 best practices, 100 SEO.
+- Wrap the scroll hint in a complementary landmark so all base-page content sits inside a landmark.
+- Lighthouse v0.2.0: 100 accessibility, 100 best practices, 100 SEO. Axe-core reported no violations with QR Studio open; the base page's scroll-hint landmark note was fixed.
 
-## 6. Asset and originality statement
+## 6. QR Atelier art and scannability
+
+### Sources reviewed
+
+- ISO/IEC 18004:2015 — module placement, finder patterns, quiet zone, and error-correction levels.
+- DENSO WAVE — QR Code essentials: <https://www.denso-wave.com/en/technology/qrcode/>
+- Thonky — error-correction table and module structure (background): <https://www.thonky.com/qr-code-tutorial/>
+- jsQR — local decode verification at multiple output sizes: <https://github.com/cozmo/jsQR>
+- WCAG 2.2 — contrast guidance for the QR panel: <https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html>
+
+### Design decisions
+
+- **The QR panel is the constant.** Every style uses an opaque cream paper panel with dark ink, regardless of the decorative palette. Artwork, texture, and motif geometry stay outside the panel.
+- **Quiet zone:** four modules on every side, filled with the panel's paper color, so the code is not crowded by ornament.
+- **Finder patterns:** the three finders keep the nested 7 / 5 / 3 silhouette. Their corners are lightly rounded, but the structure and contrast remain conventional.
+- **Data modules:** rounded squares at roughly 17% corner radius. This softens the code without merging adjacent dark modules.
+- **Central seal:** a paper-filled circle with an accent ring and the collector's initials or a motif glyph. It covers roughly seven modules across at the centre, a small fraction of the data area, and relies on H (30%) recovery.
+- **Error correction H:** chosen so the seal, paper grain, and print variation have headroom. The payload limit stays at 160 characters so the module count remains low enough for the art panel.
+- **Edition code:** a four-character FNV-1a hash of payload, style, name, caption, and, for custom pieces, palette and motif. It is deterministic and decorative. It is **not** a claim of blockchain uniqueness, ownership, or scarcity.
+- **No photo upload:** personalization is limited to text, palette, and motif. This keeps the artwork original and procedural, avoids collecting personal images, and keeps the tool usable without a file picker or backend.
+- **Plain fallback:** a 1024 × 1024 black-on-cream code with a four-module quiet zone, for printers and older scanners that struggle with styled modules.
+
+### Verification
+
+- All six sample styles and custom variants decoded with jsQR at **2048 × 2560** and at **640 × 800**.
+- A 160-character payload, a one-character monogram, and long name/caption combinations decoded successfully.
+- The plain 1024 × 1024 fallback decoded successfully.
+- Downloaded art was inspected for finder patterns, quiet zone, opaque paper, and contrast.
+- jsQR returned question marks for a Devanagari payload in the local harness. The matrix itself rendered correctly; this appears to be a decoder/UTF-8 limitation in the test harness, not an art-renderer failure. Physical-phone scanning remains the recommended final check.
+
+## 7. Asset and originality statement
 
 - All 3D geometry is generated in JavaScript with Three.js primitives and original code.
-- All textures are generated procedurally or with Canvas 2D (QR, signs, labels, glow sprites).
+- All textures are generated procedurally or with Canvas 2D (QR, signs, labels, glow sprites, Atelier paper, motifs, and plinths).
 - No external images, photography, maps, fonts, models, or stock assets are loaded.
 - No AI image/video generation was used.
 - No paid APIs, credits, or generation services were used.

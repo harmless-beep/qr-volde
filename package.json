@@ -1,11 +1,11 @@
 {
   "name": "qr-volde",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "description": "QR Volde — a 3D QR code that unfolds into a living Himalayan chowk.",
   "scripts": {
-    "check": "node --check world.js && node --check scene.js && node --check scene-world.js && node --check scene-qr.js && node --check scene-city.js && node --check city-buildings.js && node --check city-life.js && node --check qr.js",
+    "check": "node --check world.js && node --check scene.js && node --check scene-world.js && node --check scene-qr.js && node --check scene-city.js && node --check city-buildings.js && node --check city-life.js && node --check qr.js && node --check qr-art.js",
     "serve": "python -m http.server 4180 --bind 127.0.0.1"
   }
 }
