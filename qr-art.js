@@ -321,7 +321,14 @@ export function renderQRArt(canvas, qr, options = {}) {
   }
 
   ctx.restore();
-  return { style, edition, name, caption };
+  return {
+    style,
+    edition,
+    name,
+    caption,
+    qrRect: { x: panelX, y: panelY, w: panelSize, h: panelSize },
+    colors: [p.accent, p.accent2, p.paper],
+  };
 }
 
 function drawBackground(ctx, style, W, H, rng, compact) {

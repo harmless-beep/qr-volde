@@ -2,6 +2,51 @@
 
 All notable changes to QR Volde are recorded here.
 
+## [0.3.0] — 2026-10-31
+
+**Living Atelier.** The collectible preview becomes a small playable object: gold dust, a gentle tilt, a seal ceremony, and a one-tap randomizer.
+
+### Added
+
+- **Living Atelier** pointer layer on the QR Studio preview: palette-tinted gold dust, a soft radial glow, and a card tilt of up to 3°.
+- **Seal interaction**: click, tap, **Enter**, or **Space** triggers two rings, a warm flash, a particle burst, and a rotating hint with the style name and deterministic edition code.
+- **Surprise me** control beside the style name. It picks a different sample style, or keeps Custom Atelier about half the time and chooses a new palette and motif.
+- **QR exclusion rectangle**: the overlay clears the code every frame, and pointer effects project to the nearest panel edge so the QR never sits under dust or glow.
+- Keyboard support: the preview stage is a real `<button>` with a dynamic accessible label, an `aria-describedby` hint, and a visible focus ring.
+- Touch support: tapping the card seals it on mobile.
+- New `qr-play.js` Canvas 2D overlay module with no runtime dependencies.
+- New `living-atelier.webp` screenshot, plus refreshed `qr-studio.webp` and `mobile-atelier.webp`.
+
+### Changed
+
+- The live Studio preview is now wrapped in a `#qr-stage` button, `#qr-tilt` transform layer, and `#qr-spark` overlay canvas.
+- `renderQRArt` returns the QR panel rectangle and palette colors so the overlay can protect the code and match the current finish.
+- Atelier style name now sits beside the Surprise me pill, with the live hint below the card.
+- Mobile Studio stage widths were retuned so the preview, hint, and randomizer fit without horizontal overflow.
+- Version bumped to 0.3.0; `npm run check` includes `qr-play.js`.
+
+### QA
+
+- App Lighthouse: 100 accessibility, 100 best practices, 100 SEO (local v0.3.0 audit).
+- Launch-page Lighthouse: 100 accessibility, 100 best practices, 100 SEO.
+- Axe-core: no violations with QR Studio open at desktop and mobile widths.
+- Verified at 1440 × 1100 and 390 × 844. No horizontal overflow and no clipped Studio controls.
+- Overlay QA: zero overlay pixels inside the QR rectangle while the pointer is over the panel; dust and glow render outside it; tilt resets on pointer leave.
+- Keyboard Enter and Space both seal; touch tap seals; hint updates correctly; export canvas is unchanged by pointer movement or sealing.
+- Surprise me kept Custom active 17 of 36 tries and produced 10 distinct palette/motif combinations.
+- All six sample styles plus custom variants decoded at 2048 × 2560 and 640 × 800; the plain 1024 × 1024 fallback decoded.
+- Reduced motion: zero overlay pixels, no tilt, no seal/shuffle animation, and the seal hint still updates.
+- No-WebGL: fallback visible, Studio usable, art preview renders, stage still seals.
+- No console errors on the live site.
+
+### Known limits
+
+- The Living Atelier is a preview-only flourish. It does not add sound, haptics, or gameplay progression.
+- The interaction is intentionally decorative; the QR stays the dominant element and the downloadable art is unchanged.
+- The 3D QR remains artwork, not a scanning target.
+- Payment and authenticator presets remain clearly labelled demos.
+- Final brand copy, CTA destination, real payloads, and the original-code license remain open.
+
 ## [0.2.0] — 2026-10-29
 
 **QR Atelier.** The flat code becomes a collectible art card, and every export is tested for scannability.

@@ -4,9 +4,12 @@ import {
   ART_PALETTES,
   ART_STYLES,
   DEFAULT_ART_OPTIONS,
+  artEdition,
   artFileName,
   renderQRArt,
+  resolveArtStyle,
 } from './qr-art.js';
+import { createArtPlayground } from './qr-play.js';
 import { initScene, sectionAt, sectionStart } from './scene.js';
 import { clamp } from './scene-world.js';
 
@@ -102,6 +105,25 @@ const presetButtons = [...document.querySelectorAll('.studio__preset')];
 const applyQrButton = document.getElementById('apply-qr');
 const downloadQrButton = document.getElementById('download-qr');
 const downloadPlainButton = document.getElementById('download-plain');
+const qrStage = document.getElementById('qr-stage');
+const qrTilt = document.getElementById('qr-tilt');
+const qrSpark = document.getElementById('qr-spark');
+const qrStageHint = document.getElementById('qr-stage-hint');
+const qrShuffleButton = document.getElementById('qr-shuffle');
+
+const STAGE_HINT = 'Tap or press Enter to seal.';
+const STAGE_HINT_INVALID = 'Add a destination to wake the card.';
+const SEAL_LINES = [
+  (style, edition) => `Sealed in ${style}. Edition ${edition}.`,
+  (style, edition) => `Pressed in gold. ${style}, edition ${edition}.`,
+  (style, edition) => `A small ceremony. Edition ${edition}.`,
+  (style, edition) => `Kept. ${style}, edition ${edition}.`,
+];
+const SHUFFLE_LINES = [
+  'Surprise me. A new finish.',
+  'A new edition. Tap to seal it.',
+  'The atelier chose again.',
+];
 
 let sceneAPI = null;
 let currentQR = null;
@@ -120,6 +142,10 @@ let artCaption = DEFAULT_ART_OPTIONS.caption;
 let customPaletteId = DEFAULT_ART_OPTIONS.paletteId;
 let customMotifId = DEFAULT_ART_OPTIONS.motifId;
 let reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let playground = null;
+let sealCount = 0;
+let shuffleCount = 0;
+let hintTimer = null;
 
 const startTime = performance.now();
 let lastFrame = startTime;
@@ -255,6 +281,115 @@ function drawQrPlaceholder(message) {
   context.restore();
 }
 
+function setStageHint(text, { error = false } = {}) {
+  if (!qrStageHint) return;
+  qrStageHint.classList.toggle('is-error', error);
+  if (qrStageHint.textContent === text) return;
+  qrStageHint.textContent = text;
+  qrStageHint.classList.remove('is-fresh');
+  void qrStageHint.offsetWidth;
+  qrStageHint.classList.add('is-fresh');
+  window.clearTimeout(hintTimer);
+  hintTimer = window.setTimeout(() => qrStageHint.classList.remove('is-fresh'), 340);
+}
+
+function resetStageHint() {
+  if (previewQR) setStageHint(STAGE_HINT);
+}
+
+function resetTilt() {
+  if (!qrTilt) return;
+  qrTilt.classList.remove('is-pointing');
+  qrTilt.style.setProperty('--tilt-x', '0deg');
+  qrTilt.style.setProperty('--tilt-y', '0deg');
+}
+
+function setStageReady(ready) {
+  if (qrStage) qrStage.disabled = !ready;
+  if (qrShuffleButton) qrShuffleButton.disabled = !ready;
+  if (!ready) {
+    playground?.reset();
+    resetTilt();
+  }
+}
+
+function handleSeal() {
+  if (!previewQR) return;
+  const options = getArtOptions();
+  const style = resolveArtStyle(options);
+  const edition = artEdition(options, previewQR.text);
+  const line = SEAL_LINES[sealCount % SEAL_LINES.length];
+  sealCount += 1;
+  setStageHint(line(style.short, edition));
+  if (!reduceMotion && qrStage) {
+    qrStage.classList.remove('is-sealing');
+    void qrStage.offsetWidth;
+    qrStage.classList.add('is-sealing');
+    window.setTimeout(() => qrStage.classList.remove('is-sealing'), 620);
+  }
+}
+
+function handleStageClick(event) {
+  if (!previewQR) return;
+  if (playground) playground.seal(event);
+  else handleSeal();
+}
+
+function handleStagePointerMove(event) {
+  if (!previewQR || reduceMotion) return;
+  if (qrTilt && event.pointerType !== 'touch') {
+    const rect = qrStage?.getBoundingClientRect();
+    if (rect && rect.width && rect.height) {
+      const px = clamp((event.clientX - rect.left) / rect.width, 0, 1);
+      const py = clamp((event.clientY - rect.top) / rect.height, 0, 1);
+      qrTilt.style.setProperty('--tilt-x', `${((0.5 - py) * 6).toFixed(2)}deg`);
+      qrTilt.style.setProperty('--tilt-y', `${((px - 0.5) * 6).toFixed(2)}deg`);
+      qrTilt.classList.add('is-pointing');
+    }
+  }
+  playground?.pointerMove(event);
+}
+
+function handleStagePointerLeave() {
+  resetTilt();
+  playground?.pointerLeave();
+}
+
+function shuffleArt() {
+  if (!previewQR) return;
+  const customStyle = ART_STYLES.find((style) => style.id === 'custom') ?? ART_STYLES[0];
+  const stayCustom = artStyleId === 'custom' && Math.random() < 0.5;
+  const pool = ART_STYLES.filter((style) => style.id !== artStyleId);
+  const next = stayCustom
+    ? customStyle
+    : (pool[Math.floor(Math.random() * pool.length)] ?? ART_STYLES[0]);
+  artStyleId = next.id;
+
+  if (next.id === 'custom') {
+    const palettes = ART_PALETTES.filter((palette) => palette.id !== customPaletteId);
+    const motifs = ART_MOTIFS.filter((motif) => motif.id !== customMotifId);
+    customPaletteId = (palettes[Math.floor(Math.random() * palettes.length)] ?? ART_PALETTES[0]).id;
+    customMotifId = (motifs[Math.floor(Math.random() * motifs.length)] ?? ART_MOTIFS[0]).id;
+  }
+
+  updateArtControls();
+  refreshArtPreview();
+  renderStyleThumbs();
+  persistArtState();
+  playground?.reset();
+
+  const line = SHUFFLE_LINES[shuffleCount % SHUFFLE_LINES.length];
+  shuffleCount += 1;
+  setStageHint(line);
+
+  if (!reduceMotion && qrStage) {
+    qrStage.classList.remove('is-shuffling');
+    void qrStage.offsetWidth;
+    qrStage.classList.add('is-shuffling');
+    window.setTimeout(() => qrStage.classList.remove('is-shuffling'), 680);
+  }
+}
+
 function setPresetState(value) {
   for (const button of presetButtons) {
     const preset = PRESETS[button.dataset.preset];
@@ -303,8 +438,13 @@ function loadArtState() {
 }
 
 function refreshArtPreview() {
-  if (!previewQR) return;
-  renderQRArt(qrCanvas, previewQR.qr, getArtOptions());
+  if (!previewQR) return null;
+  const result = renderQRArt(qrCanvas, previewQR.qr, getArtOptions());
+  if (result) {
+    playground?.setExclusion(result.qrRect);
+    playground?.setColors(result.colors);
+  }
+  return result;
 }
 
 function renderStyleThumbs() {
@@ -337,6 +477,9 @@ function updateArtControls() {
   const selected = ART_STYLES.find((style) => style.id === artStyleId) ?? ART_STYLES[0];
   qrStyleName.textContent = selected.name;
   qrCustomPanel.hidden = selected.id !== 'custom';
+  if (qrStage) {
+    qrStage.setAttribute('aria-label', `Seal the ${selected.name} art QR card. Press Enter for a gold seal.`);
+  }
 
   for (const item of styleButtons) {
     const active = item.style.id === selected.id;
@@ -360,6 +503,7 @@ function setArtStyle(styleId) {
   artStyleId = styleId;
   updateArtControls();
   refreshArtPreview();
+  resetStageHint();
   persistArtState();
 }
 
@@ -369,6 +513,7 @@ function setCustomPalette(paletteId) {
   updateArtControls();
   refreshArtPreview();
   renderStyleThumbs();
+  resetStageHint();
   persistArtState();
 }
 
@@ -378,6 +523,7 @@ function setCustomMotif(motifId) {
   updateArtControls();
   refreshArtPreview();
   renderStyleThumbs();
+  resetStageHint();
   persistArtState();
 }
 
@@ -457,6 +603,8 @@ function updatePreview(text, options = {}) {
     applyQrButton.disabled = false;
     downloadQrButton.disabled = false;
     downloadPlainButton.disabled = false;
+    setStageReady(true);
+    setStageHint(STAGE_HINT);
     setPresetState(result.text);
     return result;
   } catch (error) {
@@ -468,6 +616,8 @@ function updatePreview(text, options = {}) {
     applyQrButton.disabled = true;
     downloadQrButton.disabled = true;
     downloadPlainButton.disabled = true;
+    setStageReady(false);
+    setStageHint(STAGE_HINT_INVALID, { error: true });
     setPresetState(null);
     return null;
   }
@@ -526,6 +676,12 @@ function initStudio() {
 
   loadArtState();
   buildArtControls();
+  playground = createArtPlayground({
+    stage: qrStage,
+    canvas: qrSpark,
+    reducedMotion: () => reduceMotion,
+    onSeal: handleSeal,
+  });
   qrNameInput.value = artName;
   qrCaptionInput.value = artCaption;
 
@@ -541,8 +697,16 @@ function initStudio() {
   studio.addEventListener('close', () => {
     document.body.classList.remove('has-dialog');
     document.documentElement.style.overflow = '';
+    playground?.reset();
+    resetTilt();
     if (lastFocus instanceof HTMLElement) lastFocus.focus();
   });
+
+  qrStage?.addEventListener('pointermove', handleStagePointerMove);
+  qrStage?.addEventListener('pointerleave', handleStagePointerLeave);
+  qrStage?.addEventListener('pointercancel', handleStagePointerLeave);
+  qrStage?.addEventListener('click', handleStageClick);
+  qrShuffleButton?.addEventListener('click', shuffleArt);
 
   qrInput.addEventListener('input', () => {
     window.clearTimeout(previewTimer);
@@ -553,6 +717,7 @@ function initStudio() {
     artName = qrNameInput.value.slice(0, 24);
     artCaption = qrCaptionInput.value.slice(0, 36);
     refreshArtPreview();
+    resetStageHint();
     window.clearTimeout(artTimer);
     artTimer = window.setTimeout(() => {
       renderStyleThumbs();
@@ -698,6 +863,10 @@ function boot() {
 
   window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener?.('change', (event) => {
     reduceMotion = event.matches;
+    if (reduceMotion) {
+      resetTilt();
+      playground?.reset();
+    }
   });
 
   window.__qrVolde = {
@@ -722,6 +891,10 @@ function boot() {
         artStyle: artStyleId,
         artName,
         artCaption,
+        artPalette: customPaletteId,
+        artMotif: customMotifId,
+        stageHint: qrStageHint?.textContent ?? null,
+        stageReady: Boolean(qrStage && !qrStage.disabled),
         webgl: Boolean(sceneAPI),
         reduceMotion,
         scrollY: window.scrollY,
@@ -757,6 +930,9 @@ function boot() {
     openStudio,
     closeStudio,
     applyStudioQR,
+    shuffleArt,
+    sealStage: handleSeal,
+    getPlayground: () => playground,
     getScene: () => sceneAPI,
   };
 }
