@@ -1,18 +1,18 @@
 # QR Volde
 
-**A giant 3D QR code that unfolds into a living Himalayan chowk.**
+**A giant 3D QR code that unfolds into a living Nepalese courtyard.**
 
-[Live demo](https://harmless-beep.github.io/qr-volde/) · [Release v0.3.0](https://github.com/harmless-beep/qr-volde/releases/tag/v0.3.0) · [Research notes](./RESEARCH.md) · [Changelog](./CHANGELOG.md)
+[Live demo](https://harmless-beep.github.io/qr-volde/) · [Release v0.4.0](https://github.com/harmless-beep/qr-volde/releases/tag/v0.4.0) · [Research notes](./RESEARCH.md) · [Changelog](./CHANGELOG.md)
 
 [![QR Volde launch film — animated preview](launch-film/launch-film.gif)](https://harmless-beep.github.io/qr-volde/launch.html)
 
 ## Overview
 
-QR Volde is a scroll-driven 3D web experience. A dark-square QR monolith faces you, then breaks apart into a Kathmandu-style courtyard: a tiered pagoda, a shop row, a tea stall, a stone spout, a stupa, prayer flags, trees, people, a bus, a scooter, and the Himalayas behind it.
+QR Volde is a scroll-driven 3D web experience. A dark-square QR monolith faces you, then breaks apart into a Kathmandu-style courtyard: a tiered pagoda, a shop row, a tea stall, a stone spout, a stupa, prayer flags, trees, people, a bus, a scooter, and the Himalayas behind it. Switch to **Mithila** and the same monolith unfolds into a Janakpur-inspired courtyard: a white domed temple, painted mud houses, a lamp-lit pond with ghats, a tulsi shrine, a painting pavilion, mango groves, and festival kites.
 
 The 3D code is the artwork. **QR Studio** turns the flat code into a collectible, scan-tested art card, or a plain fallback QR when a printer needs the simplest possible mark.
 
-**Status:** v0.3.0 Living Atelier, published 2026-10-31.  
+**Status:** v0.4.0 Mithila Courtyard, published 2026-10-31.  
 **Built with:** Three.js r186 · `qrcode-generator` 2.0.4 · vanilla ES modules · Canvas 2D · GitHub Pages.  
 **No build step, no backend, no analytics, no paid APIs.**
 
@@ -76,10 +76,15 @@ The art is generated locally from type, color, and procedural geometry. The QR s
 
 ### Mode gallery
 
-| Himalayan Dawn | Neon Kathmandu | Minimal Gallery |
-|:--:|:--:|:--:|
-| ![Himalayan Dawn mode](docs/screenshots/signal-desktop.webp) | ![Neon Kathmandu mode](docs/screenshots/neon-kathmandu.webp) | ![Minimal Gallery mode](docs/screenshots/minimal-gallery.webp) |
-| *Warm brick, cream, and mountain haze.* | *Midnight blue, cyan modules, magenta signage.* | *Chalk, stone, charcoal, one teal accent.* |
+| Himalayan Dawn | Neon Kathmandu |
+|:--:|:--:|
+| ![Himalayan Dawn mode](docs/screenshots/signal-desktop.webp) | ![Neon Kathmandu mode](docs/screenshots/neon-kathmandu.webp) |
+| *Warm brick, cream, and mountain haze.* | *Midnight blue, cyan modules, magenta signage.* |
+
+| Minimal Gallery | Mithila Courtyard |
+|:--:|:--:|
+| ![Minimal Gallery mode](docs/screenshots/minimal-gallery.webp) | ![Mithila Courtyard mode with a white domed temple, painted houses, a lamp-lit pond, and a circular aripana floor painting](docs/screenshots/mithila-courtyard.webp) |
+| *Chalk, stone, charcoal, one teal accent.* | *White domes, painted walls, and a lamp-lit pond at dusk.* |
 
 ### Mobile
 
@@ -91,13 +96,19 @@ The art is generated locally from type, color, and procedural geometry. The QR s
 
 <p align="center"><em>Responsive framing, full-width copy, and a touch-friendly QR Studio with a collectible art preview.</em></p>
 
+<p align="center">
+  <img src="docs/screenshots/mobile-mithila.webp" width="280" alt="QR Volde on a mobile screen showing the Mithila courtyard, four mode swatches, and the courtyard copy">
+</p>
+
+<p align="center"><em>Mithila mode on a phone: four mode swatches, a white domed temple, painted houses, and a lamp-lit pond.</em></p>
+
 ## The experience
 
-Four scenes share one continuous camera flight:
+Four scenes share one continuous camera flight; Mithila mode takes a second, leftward flight over the pond and painting pavilion.
 
 1. **The Signal** — the QR monolith. Every square is a door.
 2. **The Unfold** — modules lift from the wall and land as the city plan.
-3. **The Chowk** — the block assembles: Newari roofs, brick, timber, tea steam, prayer flags, and small errands.
+3. **The Chowk** — the block assembles: Newari roofs, brick, timber, tea steam, prayer flags, and small errands. In Mithila mode this scene becomes **The Courtyard**: white domes, painted walls, oil lamps, and festival kites.
 4. **The Studio** — make a QR for a link, video, payment demo, or app, then export it as a collectible art card.
 
 Scroll progress is weighted by scene, so the QR reveal and the city reveal each get room to breathe. The camera adapts to portrait, tablet, and wide screens instead of simply cropping the artwork.
@@ -159,6 +170,9 @@ The v0.3 preview is a small playable object, not a static mockup. It is built wi
 - **Himalayan Dawn** — warm cream, terracotta, brick, and pale mountain haze.
 - **Neon Kathmandu** — midnight blue, cyan modules, magenta signage, and wet-street glow.
 - **Minimal Gallery** — chalk, stone, charcoal, and a single teal accent.
+- **Mithila Courtyard** — a warm Terai dusk with a deep-plum QR floor, white temple domes, painted walls, teal pond water, and festival kites.
+
+Dawn, Neon, and Gallery share the Newari chowk and its rightward camera orbit. **Mithila** is a different place, not a recolour: it builds a separate Janakpur-inspired courtyard and flies the camera left over the pond, the ghats, and the painting pavilion. Section 3 changes to **The Courtyard**, and the mode swatch, theme colour, copy, and page background follow.
 
 The mode persists in `localStorage` under `qrvolde-mode`. The 3D artwork is themed by mode; Atelier palettes are independent and always keep the QR on a high-contrast paper panel.
 
@@ -187,6 +201,8 @@ Opening `index.html` directly with `file://` will not work because the app uses 
 - **One QR matrix, four outputs.** `qrcode-generator` produces the matrix once. The same matrix drives the 3D module wall, the ground texture, the Atelier art card, and the plain fallback.
 - **Instanced geometry.** The QR wall is built from instanced modules; the city is procedural low-poly geometry. No external models or image textures are loaded.
 - **Wall-to-ground morph.** Modules lift, drift, and land as the QR plaza. City props fade in as the camera rises over the chowk.
+- **Two scene groups, two flights.** `chowk` and `chowk-road` hold the Newari block; `mithila` holds the Janakpur courtyard. Switching modes toggles the groups and swaps the active camera rig, so each place keeps its own architecture and flight path.
+- **Mithila as a cultural layer.** The QR plaza stays the ground pattern. The circular aripana painting sits just above the raised modules, so the code and the courtyard ornament remain visible together.
 - **Responsive camera.** Portrait screens pull back and lower the look target; wide screens shift the artwork to make room for the copy card.
 - **Procedural Atelier.** A Canvas 2D renderer draws original motifs, paper texture, typography, and a gallery plinth around the high-contrast QR panel. No photos, external images, or fonts are loaded.
 - **Living Atelier overlay.** A second 640 x 800 Canvas 2D layer draws pointer dust, glow, rings, and seal bursts. It is decorative only; the QR exclusion rectangle is cleared every frame, and the exported art canvas is never modified.
@@ -199,14 +215,15 @@ Opening `index.html` directly with `file://` will not work because the app uses 
 | Path | Role |
 |---|---|
 | `index.html` | Page shell, import map, copy overlay, mode switcher, QR Studio dialog. |
-| `styles.css` | Layout, three visual themes, copy card, rail, Studio styling. |
-| `world.js` | Boot, scroll progress, sections, modes, QR Studio orchestration. |
-| `scene.js` | Camera path, section mapping, responsive framing, scene API. |
+| `styles.css` | Layout, four visual themes, copy card, rail, Studio styling. |
+| `world.js` | Boot, scroll progress, sections, modes, per-mode copy, QR Studio orchestration. |
+| `scene.js` | Camera rigs, section mapping, responsive framing, scene API, mode switching. |
 | `scene-world.js` | Renderer, palettes, materials, lights, island, mountains, clouds, sky. |
 | `scene-qr.js` | QR monolith, wall-to-ground morph, ground texture, plaza. |
 | `scene-city.js` | Road, city placement, reveal timing, people and flag animation. |
 | `city-buildings.js` | Pagoda, shop row, tea stall, dhunge dhara, stupa, trees, signs. |
 | `city-life.js` | People, dog, pigeons, bus, scooter, prayer flags, wires, lamps. |
+| `city-mithila.js` | Janakpur courtyard: domed temple, painted houses, pond and ghats, tulsi shrine, pavilion, groves, kites, elephant, aripana. |
 | `qr.js` | QR generation, canvas rendering, PNG download, 3D texture drawing. |
 | `qr-art.js` | QR Atelier: six styles, custom palettes/motifs, and 2048 x 2560 art-card rendering. |
 | `qr-play.js` | Living Atelier overlay: pointer dust, glow, tilt state, seal rings, edge projection, and reduced-motion guards. |
@@ -220,16 +237,17 @@ Opening `index.html` directly with `file://` will not work because the app uses 
 
 ## Testing and QA
 
-- App Lighthouse: **100 accessibility, 100 best practices, 100 SEO** (v0.3.0 local audit).
+- App Lighthouse: **100 accessibility, 100 best practices, 100 SEO** (v0.4.0 local audit).
 - Launch-page Lighthouse: **100 accessibility, 100 best practices, 100 SEO** (local audit).
-- Axe-core: **no violations** with QR Studio open at desktop and mobile widths.
-- Verified at **1440 x 1100** and **390 x 844**. No horizontal overflow, no clipped Studio controls, and the preview stage stays inside the panel.
-- Interaction QA: pointer dust and glow render outside the QR panel, the QR exclusion rectangle contains **zero overlay pixels**, tilt resets on pointer leave, keyboard **Enter** and **Space** both seal, touch tap seals, the hint cycles, and **Surprise me** kept Custom active 17 of 36 tries while producing 10 distinct palette/motif combinations.
+- Axe-core: **no violations** with QR Studio open at desktop and mobile widths, including Mithila mode.
+- Verified at **1440 x 1100**, **390 x 844**, and **320 x 700**. No horizontal overflow, no clipped Studio controls, and the preview stage stays inside the panel. The four-swatch mode group fits the mobile top bar.
+- Mithila mode: `chowk` and `chowk-road` hide while `mithila` shows its 30 scene groups, switching back restores the chowk, the mode survives reload, and section-3 copy resets when another mode is chosen.
+- Interaction QA: pointer dust and glow render outside the QR panel, the QR exclusion rectangle contains **zero overlay pixels**, tilt resets on pointer leave, keyboard **Enter** and **Space** both seal, touch tap seals, the hint cycles, and **Surprise me** kept Custom active 23 of 36 tries while producing 13 distinct palette/motif combinations.
 - The export canvas was byte-for-byte identical before and after pointer movement and sealing.
 - All six sample styles plus custom variants decoded with jsQR at **2048 x 2560** and **640 x 800**; the plain **1024 x 1024** fallback also decoded.
-- Reduced motion: **zero** overlay pixels, no tilt, no seal/shuffle animation, and the seal hint still updates.
-- No-WebGL: fallback is visible, QR Studio opens, the art preview renders, and the stage still seals.
-- Tested all three visual modes, real scrolling, rail navigation, CTA, QR generation, style switching, custom palette/motif selection, name and caption personalization, art PNG download, plain fallback download, Use in world, Devanagari input, invalid input, maximum length, and long payloads.
+- Reduced motion: **zero** overlay pixels, no tilt, no seal/shuffle animation, and the seal hint still updates. The Mithila scene also renders correctly with reduced motion.
+- No-WebGL: fallback is visible, QR Studio opens, the art preview renders, and the stage still seals. The Mithila theme and copy still switch without WebGL.
+- Tested all four visual modes, real scrolling, rail navigation, CTA, QR generation, style switching, custom palette/motif selection, name and caption personalization, art PNG download, plain fallback download, Use in world, Devanagari input, invalid input, maximum length, and long payloads.
 - Downloaded art checked for finder patterns, a four-module quiet zone, opaque paper, and high contrast.
 - Launch film checked at 20.0s, 1920x1080, 30fps, stereo AAC; key frames and transitions inspected.
 - No console errors on the live site.
@@ -255,15 +273,15 @@ GitHub Pages serves the repository root from the `main` branch.
 - The app uses no stock images, photography, maps, external fonts, 3D models, or AI-generated assets. All geometry, Atelier motifs, and Canvas textures are original procedural work.
 - The Atelier never asks for a photo or file upload. Personalization is limited to text, palette, and motif.
 - The launch film uses licensed music, SFX, and fonts; see [`THIRD_PARTY_NOTICES.md`](./THIRD_PARTY_NOTICES.md) and [`launch-film/README.md`](./launch-film/README.md).
-- The city is a Kathmandu-inspired composition, not a survey-accurate reconstruction.
+- The city is a Kathmandu-inspired composition, not a survey-accurate reconstruction. Mithila mode is a Janakpur-inspired courtyard, likewise an artistic interpretation rather than a survey.
 
 ## Roadmap
 
 - **v0.1** — Signal vertical slice: QR monolith, unfold, chowk, Studio. **Published.**
 - **v0.2** — QR Atelier: six collectible art styles, custom palettes/motifs, and scan-tested 2048 x 2560 exports. **Published.**
 - **v0.3** — Living Atelier: pointer gold dust, card tilt, seal ceremony, and **Surprise me**. **Published.**
-- **v0.4** — City: more streets, depth, and life.
-- **v0.5** — Districts: switchable neighbourhoods and landmarks.
+- **v0.4** — Mithila Courtyard: a second architecture group, a new leftward flight, and Janakpur-inspired culture. **Published.**
+- **v0.5** — Districts: more switchable neighbourhoods, landmarks, and cultural layers.
 - **v0.6** — Launch: final brand copy, CTA destination, real demo payloads.
 - **v1.0** — Stable release.
 

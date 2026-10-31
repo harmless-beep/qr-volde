@@ -1,10 +1,10 @@
 # Research Notes
 
 **Project:** QR Volde  
-**Version:** v0.3.0  
+**Version:** v0.4.0  
 **Research date:** 2026-10-27; updated 2026-10-31
 
-This document records the references and decisions behind the v0.1 vertical slice, the v0.2 QR Atelier, and the v0.3 Living Atelier. The goal is recognition, not reconstruction. All geometry, textures, signs, characters, and Atelier motifs are original procedural work; no photos, maps, stock models, third-party visual assets, or AI-generated images were copied into the project.
+This document records the references and decisions behind the v0.1 vertical slice, the v0.2 QR Atelier, the v0.3 Living Atelier, and the v0.4 Mithila Courtyard. The goal is recognition, not reconstruction. All geometry, textures, signs, characters, and Atelier motifs are original procedural work; no photos, maps, stock models, third-party visual assets, or AI-generated images were copied into the project.
 
 ## 1. Kathmandu Valley and Newar architecture
 
@@ -103,7 +103,7 @@ This document records the references and decisions behind the v0.1 vertical slic
 - Keep touch targets at least 2rem where practical; rail controls use larger transparent hit areas.
 - Provide `aria-pressed` on visual mode buttons and `aria-current` on scene rail buttons.
 - Wrap the scroll hint in a complementary landmark so all base-page content sits inside a landmark.
-- Lighthouse v0.3.0: 100 accessibility, 100 best practices, 100 SEO. Axe-core reported no violations with QR Studio open at desktop and mobile widths.
+- Lighthouse v0.4.0: 100 accessibility, 100 best practices, 100 SEO. Axe-core reported no violations with QR Studio open at desktop and mobile widths, including Mithila mode.
 
 ## 6. QR Atelier art and scannability
 
@@ -165,9 +165,42 @@ This document records the references and decisions behind the v0.1 vertical slic
 - **Surprise me** kept Custom active 17 of 36 tries and produced 10 distinct palette/motif combinations.
 - Reduced motion: **0** overlay pixels, `transform: none` on the tilt layer, no seal/shuffle animation, and the hint still updates.
 - All six sample styles plus custom variants decoded at 2048 x 2560 and 640 x 800; the plain 1024 x 1024 fallback decoded.
-- Lighthouse v0.3.0: 100 accessibility, 100 best practices, 100 SEO for the app and launch page. Axe-core: no violations with the Studio open at desktop and mobile widths.
+- Lighthouse v0.4.0: 100 accessibility, 100 best practices, 100 SEO for the app and launch page. Axe-core: no violations with the Studio open at desktop and mobile widths.
 
-## 8. Asset and originality statement
+## 8. Janakpur and Mithila
+
+### Sources reviewed
+
+- UNESCO World Heritage Centre — Ram Janaki Temple tentative list: <https://whc.unesco.org/en/tentativelists/5261/>
+- Janaki Mandir (background): <https://en.wikipedia.org/wiki/Janaki_Mandir>
+- Janakpur (background): <https://en.wikipedia.org/wiki/Janakpur>
+- Mithila region (background): <https://en.wikipedia.org/wiki/Mithila_(region)>
+- Madhubani / Mithila art (background): <https://en.wikipedia.org/wiki/Madhubani_art>
+- Nepal Tourism Board — Mithila Art: <https://ntb.gov.np/mithila-art>
+- Mithila painting symbols and styles (background): Bharni, Kachni, Tantrik, Godna, and Kohbar traditions; fish, lotus, bamboo, parrot, sun, and moon motifs; double-line borders and dense fill.
+- Aripana / Aripan ritual floor art (background): rice-paste line drawing in Mithila courtyards, related to rangoli and kolam traditions.
+
+### Visual language used
+
+- **White domed temple:** a bright white three-storey massing with a central dome, corner chhatris, arched openings, lattice jaali screens, turrets, and a gold finial. It is an original composition inspired by the Janaki Mandir's white stone, domes, and arches, not a replica.
+- **Painted houses:** mud-plaster walls with Mithila-style line painting, double borders, fish, lotus, bamboo, parrots, and sun motifs. Roofs are low-pitched tile or thatch, distinct from the Newari tiered pagoda.
+- **Painting pavilion:** an open courtyard pavilion with painted panels, a low worktable, and seated painters, suggesting Mithila art as a living practice rather than a museum object.
+- **Sacred pond and ghats:** stepped stone ghats, teal water, lotus, floating oil lamps, and herons. Janakpur is known for its ponds and ghats, and the pond gives the new camera flight its leftward destination.
+- **Tulsi shrine:** a small raised courtyard shrine, a common domestic and devotional detail.
+- **Groves and festival life:** mango and banana trees, a cart, an elephant, a bovine, residents in sari and dhoti with bun and tika, and kites in the dusk sky.
+- **Aripana:** a circular floor painting built from original Canvas 2D line work — concentric rings, petals, dots, and a lotus centre — placed just above the QR plaza.
+- **Palette:** warm Terai dusk, pale hazy mountains at the plains' edge, a deep-plum QR floor, white temple stone, terracotta red, marigold yellow, and teal water.
+
+### Decisions
+
+- **A different place, not a recolour.** Mithila has its own scene group (`mithila`), its own props, and its own leftward camera rig. Dawn, Neon, and Gallery keep the Newari chowk and its rightward orbit.
+- **The QR stays the plaza.** The code remains the ground pattern; the aripana sits above the raised modules so the QR and the courtyard ornament stay visible together.
+- **No sacred interior.** The temple is exterior and neighbourhood-scale. The scene does not recreate a shrine interior or use sensitive imagery as decoration.
+- **Original motifs only.** The painting panels and aripana are procedural line art drawn from general Mithila visual vocabulary. No scanned, photographed, or AI-generated Mithila artwork is used, and the project does not claim to reproduce a specific artist's work.
+- **Cultural interpretation, not a survey.** The courtyard is a Janakpur-inspired composition. It is not a geographic reconstruction, and the temple is not a measured model of the Janaki Mandir.
+- **English UI, local accents.** Interface copy stays English; `Mithila` and `Janakpur` name the place and tradition without pretending to be a language lesson.
+
+## 9. Asset and originality statement
 
 - All 3D geometry is generated in JavaScript with Three.js primitives and original code.
 - All textures are generated procedurally or with Canvas 2D (QR, signs, labels, glow sprites, Atelier paper, motifs, and plinths).

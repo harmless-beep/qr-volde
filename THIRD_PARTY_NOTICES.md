@@ -1,6 +1,6 @@
 # Third-Party Notices
 
-QR Volde v0.3.0 includes the following third-party software. The original QR Volde code, procedural art, and QR Atelier motifs are separate from these components. v0.3.0 adds no new runtime dependencies.
+QR Volde v0.4.0 includes the following third-party software. The original QR Volde code, procedural art, QR Atelier motifs, and Mithila courtyard art are separate from these components. v0.4.0 adds no new runtime dependencies.
 
 ## Three.js r186
 

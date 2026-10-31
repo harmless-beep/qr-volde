@@ -9,7 +9,8 @@ import {
   smoothstep,
 } from './scene-world.js';
 import { buildQR, setQR, updateQRMorph, refreshGroundTexture } from './scene-qr.js';
-import { buildCity, updateCity } from './scene-city.js';
+import { buildCity, updateCity, setCityVisible } from './scene-city.js';
+import { buildMithila, updateMithila, setMithilaVisible } from './city-mithila.js';
 
 /* -------------------------------------------------------------------------
    Camera choreography
@@ -19,7 +20,7 @@ import { buildCity, updateCity } from './scene-city.js';
 
 const SECTION_WEIGHTS = [1.0, 1.2, 1.4, 1.5];
 
-const CAMERA_SECTIONS = [
+const CHOWK_SECTIONS = [
   {
     approach: [0, 7.5, 20],
     inside: [0, 7.5, 17],
@@ -46,20 +47,64 @@ const CAMERA_SECTIONS = [
   },
 ];
 
-const OUTRO = [18, 14, 30];
+const CHOWK_OUTRO = [18, 14, 30];
 
-const cameraPoints = [];
-const lookCenters = [];
+// Mithila gets its own flight: the camera leans left over the pond and
+// painting pavilion instead of orbiting right over the shop row.
+const MITHILA_SECTIONS = [
+  {
+    approach: [0, 7.5, 20],
+    inside: [0, 7.5, 17],
+    depart: [0, 8.2, 15.5],
+    look: [0, 7.2, 0],
+  },
+  {
+    approach: [0, 10.5, 16.5],
+    inside: [-6.5, 12.5, 16.5],
+    depart: [-10.5, 14.5, 18],
+    look: [-0.5, 4.6, -1],
+  },
+  {
+    approach: [-10.5, 14.5, 18],
+    inside: [-13.5, 13.2, 20.5],
+    depart: [-15, 15.5, 23.5],
+    look: [0, 3.4, -1],
+  },
+  {
+    approach: [-15, 15.5, 23.5],
+    inside: [-13, 12, 26],
+    depart: [-9, 12.5, 29.5],
+    look: [0, 3, -1],
+  },
+];
 
-for (const section of CAMERA_SECTIONS) {
-  cameraPoints.push(new THREE.Vector3(...section.approach));
-  cameraPoints.push(new THREE.Vector3(...section.inside));
-  cameraPoints.push(new THREE.Vector3(...section.depart));
-  lookCenters.push(new THREE.Vector3(...section.look));
+const MITHILA_OUTRO = [-7, 13, 31];
+
+function makeCameraRig(sections, outro) {
+  const points = [];
+  const looks = [];
+
+  for (const section of sections) {
+    points.push(new THREE.Vector3(...section.approach));
+    points.push(new THREE.Vector3(...section.inside));
+    points.push(new THREE.Vector3(...section.depart));
+    looks.push(new THREE.Vector3(...section.look));
+  }
+  points.push(new THREE.Vector3(...outro));
+
+  return {
+    points,
+    looks,
+    curve: new THREE.CatmullRomCurve3(points, false, 'centripetal', 0.5),
+  };
 }
-cameraPoints.push(new THREE.Vector3(...OUTRO));
 
-const cameraCurve = new THREE.CatmullRomCurve3(cameraPoints, false, 'centripetal', 0.5);
+const CAMERA_RIGS = {
+  chowk: makeCameraRig(CHOWK_SECTIONS, CHOWK_OUTRO),
+  mithila: makeCameraRig(MITHILA_SECTIONS, MITHILA_OUTRO),
+};
+
+let activeRig = CAMERA_RIGS.chowk;
 const tempLook = new THREE.Vector3();
 const tempDir = new THREE.Vector3();
 const tempRight = new THREE.Vector3();
@@ -93,15 +138,15 @@ export function sectionStart(index) {
 
 function updateCamera(progress) {
   const { index, local } = sectionAt(progress);
-  const denominator = cameraPoints.length - 1;
+  const denominator = activeRig.points.length - 1;
   const curveT = clamp((index * 3 + local * 3) / denominator, 0, 1);
 
-  cameraCurve.getPoint(curveT, ctx.camera.position);
+  activeRig.curve.getPoint(curveT, ctx.camera.position);
 
-  tempLook.copy(lookCenters[index]);
-  if (index < lookCenters.length - 1) {
+  tempLook.copy(activeRig.looks[index]);
+  if (index < activeRig.looks.length - 1) {
     const blend = smoothstep(0, 1, (local - 2 / 3) * 3);
-    tempLook.lerp(lookCenters[index + 1], blend);
+    tempLook.lerp(activeRig.looks[index + 1], blend);
   }
 
   const aspect = ctx.camera.aspect;
@@ -128,21 +173,30 @@ function updateCamera(progress) {
   ctx.camera.lookAt(tempLook);
 }
 
+function setSceneMode(modeId) {
+  const isMithila = modeId === 'mithila';
+  activeRig = isMithila ? CAMERA_RIGS.mithila : CAMERA_RIGS.chowk;
+  setCityVisible(!isMithila);
+  setMithilaVisible(isMithila);
+  applyPalette(modeId);
+  refreshGroundTexture();
+  updateQRMorph(currentProgress);
+  updateCamera(currentProgress);
+}
+
 export function initScene(canvas, initialQR) {
   createWorldBase(canvas);
   buildQR(initialQR);
   buildCity();
-  applyPalette('dawn');
-  refreshGroundTexture();
-  updateCamera(0);
+  buildMithila();
+  setSceneMode('dawn');
   updateQRMorph(0);
   updateCity(0, 0, false);
+  updateMithila(0, 0, false);
 
   return {
     setMode(modeId) {
-      applyPalette(modeId);
-      refreshGroundTexture();
-      updateQRMorph(currentProgress);
+      setSceneMode(modeId);
     },
     setQR(qrData) {
       setQR(qrData);
@@ -153,6 +207,7 @@ export function initScene(canvas, initialQR) {
       updateCamera(currentProgress);
       updateQRMorph(currentProgress);
       updateCity(currentProgress, time, reduceMotion);
+      updateMithila(currentProgress, time, reduceMotion);
       updateBase(time, reduceMotion);
       ctx.renderer.render(ctx.scene, ctx.camera);
     },

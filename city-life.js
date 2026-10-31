@@ -22,6 +22,11 @@ export function makePerson(options = {}) {
   const bag = options.bag ?? false;
   const hat = options.hat ?? false;
   const basket = options.basket ?? false;
+  const sari = options.sari ?? false;
+  const dhoti = options.dhoti ?? false;
+  const bun = options.bun ?? false;
+  const tika = options.tika ?? false;
+  const tray = options.tray ?? false;
 
   group.scale.setScalar(scale);
 
@@ -30,6 +35,34 @@ export function makePerson(options = {}) {
   addCylinder(group, 0.17, 0.23, 0.64, 6, 0, 1.0, 0, shirt);
   addSphere(group, 0.17, 0, 1.46, 0, skin, { widthSegments: 7, heightSegments: 5 });
   addSphere(group, 0.155, 0, 1.48, 0.04, skin, { widthSegments: 6, heightSegments: 4 });
+
+  if (sari) {
+    addCylinder(group, 0.18, 0.32, 0.92, 7, 0, 0.44, 0, shirt);
+    addBox(group, 0.14, 0.6, 0.05, -0.22, 1.15, 0.15, shirt, { rotZ: 0.1, castShadow: false });
+    addBox(group, 0.035, 0.6, 0.02, -0.28, 1.15, 0.18, 'gold', { rotZ: 0.1, castShadow: false });
+    addBox(group, 0.34, 0.04, 0.24, 0, 0.62, 0, 'gold', { castShadow: false });
+  }
+
+  if (dhoti) {
+    addBox(group, 0.42, 0.28, 0.34, 0, 0.5, 0, 'white', { castShadow: false });
+    addBox(group, 0.46, 0.05, 0.36, 0, 0.66, 0, 'gold', { castShadow: false });
+  }
+
+  if (bun) {
+    addSphere(group, 0.12, 0, 1.47, -0.14, 'dark', { widthSegments: 6, heightSegments: 4, castShadow: false });
+  }
+
+  if (tika) {
+    addSphere(group, 0.022, 0, 1.53, 0.15, 'accent', { widthSegments: 5, heightSegments: 4, castShadow: false });
+  }
+
+  if (tray) {
+    addCylinder(group, 0.24, 0.24, 0.035, 8, 0, 1.02, 0.26, 'gold', { castShadow: false });
+    for (let i = -1; i <= 1; i += 1) {
+      addCylinder(group, 0.055, 0.07, 0.045, 7, i * 0.1, 1.055, 0.26, 'brick', { castShadow: false });
+      addCone(group, 0.02, 0.07, 5, i * 0.1, 1.1, 0.26, 'window', { castShadow: false });
+    }
+  }
 
   const leftArm = addBox(group, 0.075, 0.5, 0.08, -0.27, 1.05, 0, shirt, { rotZ: 0.12 });
   const rightArm = addBox(group, 0.075, 0.5, 0.08, 0.27, 1.05, 0, shirt, { rotZ: -0.12 });

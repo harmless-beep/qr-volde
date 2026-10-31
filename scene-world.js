@@ -26,6 +26,8 @@ export const PALETTES = {
     water: '#6e9eae', sky: '#f4e6d2', fog: '#eedcc6', sun: '#ffe6c2',
     hemiSky: '#fff6e8', hemiGround: '#9a7558', fill: '#dbe8ff',
     skin: '#c98e68', cloth: '#c96f4a', cloth2: '#2f6f6a', cloth3: '#e1a45a', dark: '#241f1a',
+    plaster: '#f3e4c8', mud: '#c98e63', thatch: '#c9a24a', thatchDark: '#9a7634',
+    indigo: '#2f6f6a', marigold: '#e1a45a', lotus: '#e8a0a0', leaf: '#8fbf7a', leafDark: '#6f9f62',
     exposure: 1.08, sunIntensity: 2.35, hemiIntensity: 1.5, fillIntensity: 0.5,
     fogNear: 36, fogFar: 110, neonIntensity: 0.08, windowIntensity: 0.35,
     qrGlowIntensity: 0.25, qrDarkIntensity: 0,
@@ -42,6 +44,8 @@ export const PALETTES = {
     water: '#1d6a7a', sky: '#070b16', fog: '#0a1020', sun: '#9fe9ff',
     hemiSky: '#30406a', hemiGround: '#070b16', fill: '#ff4fa3',
     skin: '#d7a07e', cloth: '#ff4fa3', cloth2: '#56e0ff', cloth3: '#ffb347', dark: '#070b16',
+    plaster: '#2a3348', mud: '#2b2038', thatch: '#6e4a2a', thatchDark: '#3d2a1a',
+    indigo: '#56e0ff', marigold: '#ffb347', lotus: '#ff4fa3', leaf: '#15352f', leafDark: '#0d2624',
     exposure: 0.94, sunIntensity: 1.15, hemiIntensity: 1.15, fillIntensity: 0.8,
     fogNear: 24, fogFar: 85, neonIntensity: 2.6, windowIntensity: 2.2,
     qrGlowIntensity: 1.4, qrDarkIntensity: 1.6,
@@ -58,9 +62,29 @@ export const PALETTES = {
     water: '#9bb9b5', sky: '#f3f0e9', fog: '#eeeae1', sun: '#fff8e8',
     hemiSky: '#fffdf8', hemiGround: '#b9b1a3', fill: '#e7f0ee',
     skin: '#b99b86', cloth: '#7b8f8b', cloth2: '#b6a58e', cloth3: '#d3c9b9', dark: '#1f2222',
+    plaster: '#f7f3ea', mud: '#c8b8a3', thatch: '#b8ae9e', thatchDark: '#8f8779',
+    indigo: '#2f6f6a', marigold: '#b9975f', lotus: '#d3c9b9', leaf: '#c9c6b6', leafDark: '#aaa895',
     exposure: 1.02, sunIntensity: 1.9, hemiIntensity: 1.45, fillIntensity: 0.45,
     fogNear: 38, fogFar: 115, neonIntensity: 0.05, windowIntensity: 0.15,
     qrGlowIntensity: 0.05, qrDarkIntensity: 0,
+  },
+  mithila: {
+    grass: '#8aa85e', grassDark: '#6d8a4a', soil: '#8a5a3c', rock: '#c9a07a', rockDark: '#9e7657',
+    stone: '#e8dcc8', stoneDark: '#c9b49a', road: '#c9a98a',
+    wall: '#f2e2c8', wallWarm: '#e8c79a', brick: '#b5543f', brickDark: '#8a3a2e',
+    roof: '#c9a24a', roofDark: '#9a7634', wood: '#7a4a30', woodDark: '#4a2b1e',
+    gold: '#e8b04a', glass: '#3f6f6a', window: '#ffcf7a', accent: '#b23a48', accent2: '#2f6f6a',
+    neon: '#ffb347', white: '#fff7e8', cloud: '#ffe9d2', cloudShade: '#e8c9b0',
+    mountainFar: '#f2dccd', mountainMid: '#ecd0c0', mountainNear: '#e2c1b0', snow: '#fff6ea',
+    qrDark: '#3a2438', qrBg: '#fbf0dd', qrPanel: '#f6e7cf', qrGlow: '#b23a48', label: '#fff7e8',
+    water: '#3f8a8a', sky: '#f7e3cd', fog: '#f0d2b8', sun: '#ffd9a0',
+    hemiSky: '#fff0dc', hemiGround: '#9a6a50', fill: '#ffd0b0',
+    skin: '#b97a55', cloth: '#b23a48', cloth2: '#2f6f6a', cloth3: '#e8b04a', dark: '#2a1c2e',
+    plaster: '#f7ead6', mud: '#d9a86f', thatch: '#c9a24a', thatchDark: '#9a7634',
+    indigo: '#2f4a6a', marigold: '#e89a2b', lotus: '#e08a8a', leaf: '#6f8f45', leafDark: '#4f6f35',
+    exposure: 1.05, sunIntensity: 2.2, hemiIntensity: 1.4, fillIntensity: 0.6,
+    fogNear: 34, fogFar: 108, neonIntensity: 0.8, windowIntensity: 0.9,
+    qrGlowIntensity: 0.3, qrDarkIntensity: 0,
   },
 };
 
@@ -122,6 +146,15 @@ const MAT_DEFS = {
   cloth2: { roughness: 0.95 },
   cloth3: { roughness: 0.95 },
   dark: { roughness: 0.92 },
+  plaster: { roughness: 0.88 },
+  mud: { roughness: 1 },
+  thatch: { roughness: 1, flatShading: true },
+  thatchDark: { roughness: 1, flatShading: true },
+  indigo: { roughness: 0.74 },
+  marigold: { roughness: 0.62 },
+  lotus: { roughness: 0.8 },
+  leaf: { roughness: 0.96, flatShading: true },
+  leafDark: { roughness: 0.96, flatShading: true },
 };
 
 const GLOW_KEYS = new Set(['neon', 'window', 'qrGlow', 'qrDark']);
@@ -624,10 +657,11 @@ export function applyPalette(modeId) {
   ctx.hemi.intensity = palette.hemiIntensity;
   ctx.sun.color.set(palette.sun);
   ctx.sun.intensity = palette.sunIntensity;
+  ctx.sun.position.set(...(modeId === 'mithila' ? [-24, 16, 14] : [-18, 28, 18]));
   ctx.fill.color.set(palette.fill);
   ctx.fill.intensity = palette.fillIntensity;
   ctx.rim.color.set(palette.accent);
-  ctx.rim.intensity = modeId === 'neon' ? 1.1 : 0.35;
+  ctx.rim.intensity = modeId === 'neon' ? 1.1 : modeId === 'mithila' ? 0.62 : 0.35;
 
   for (const [key, material] of ctx.materials) {
     const color = palette[key];
@@ -663,12 +697,26 @@ export function applyPalette(modeId) {
 
   if (ctx.skySprite) {
     ctx.skySprite.material.color.set(palette.sun);
-    ctx.skySprite.material.opacity = modeId === 'neon' ? 0.9 : modeId === 'minimal' ? 0.5 : 0.82;
+    ctx.skySprite.material.opacity = modeId === 'neon' ? 0.9 : modeId === 'minimal' ? 0.5 : modeId === 'mithila' ? 0.95 : 0.82;
+    ctx.skySprite.position.set(...(modeId === 'mithila' ? [-26, 9, -64] : [-20, 18, -62]));
+    const skyScale = modeId === 'mithila' ? 30 : 24;
+    ctx.skySprite.scale.set(skyScale, skyScale, 1);
+  }
+
+  const cloudMaterial = ctx.materials.get('cloud');
+  if (cloudMaterial) cloudMaterial.opacity = modeId === 'mithila' ? 0.52 : 0.9;
+  const cloudShadeMaterial = ctx.materials.get('cloudShade');
+  if (cloudShadeMaterial) cloudShadeMaterial.opacity = modeId === 'mithila' ? 0.38 : 0.72;
+
+  // Janakpur sits on the plains. Keep the low cloud sea, but clear the high
+  // cloud shelf so the dusk sky belongs to the temple and the kites.
+  for (const cloud of ctx.baseAnim.clouds) {
+    cloud.mesh.visible = modeId !== 'mithila' || cloud.mesh.position.y < 0;
   }
 
   if (ctx.qrHalo) {
     ctx.qrHalo.material.color.set(palette.qrGlow);
-    ctx.qrHalo.material.opacity = modeId === 'neon' ? 0.34 : modeId === 'minimal' ? 0.06 : 0.12;
+    ctx.qrHalo.material.opacity = modeId === 'neon' ? 0.34 : modeId === 'mithila' ? 0.24 : modeId === 'minimal' ? 0.06 : 0.12;
   }
 
   if (ctx.groundQR) {

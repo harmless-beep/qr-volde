@@ -2,6 +2,46 @@
 
 All notable changes to QR Volde are recorded here.
 
+## [0.4.0] — 2026-10-31
+
+**Mithila Courtyard.** A fourth visual mode leaves the Kathmandu Valley for the Terai. It is a separate architecture group and a separate camera flight, not a palette swap.
+
+### Added
+
+- **Mithila Courtyard** visual mode, inspired by Janakpur: a white domed temple with chhatris, arches, and jaali screens; Mithila-painted houses and a painting pavilion; a sacred pond with ghats, floating diyas, and herons; a tulsi shrine; mango and banana groves; festival kites; a cart; an elephant; a bovine; and courtyard residents in sari, dhoti, bun, and tika.
+- A **raised circular aripana** floor painting above the QR plaza, built from original Canvas 2D line art and procedural geometry.
+- A second camera rig, `CAMERA_RIGS.mithila`, that flies **left** over the pond and painting pavilion instead of orbiting right over the Newari shop row.
+- Scene switching in `scene.js` (`setSceneMode`, `setCityVisible`, `setMithilaVisible`) and a named `mithila` scene group. The Newari `chowk` and `chowk-road` groups hide while Mithila is active.
+- **Mithila palette** in `scene-world.js`: warm Terai dusk, pale hazy mountains, deep-plum QR floor, teal pond water, and a low sun. High clouds are cleared so the sky belongs to the temple and the kites.
+- Per-mode section copy: section 3 becomes **The Courtyard** with `A courtyard at dusk.` and the tags `Mithila` / `Janakpur`.
+- Mithila theme, page background, mode swatch, theme-color value, and `localStorage` whitelist entry.
+- New `city-mithila.js` scene module, added to `npm run check`.
+- New screenshots: `mithila-courtyard.webp`, `mobile-mithila.webp`, and `mithila-studio.webp`.
+
+### Changed
+
+- `makePerson` in `city-life.js` accepts `sari`, `dhoti`, `bun`, `tika`, and `tray` options, so the same low-poly resident system can dress for the Terai courtyard.
+- `scene-world.js` special-cases Mithila for sun position, sky sprite, halo, cloud opacity, and mountain haze.
+- The mode group now holds four swatches; mobile spacing was retuned so it still fits the top bar at 320px.
+- Version bumped to 0.4.0.
+
+### QA
+
+- App Lighthouse: 100 accessibility, 100 best practices, 100 SEO (local v0.4.0 audit).
+- Launch-page Lighthouse: 100 accessibility, 100 best practices, 100 SEO.
+- Axe-core: no violations with QR Studio closed and open, at desktop and mobile widths, in Mithila mode.
+- Verified at 1440 × 1100, 390 × 844, and 320 × 700. No horizontal overflow; the four-swatch mode group fits.
+- Mode QA: switching hides `chowk`/`chowk-road`, shows `mithila` with 30 scene groups, and restores the chowk on switch-back. Persistence survives reload and section-3 copy resets.
+- Reduced motion and no-WebGL paths verified; the WebGL run has no console errors.
+- Full v0.3 regression re-run: all six Atelier styles plus custom and plain fallback decode; overlay exclusion stays at zero pixels; export is unchanged; Studio interactions pass.
+
+### Known limits
+
+- Mithila is an artistic, Janakpur-inspired interpretation, not a survey-accurate reconstruction. The white domed temple is a composition, not a specific building.
+- The 3D QR remains artwork, not a scanning target.
+- Payment and authenticator presets remain clearly labelled demos.
+- Final brand copy, CTA destination, real payloads, and the original-code license remain open.
+
 ## [0.3.0] — 2026-10-31
 
 **Living Atelier.** The collectible preview becomes a small playable object: gold dust, a gentle tilt, a seal ceremony, and a one-tap randomizer.

@@ -53,6 +53,7 @@ function addCityProp(group, delay = 0) {
 
 function buildRoad() {
   roadGroup = new THREE.Group();
+  roadGroup.name = 'chowk-road';
 
   const road = new THREE.Mesh(
     new THREE.RingGeometry(11.0, 13.45, 72, 1),
@@ -114,6 +115,7 @@ function addNeonLights() {
 
 export function buildCity() {
   cityGroup = new THREE.Group();
+  cityGroup.name = 'chowk';
   ctx.scene.add(cityGroup);
 
   buildRoad();
@@ -251,8 +253,13 @@ export function buildCity() {
   addNeonLights();
 }
 
+export function setCityVisible(visible) {
+  if (cityGroup) cityGroup.visible = visible;
+  if (roadGroup) roadGroup.visible = visible;
+}
+
 export function updateCity(progress, time, reduceMotion = false) {
-  if (!cityGroup) return;
+  if (!cityGroup || !cityGroup.visible) return;
 
   const reveal = smoothstep(0.22, 0.55, progress);
 

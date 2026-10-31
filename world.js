@@ -53,6 +53,18 @@ const MODE_THEME = {
   dawn: '#f4e6d2',
   neon: '#070b16',
   minimal: '#f3f0e9',
+  mithila: '#f7e3cd',
+};
+
+const MODE_SECTION_COPY = {
+  mithila: {
+    2: {
+      eyebrow: '03 · The Courtyard',
+      title: 'A courtyard at dusk.',
+      body: 'White domes, painted walls, a pond full of lamps, and a festival arriving. Janakpur opens through the same code.',
+      tags: ['Mithila', 'Janakpur'],
+    },
+  },
 };
 
 const PRESETS = {
@@ -171,7 +183,7 @@ function readProgress() {
 function savedMode() {
   try {
     const value = window.localStorage.getItem('qrvolde-mode');
-    return ['dawn', 'neon', 'minimal'].includes(value) ? value : 'dawn';
+    return ['dawn', 'neon', 'minimal', 'mithila'].includes(value) ? value : 'dawn';
   } catch {
     return 'dawn';
   }
@@ -200,6 +212,7 @@ function setMode(mode, options = {}) {
   }
   if (sceneAPI) sceneAPI.setMode(mode);
   if (options.persist !== false) storeMode(mode);
+  if (lastSection >= 0) renderSection(lastSection, false);
 
   if (modeWash) {
     modeWash.classList.add('is-washing');
@@ -227,8 +240,9 @@ function buildRail() {
 }
 
 function renderSection(index, animate = true) {
-  const section = SECTIONS[index];
-  if (!section) return;
+  const base = SECTIONS[index];
+  if (!base) return;
+  const section = { ...base, ...(MODE_SECTION_COPY[currentMode]?.[index] ?? {}) };
 
   eyebrow.textContent = section.eyebrow;
   title.textContent = section.title;

@@ -279,7 +279,7 @@ export function updateQRMorph(progress) {
   qrWallLabel.visible = qrWallLabelMaterial.opacity > 0.01;
 
   if (qrHalo) {
-    const base = ctx.mode === 'neon' ? 0.34 : ctx.mode === 'minimal' ? 0.06 : 0.12;
+    const base = ctx.mode === 'neon' ? 0.34 : ctx.mode === 'mithila' ? 0.24 : ctx.mode === 'minimal' ? 0.06 : 0.12;
     qrHalo.material.opacity = base * (1 - smoothstep(0.04, 0.3, progress));
     qrHalo.visible = qrHalo.material.opacity > 0.005;
   }
