@@ -59,6 +59,7 @@ const MODE_THEME = {
 const MODE_SECTION_COPY = {
   mithila: {
     2: {
+      label: 'Courtyard',
       eyebrow: '03 · The Courtyard',
       title: 'A courtyard at dusk.',
       body: 'White domes, painted walls, a pond full of lamps, and a festival arriving. Janakpur opens through the same code.',
@@ -212,6 +213,7 @@ function setMode(mode, options = {}) {
   }
   if (sceneAPI) sceneAPI.setMode(mode);
   if (options.persist !== false) storeMode(mode);
+  updateRailLabels();
   if (lastSection >= 0) renderSection(lastSection, false);
 
   if (modeWash) {
@@ -220,13 +222,27 @@ function setMode(mode, options = {}) {
   }
 }
 
+function railLabel(index) {
+  return MODE_SECTION_COPY[currentMode]?.[index]?.label ?? SECTIONS[index].label;
+}
+
+function updateRailLabels() {
+  for (let index = 0; index < railButtons.length; index += 1) {
+    const label = railLabel(index);
+    const button = railButtons[index];
+    button.setAttribute('aria-label', `Go to ${label}`);
+    const text = button.querySelector('.qv__rail-label');
+    if (text) text.textContent = label;
+  }
+}
+
 function buildRail() {
   for (let index = 0; index < SECTIONS.length; index += 1) {
-    const section = SECTIONS[index];
+    const label = railLabel(index);
     const button = document.createElement('button');
     button.type = 'button';
-    button.setAttribute('aria-label', `Go to ${section.label}`);
-    button.innerHTML = `<span class="qv__rail-dot" aria-hidden="true"></span><span class="qv__rail-label">${section.label}</span>`;
+    button.setAttribute('aria-label', `Go to ${label}`);
+    button.innerHTML = `<span class="qv__rail-dot" aria-hidden="true"></span><span class="qv__rail-label">${label}</span>`;
     button.addEventListener('click', () => {
       const fraction = sectionStart(index) + 0.01;
       window.scrollTo({

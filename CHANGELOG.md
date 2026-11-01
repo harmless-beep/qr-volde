@@ -2,6 +2,24 @@
 
 All notable changes to QR Volde are recorded here.
 
+## [0.4.1] — 2026-11-01
+
+**Mithila Courtyard polish.** A small follow-up to v0.4.0: the scene rail now follows the active place.
+
+### Fixed
+
+- In Mithila mode, the section-3 rail label now reads **Courtyard** instead of **Chowk**, matching the section copy. Its accessible label updates too.
+- Switching back to Dawn, Neon, or Gallery restores the **Chowk** rail label.
+
+### Changed
+
+- Version bumped to 0.4.1.
+
+### QA
+
+- Mode QA re-run: rail label and `aria-label` switch to Courtyard in Mithila, then back to Chowk in Dawn.
+- `npm run check` passes; no console errors; no horizontal overflow at 1440 × 1100.
+
 ## [0.4.0] — 2026-10-31
 
 **Mithila Courtyard.** A fourth visual mode leaves the Kathmandu Valley for the Terai. It is a separate architecture group and a separate camera flight, not a palette swap.

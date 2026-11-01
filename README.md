@@ -2,7 +2,7 @@
 
 **A giant 3D QR code that unfolds into a living Nepalese courtyard.**
 
-[Live demo](https://harmless-beep.github.io/qr-volde/) · [Release v0.4.0](https://github.com/harmless-beep/qr-volde/releases/tag/v0.4.0) · [Research notes](./RESEARCH.md) · [Changelog](./CHANGELOG.md)
+[Live demo](https://harmless-beep.github.io/qr-volde/) · [Release v0.4.1](https://github.com/harmless-beep/qr-volde/releases/tag/v0.4.1) · [Research notes](./RESEARCH.md) · [Changelog](./CHANGELOG.md)
 
 [![QR Volde launch film — animated preview](launch-film/launch-film.gif)](https://harmless-beep.github.io/qr-volde/launch.html)
 
@@ -12,7 +12,7 @@ QR Volde is a scroll-driven 3D web experience. A dark-square QR monolith faces y
 
 The 3D code is the artwork. **QR Studio** turns the flat code into a collectible, scan-tested art card, or a plain fallback QR when a printer needs the simplest possible mark.
 
-**Status:** v0.4.0 Mithila Courtyard, published 2026-10-31.  
+**Status:** v0.4.1 Mithila Courtyard, published 2026-11-01.  
 **Built with:** Three.js r186 · `qrcode-generator` 2.0.4 · vanilla ES modules · Canvas 2D · GitHub Pages.  
 **No build step, no backend, no analytics, no paid APIs.**
 
@@ -241,7 +241,7 @@ Opening `index.html` directly with `file://` will not work because the app uses 
 - Launch-page Lighthouse: **100 accessibility, 100 best practices, 100 SEO** (local audit).
 - Axe-core: **no violations** with QR Studio open at desktop and mobile widths, including Mithila mode.
 - Verified at **1440 x 1100**, **390 x 844**, and **320 x 700**. No horizontal overflow, no clipped Studio controls, and the preview stage stays inside the panel. The four-swatch mode group fits the mobile top bar.
-- Mithila mode: `chowk` and `chowk-road` hide while `mithila` shows its 30 scene groups, switching back restores the chowk, the mode survives reload, and section-3 copy resets when another mode is chosen.
+- Mithila mode: `chowk` and `chowk-road` hide while `mithila` shows its 30 scene groups, switching back restores the chowk, the mode survives reload, and section-3 copy and rail label reset when another mode is chosen.
 - Interaction QA: pointer dust and glow render outside the QR panel, the QR exclusion rectangle contains **zero overlay pixels**, tilt resets on pointer leave, keyboard **Enter** and **Space** both seal, touch tap seals, the hint cycles, and **Surprise me** kept Custom active 23 of 36 tries while producing 13 distinct palette/motif combinations.
 - The export canvas was byte-for-byte identical before and after pointer movement and sealing.
 - All six sample styles plus custom variants decoded with jsQR at **2048 x 2560** and **640 x 800**; the plain **1024 x 1024** fallback also decoded.
