@@ -1,10 +1,10 @@
 # Research Notes
 
 **Project:** QR Volde  
-**Version:** v0.4.0  
-**Research date:** 2026-10-27; updated 2026-10-31
+**Version:** v0.4.2  
+**Research date:** 2026-10-27; updated 2026-11-04
 
-This document records the references and decisions behind the v0.1 vertical slice, the v0.2 QR Atelier, the v0.3 Living Atelier, and the v0.4 Mithila Courtyard. The goal is recognition, not reconstruction. All geometry, textures, signs, characters, and Atelier motifs are original procedural work; no photos, maps, stock models, third-party visual assets, or AI-generated images were copied into the project.
+This document records the references and decisions behind the v0.1 vertical slice, the v0.2 QR Atelier, the v0.3 Living Atelier, the v0.4 Mithila Courtyard, and the v0.4.2 Mithila Festival. The goal is recognition, not reconstruction. All geometry, textures, signs, characters, and Atelier motifs are original procedural work; no photos, maps, stock models, third-party visual assets, or AI-generated images were copied into the project.
 
 ## 1. Kathmandu Valley and Newar architecture
 
@@ -103,7 +103,7 @@ This document records the references and decisions behind the v0.1 vertical slic
 - Keep touch targets at least 2rem where practical; rail controls use larger transparent hit areas.
 - Provide `aria-pressed` on visual mode buttons and `aria-current` on scene rail buttons.
 - Wrap the scroll hint in a complementary landmark so all base-page content sits inside a landmark.
-- Lighthouse v0.4.0: 100 accessibility, 100 best practices, 100 SEO. Axe-core reported no violations with QR Studio open at desktop and mobile widths, including Mithila mode.
+- Lighthouse v0.4.0: 100 accessibility, 100 best practices, 100 SEO. Axe-core reported no violations with QR Studio open at desktop and mobile widths, including Mithila mode. The v0.4.2 Mithila Festival QA re-ran Axe-core with the same result.
 
 ## 6. QR Atelier art and scannability
 
@@ -179,6 +179,11 @@ This document records the references and decisions behind the v0.1 vertical slic
 - Nepal Tourism Board — Mithila Art: <https://ntb.gov.np/mithila-art>
 - Mithila painting symbols and styles (background): Bharni, Kachni, Tantrik, Godna, and Kohbar traditions; fish, lotus, bamboo, parrot, sun, and moon motifs; double-line borders and dense fill.
 - Aripana / Aripan ritual floor art (background): rice-paste line drawing in Mithila courtyards, related to rangoli and kolam traditions.
+- Jhijhiya folk dance of the Mithila region: <https://en.wikipedia.org/wiki/Jhijhiya>
+- Torana / toran ceremonial gateway (background): <https://en.wikipedia.org/wiki/Torana_(architecture)>
+- Indian peafowl (background): <https://en.wikipedia.org/wiki/Indian_peafowl>
+- Paddy field (background): <https://en.wikipedia.org/wiki/Paddy_field>
+- Rose-ringed parakeet (background): <https://en.wikipedia.org/wiki/Rose-ringed_parakeet>
 
 ### Visual language used
 
@@ -189,6 +194,11 @@ This document records the references and decisions behind the v0.1 vertical slic
 - **Tulsi shrine:** a small raised courtyard shrine, a common domestic and devotional detail.
 - **Groves and festival life:** mango and banana trees, a cart, an elephant, a bovine, residents in sari and dhoti with bun and tika, and kites in the dusk sky.
 - **Aripana:** a circular floor painting built from original Canvas 2D line work — concentric rings, petals, dots, and a lotus centre — placed just above the QR plaza.
+- **Toran gateway:** a painted lintel with marigold diamonds, a fringe of stylised mango leaves and marigolds, gold bells, and a hanging **स्वागतम्** plaque. It is a freestanding gateway at the edge of the house row, not a replica of a specific temple torana.
+- **Displaying peacock:** a stylised Indian peafowl on a low stone platform, with a green body and breast, a gold-ringed neck, a small crest, and a fanned tail of gold, teal, indigo, and white eye spots. The tail, head, and feathers move on a slow loop; reduced motion holds the display pose.
+- **Jhijhiya dancers:** three women in sari with pots and lit diyas on their heads, swaying and circling around a gold ring. The dance is referenced as a Mithila folk form; the figures are generic, not portraits, and the diyas are decorative geometry rather than real fire.
+- **Paddy field:** a flooded plot with mud bunds, dense rice rows, and a straw-hatted scarecrow on the front-left grass. It is a small diorama-scale field, not an agricultural model.
+- **Parrot flock:** five rose-ringed parakeets with green bodies, red beaks, long tails, and flapping wings, circling above the courtyard. Their initial positions are set at build time so reduced motion still shows them in the sky.
 - **Palette:** warm Terai dusk, pale hazy mountains at the plains' edge, a deep-plum QR floor, white temple stone, terracotta red, marigold yellow, and teal water.
 
 ### Decisions
@@ -197,6 +207,8 @@ This document records the references and decisions behind the v0.1 vertical slic
 - **The QR stays the plaza.** The code remains the ground pattern; the aripana sits above the raised modules so the QR and the courtyard ornament stay visible together.
 - **No sacred interior.** The temple is exterior and neighbourhood-scale. The scene does not recreate a shrine interior or use sensitive imagery as decoration.
 - **Original motifs only.** The painting panels and aripana are procedural line art drawn from general Mithila visual vocabulary. No scanned, photographed, or AI-generated Mithila artwork is used, and the project does not claim to reproduce a specific artist's work.
+- **Festival layer, not a ritual manual.** The toran, jhijhiya, peacock, paddy, and parakeet props are decorative and educational. The project does not stage a real ritual, collect ritual secrets, or claim ethnographic accuracy. The jhijhiya figures are generic dancers in sari, and the diyas are unlit geometry with a warm glow sprite.
+- **Animals are stylised.** The peacock and parakeets use low-poly primitives and palette colours. They are recognisable silhouettes, not natural-history illustrations.
 - **Cultural interpretation, not a survey.** The courtyard is a Janakpur-inspired composition. It is not a geographic reconstruction, and the temple is not a measured model of the Janaki Mandir.
 - **English UI, local accents.** Interface copy stays English; `Mithila` and `Janakpur` name the place and tradition without pretending to be a language lesson.
 

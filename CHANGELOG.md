@@ -2,6 +2,32 @@
 
 All notable changes to QR Volde are recorded here.
 
+## [0.4.2] — 2026-11-04
+
+**Mithila Festival.** Five new animated props join the Janakpur courtyard, all original procedural geometry and Canvas 2D work.
+
+### Added
+
+- **Toran gateway** — a painted lintel with marigold diamonds, a mango-leaf and marigold fringe, gold bells, and a hanging **स्वागतम्** plaque.
+- **Displaying peacock** — a low stone platform, a green body and breast, a gold-ringed neck, a crest, and a fanned tail with gold, teal, indigo, and white eye spots. The tail, head, and feathers move on a slow loop.
+- **Jhijhiya dancers** — three women in sari with pots and lit diyas on their heads, swaying and circling around a gold ring.
+- **Paddy field** — a flooded plot with mud bunds, dense rice rows, and a straw-hatted scarecrow, set on the foreground grass.
+- **Parrot flock** — five rose-ringed parakeets with red beaks, long tails, and flapping wings, circling above the courtyard.
+
+### Changed
+
+- The Mithila scene now has 35 child groups, up from 30.
+- The paddy field sits on the front-left grass so it stays clear of the QR plaza and the front steps.
+- The peacock sits in the foreground-left, clear of the houses and the tulsi shrine.
+- Version bumped to 0.4.2.
+
+### QA
+
+- `npm run check` passes.
+- Preview QA at 1440 × 1100 and 390 × 844: 35 scene groups, no console errors, no horizontal overflow.
+- Reduced motion leaves all five props static; the no-WebGL fallback and theme switching still work.
+- Axe-core: no violations with QR Studio open at desktop and mobile widths.
+
 ## [0.4.1] — 2026-11-01
 
 **Mithila Courtyard polish.** A small follow-up to v0.4.0: the scene rail now follows the active place.

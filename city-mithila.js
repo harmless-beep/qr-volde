@@ -8,6 +8,7 @@ import {
   addLine,
   getMaterial,
   makeGlowTexture,
+  makeTextTexture,
   makeRng,
   smoothstep,
   clamp,
@@ -30,10 +31,16 @@ const kites = [];
 const flames = [];
 const floaters = [];
 const herons = [];
+const hangings = [];
+const peacocks = [];
+const dancers = [];
+const crops = [];
+const parrots = [];
 const panelTextures = new Map();
 let mithilaGroup = null;
 let cow = null;
 let glowTexture = null;
+let jhijhiyaCircle = null;
 
 const INK = '#2b1b2e';
 const RED = '#b23a48';
@@ -1446,6 +1453,434 @@ function makeAripanaGroup() {
   return group;
 }
 
+function makeToranGate() {
+  const group = new THREE.Group();
+
+  for (const sx of [-1, 1]) {
+    const x = sx * 1.55;
+    addBox(group, 0.42, 0.24, 0.54, x, 0.12, 0, 'stoneDark');
+    addBox(group, 0.23, 2.6, 0.23, x, 1.52, 0, 'woodDark');
+    for (let i = 0; i < 4; i += 1) {
+      addBox(group, 0.25, 0.1, 0.25, x, 0.6 + i * 0.58, 0, i % 2 ? 'accent' : 'accent2', {
+        castShadow: false,
+      });
+    }
+    addBox(group, 0.31, 0.07, 0.31, x, 2.78, 0, 'gold', { castShadow: false });
+    addBox(group, 0.13, 0.13, 0.02, x, 1.98, 0.13, 'marigold', {
+      rotZ: Math.PI / 4,
+      castShadow: false,
+    });
+  }
+
+  addBox(group, 3.5, 0.5, 0.32, 0, 3.08, 0, 'accent');
+  addBox(group, 3.56, 0.06, 0.36, 0, 3.34, 0, 'gold', { castShadow: false });
+  addBox(group, 3.56, 0.06, 0.36, 0, 2.82, 0, 'gold', { castShadow: false });
+
+  for (let i = -3; i <= 3; i += 1) {
+    addBox(group, 0.16, 0.16, 0.02, i * 0.42, 3.08, 0.18, i % 2 ? 'marigold' : 'accent2', {
+      rotZ: Math.PI / 4,
+      castShadow: false,
+    });
+  }
+
+  addCylinder(group, 0.1, 0.15, 0.18, 8, 0, 3.42, 0, 'gold');
+  addSphere(group, 0.09, 0, 3.57, 0, 'gold', { widthSegments: 6, heightSegments: 5, castShadow: false });
+  addCone(group, 0.05, 0.16, 6, 0, 3.71, 0, 'gold', { castShadow: false });
+  for (let i = 0; i < 4; i += 1) {
+    const a = (i / 4) * Math.PI * 2 + 0.4;
+    addSphere(group, 0.075, Math.cos(a) * 0.13, 3.61, Math.sin(a) * 0.13, i % 2 ? 'leaf' : 'leafDark', {
+      widthSegments: 5,
+      heightSegments: 4,
+      scale: [0.55, 1.35, 0.3],
+      castShadow: false,
+    });
+  }
+
+  const plaque = new THREE.Group();
+  plaque.position.set(0, 2.83, 0.24);
+  addBox(plaque, 1.32, 0.46, 0.07, 0, -0.26, 0, 'brick');
+  addBox(plaque, 1.38, 0.05, 0.08, 0, -0.04, 0, 'gold', { castShadow: false });
+  addBox(plaque, 1.38, 0.05, 0.08, 0, -0.48, 0, 'gold', { castShadow: false });
+  for (const sx of [-1, 1]) {
+    addCylinder(plaque, 0.012, 0.012, 0.1, 4, sx * 0.46, -0.05, 0, 'gold', { castShadow: false });
+  }
+  const plaqueTexture = makeTextTexture('स्वागतम्', {
+    width: 512,
+    height: 160,
+    font: '700 92px "Nirmala UI", "Noto Sans Devanagari", "Segoe UI", sans-serif',
+    color: '#fff7e8',
+  });
+  if (plaqueTexture) {
+    const plaqueMaterial = new THREE.MeshBasicMaterial({
+      map: plaqueTexture,
+      transparent: true,
+      depthWrite: false,
+      side: THREE.DoubleSide,
+      toneMapped: false,
+    });
+    const plaqueFace = new THREE.Mesh(new THREE.PlaneGeometry(1.14, 0.36), plaqueMaterial);
+    plaqueFace.position.set(0, -0.26, 0.045);
+    plaque.add(plaqueFace);
+  }
+  group.add(plaque);
+  hangings.push({ group: plaque, phase: 0.7, amp: 0.018 });
+
+  for (let i = 0; i < 11; i += 1) {
+    const t = i / 10;
+    const x = -1.42 + t * 2.84;
+    const strand = new THREE.Group();
+    strand.position.set(x, 2.78, 0.18);
+    const length = 0.36 + rng() * 0.22;
+    addLine(strand, [new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, -length, 0)], 'leafDark', 0.5);
+    addSphere(strand, 0.085, 0, -length * 0.35, 0, 'leaf', {
+      widthSegments: 5,
+      heightSegments: 4,
+      scale: [0.55, 1.5, 0.3],
+      castShadow: false,
+    });
+    addSphere(strand, 0.075, 0.02, -length * 0.7, 0.01, 'leafDark', {
+      widthSegments: 5,
+      heightSegments: 4,
+      scale: [0.55, 1.45, 0.3],
+      castShadow: false,
+    });
+    addSphere(strand, 0.06, 0, -length, 0, 'marigold', {
+      widthSegments: 5,
+      heightSegments: 4,
+      castShadow: false,
+    });
+    if (i % 3 === 0) {
+      addCone(strand, 0.05, 0.1, 6, 0, -length - 0.07, 0, 'gold', {
+        rotX: Math.PI,
+        castShadow: false,
+      });
+      addSphere(strand, 0.018, 0, -length - 0.13, 0, 'gold', {
+        widthSegments: 4,
+        heightSegments: 3,
+        castShadow: false,
+      });
+    }
+    group.add(strand);
+    hangings.push({ group: strand, phase: rng() * Math.PI * 2, amp: 0.055 });
+  }
+
+  return group;
+}
+
+function makePeacock() {
+  const group = new THREE.Group();
+
+  addCylinder(group, 1.0, 1.1, 0.14, 10, 0, 0.07, 0, 'stoneDark');
+  addCylinder(group, 0.86, 0.92, 0.12, 10, 0, 0.19, 0, 'stone');
+  for (let i = 0; i < 12; i += 1) {
+    const a = (i / 12) * Math.PI * 2;
+    addSphere(group, 0.055, Math.cos(a) * 0.92, 0.25, Math.sin(a) * 0.92, i % 2 ? 'marigold' : 'accent', {
+      widthSegments: 5,
+      heightSegments: 4,
+      castShadow: false,
+    });
+  }
+
+  for (const sx of [-1, 1]) {
+    addCylinder(group, 0.035, 0.045, 0.5, 5, sx * 0.12, 0.5, 0.02, 'gold');
+    addBox(group, 0.12, 0.03, 0.18, sx * 0.12, 0.27, 0.08, 'gold', { castShadow: false });
+  }
+
+  addSphere(group, 0.32, 0, 0.88, -0.02, 'accent2', {
+    widthSegments: 8,
+    heightSegments: 6,
+    scale: [0.72, 1.0, 1.25],
+  });
+  addSphere(group, 0.23, 0, 0.92, 0.2, 'leaf', {
+    widthSegments: 7,
+    heightSegments: 5,
+    scale: [0.8, 0.9, 0.7],
+  });
+  addCylinder(group, 0.11, 0.16, 0.62, 7, 0, 1.42, 0.18, 'accent2', { rotX: -0.22 });
+  addCylinder(group, 0.17, 0.17, 0.05, 8, 0, 1.16, 0.15, 'gold', { castShadow: false });
+
+  const head = new THREE.Group();
+  head.position.set(0, 1.76, 0.28);
+  addSphere(head, 0.16, 0, 0, 0, 'accent2', { widthSegments: 7, heightSegments: 5 });
+  addCone(head, 0.05, 0.18, 5, 0, -0.01, 0.2, 'gold', { rotX: Math.PI / 2 });
+  for (const sx of [-1, 1]) {
+    addSphere(head, 0.035, sx * 0.1, 0.04, 0.1, 'white', {
+      widthSegments: 5,
+      heightSegments: 4,
+      castShadow: false,
+    });
+    addSphere(head, 0.017, sx * 0.11, 0.04, 0.115, 'dark', {
+      widthSegments: 4,
+      heightSegments: 3,
+      castShadow: false,
+    });
+  }
+  for (let i = -2; i <= 2; i += 1) {
+    addCylinder(head, 0.012, 0.012, 0.24, 4, i * 0.028, 0.2, -0.02, 'gold', {
+      rotZ: i * 0.1,
+      castShadow: false,
+    });
+    addSphere(head, 0.022, i * 0.045, 0.33, -0.02, 'accent', {
+      widthSegments: 4,
+      heightSegments: 3,
+      castShadow: false,
+    });
+  }
+  group.add(head);
+
+  const tail = new THREE.Group();
+  tail.position.set(0, 0.92, -0.3);
+  const feathers = [];
+  for (let i = 0; i < 9; i += 1) {
+    const t = i / 8;
+    const angle = -1.0 + t * 2.0;
+    const feather = new THREE.Group();
+    feather.rotation.z = angle;
+    addBox(feather, 0.05, 0.9, 0.025, 0, 0.45, 0, i % 2 ? 'leaf' : 'accent2', {
+      castShadow: false,
+    });
+    addSphere(feather, 0.14, 0, 0.88, 0.01, 'gold', {
+      widthSegments: 7,
+      heightSegments: 5,
+      scale: [1, 1, 0.25],
+      castShadow: false,
+    });
+    addSphere(feather, 0.09, 0, 0.88, 0.02, 'accent2', {
+      widthSegments: 6,
+      heightSegments: 4,
+      scale: [1, 1, 0.25],
+      castShadow: false,
+    });
+    addSphere(feather, 0.045, 0, 0.88, 0.03, 'indigo', {
+      widthSegments: 5,
+      heightSegments: 4,
+      scale: [1, 1, 0.25],
+      castShadow: false,
+    });
+    addSphere(feather, 0.018, 0, 0.9, 0.04, 'white', {
+      widthSegments: 4,
+      heightSegments: 3,
+      scale: [1, 1, 0.25],
+      castShadow: false,
+    });
+    tail.add(feather);
+    feathers.push({ group: feather, baseAngle: angle, phase: i * 0.7 });
+  }
+  group.add(tail);
+
+  for (const sx of [-1, 1]) {
+    addSphere(group, 0.2, sx * 0.22, 0.9, -0.02, 'indigo', {
+      widthSegments: 6,
+      heightSegments: 4,
+      scale: [0.45, 0.9, 1.1],
+      castShadow: false,
+    });
+  }
+
+  group.userData.tail = tail;
+  group.userData.head = head;
+  group.userData.feathers = feathers;
+  return group;
+}
+
+function makeJhijhiyaCircle() {
+  const circle = new THREE.Group();
+  const radius = 0.95;
+  const saris = ['cloth', 'cloth2', 'cloth3'];
+
+  for (let i = 0; i < 3; i += 1) {
+    const a = (i / 3) * Math.PI * 2 + 0.35;
+    const x = Math.cos(a) * radius;
+    const z = Math.sin(a) * radius;
+    const dancer = makePerson({
+      sari: true,
+      bun: true,
+      tika: true,
+      shirt: saris[i],
+      pants: 'dark',
+      scale: 0.92,
+    });
+    dancer.position.set(x, 0, z);
+    const baseRotY = Math.atan2(-x, -z);
+    dancer.rotation.y = baseRotY;
+
+    addCylinder(dancer, 0.15, 0.21, 0.3, 7, 0, 1.79, 0, 'brick');
+    addCylinder(dancer, 0.23, 0.23, 0.04, 7, 0, 1.96, 0, 'gold', { castShadow: false });
+    for (let j = 0; j < 6; j += 1) {
+      const ga = (j / 6) * Math.PI * 2;
+      addSphere(dancer, 0.04, Math.cos(ga) * 0.22, 1.95, Math.sin(ga) * 0.22, j % 2 ? 'marigold' : 'leaf', {
+        widthSegments: 5,
+        heightSegments: 4,
+        castShadow: false,
+      });
+    }
+    makeDiya(dancer, 0, 1.99, 0, 0.9);
+
+    if (dancer.userData.arms) {
+      dancer.userData.arms.leftArm.rotation.z = 0.7;
+      dancer.userData.arms.rightArm.rotation.z = -0.7;
+    }
+
+    circle.add(dancer);
+    dancers.push({ group: dancer, baseRotY, phase: i * 1.7 + 0.4, arms: dancer.userData.arms });
+  }
+
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(1.18, 0.025, 4, 32), getMaterial('gold'));
+  ring.rotation.x = -Math.PI / 2;
+  ring.position.y = 0.02;
+  ring.castShadow = false;
+  circle.add(ring);
+  for (let i = 0; i < 12; i += 1) {
+    const a = (i / 12) * Math.PI * 2;
+    addSphere(circle, 0.05, Math.cos(a) * 1.32, 0.04, Math.sin(a) * 1.32, i % 2 ? 'marigold' : 'accent', {
+      widthSegments: 5,
+      heightSegments: 4,
+      castShadow: false,
+    });
+  }
+
+  return circle;
+}
+
+function makePaddyField() {
+  const group = new THREE.Group();
+
+  addBox(group, 4.1, 0.1, 3.0, 0, 0.05, 0, 'soil', { receiveShadow: true });
+  addBox(group, 3.5, 0.05, 2.4, 0, 0.12, 0, 'water', { castShadow: false });
+  addBox(group, 4.1, 0.15, 0.22, 0, 0.1, 1.45, 'mud');
+  addBox(group, 4.1, 0.15, 0.22, 0, 0.1, -1.45, 'mud');
+  addBox(group, 0.22, 0.15, 3.0, 2.05, 0.1, 0, 'mud');
+  addBox(group, 0.22, 0.15, 3.0, -2.05, 0.1, 0, 'mud');
+  addBox(group, 3.5, 0.1, 0.1, 0, 0.08, 0, 'mud', { castShadow: false });
+  addBox(group, 0.1, 0.1, 2.4, 0, 0.08, 0, 'mud', { castShadow: false });
+
+  for (let row = 0; row < 5; row += 1) {
+    for (let col = 0; col < 7; col += 1) {
+      const x = -1.5 + col * 0.5;
+      const z = -0.95 + row * 0.48;
+      const clump = new THREE.Group();
+      clump.position.set(x, 0.13, z);
+      for (let blade = 0; blade < 4; blade += 1) {
+        const bx = (rng() - 0.5) * 0.16;
+        const bz = (rng() - 0.5) * 0.16;
+        const height = 0.34 + rng() * 0.16;
+        addCone(clump, 0.026, height, 4, bx, height / 2, bz, blade % 2 ? 'leaf' : 'leafDark', {
+          rotZ: (rng() - 0.5) * 0.28,
+          rotX: (rng() - 0.5) * 0.28,
+          castShadow: false,
+        });
+        if (blade < 2) {
+          addSphere(clump, 0.022, bx, height, bz, 'gold', {
+            widthSegments: 4,
+            heightSegments: 3,
+            castShadow: false,
+          });
+        }
+      }
+      group.add(clump);
+      crops.push({ group: clump, phase: rng() * Math.PI * 2 });
+    }
+  }
+
+  const scarecrow = new THREE.Group();
+  scarecrow.position.set(1.15, 0.14, -0.95);
+  scarecrow.rotation.y = -0.5;
+  scarecrow.scale.setScalar(0.82);
+  addBox(scarecrow, 0.4, 0.08, 0.4, 0, 0.02, 0, 'mud', { castShadow: false });
+  addCylinder(scarecrow, 0.04, 0.05, 1.8, 6, 0, 0.9, 0, 'woodDark');
+  addBox(scarecrow, 0.95, 0.06, 0.06, 0, 1.3, 0, 'wood');
+  addBox(scarecrow, 0.48, 0.52, 0.14, 0, 1.26, 0.02, 'accent');
+  addBox(scarecrow, 0.5, 0.05, 0.16, 0, 0.99, 0.02, 'gold', { castShadow: false });
+  addSphere(scarecrow, 0.14, 0, 1.66, 0, 'gold', { widthSegments: 6, heightSegments: 5 });
+  addCylinder(scarecrow, 0.23, 0.25, 0.035, 8, 0, 1.79, 0, 'thatch', { castShadow: false });
+  addCone(scarecrow, 0.2, 0.18, 8, 0, 1.89, 0, 'thatch');
+  addCone(scarecrow, 0.08, 0.06, 6, 0, 1.99, 0, 'thatchDark', { castShadow: false });
+  for (const sx of [-0.05, 0.05]) {
+    addSphere(scarecrow, 0.02, sx, 1.68, 0.13, 'dark', {
+      widthSegments: 5,
+      heightSegments: 4,
+      castShadow: false,
+    });
+  }
+  addBox(scarecrow, 0.08, 0.018, 0.02, 0, 1.59, 0.135, 'dark', { castShadow: false });
+  group.add(scarecrow);
+
+  return group;
+}
+
+function makeParrotFlock() {
+  const flock = new THREE.Group();
+
+  for (let i = 0; i < 5; i += 1) {
+    const bird = new THREE.Group();
+    addSphere(bird, 0.19, 0, 0, 0, 'leaf', {
+      widthSegments: 7,
+      heightSegments: 5,
+      scale: [0.85, 0.95, 1.55],
+    });
+    addSphere(bird, 0.12, 0, 0.09, 0.3, 'leaf', { widthSegments: 6, heightSegments: 4 });
+    addCone(bird, 0.04, 0.12, 5, 0, 0.08, 0.44, 'accent', {
+      rotX: Math.PI / 2,
+      castShadow: false,
+    });
+    for (const sx of [-1, 1]) {
+      addSphere(bird, 0.02, sx * 0.065, 0.13, 0.34, 'white', {
+        widthSegments: 4,
+        heightSegments: 3,
+        castShadow: false,
+      });
+      addSphere(bird, 0.011, sx * 0.072, 0.13, 0.35, 'dark', {
+        widthSegments: 4,
+        heightSegments: 3,
+        castShadow: false,
+      });
+    }
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(0.08, 0.012, 4, 10), getMaterial('accent'));
+    ring.position.set(0, 0.05, 0.28);
+    ring.rotation.x = Math.PI / 2;
+    ring.castShadow = false;
+    bird.add(ring);
+
+    addBox(bird, 0.065, 0.035, 0.48, 0, 0.02, -0.34, 'leafDark', { rotX: -0.16, castShadow: false });
+    addBox(bird, 0.035, 0.025, 0.36, -0.03, 0, -0.56, 'accent2', { rotX: -0.16, castShadow: false });
+    addBox(bird, 0.035, 0.025, 0.36, 0.03, 0, -0.56, 'accent2', { rotX: -0.16, castShadow: false });
+
+    const wingL = new THREE.Group();
+    wingL.position.set(-0.12, 0.09, 0.02);
+    addBox(wingL, 0.3, 0.03, 0.15, -0.15, 0, 0, 'leafDark', { castShadow: false });
+    bird.add(wingL);
+    const wingR = new THREE.Group();
+    wingR.position.set(0.12, 0.09, 0.02);
+    addBox(wingR, 0.3, 0.03, 0.15, 0.15, 0, 0, 'leafDark', { castShadow: false });
+    bird.add(wingR);
+
+    const phase = i * 0.55 + 0.3;
+    const radius = 3.0 + (i % 3) * 0.45;
+    const baseY = 9.8 + (i % 3) * 0.4;
+    const angle = phase;
+    bird.position.set(0.2 + Math.cos(angle) * radius, baseY, -1.0 + Math.sin(angle) * radius);
+    bird.rotation.y = -angle;
+    bird.scale.setScalar(0.85 + i * 0.03);
+    wingL.rotation.z = -0.5;
+    wingR.rotation.z = 0.5;
+    flock.add(bird);
+
+    parrots.push({
+      group: bird,
+      wingL,
+      wingR,
+      phase,
+      radius,
+      speed: 0.26 + (i % 2) * 0.04,
+      baseY,
+      centerX: 0.2,
+      centerZ: -1.0,
+    });
+  }
+
+  return flock;
+}
+
 export function buildMithila() {
   mithilaGroup = new THREE.Group();
   mithilaGroup.name = 'mithila';
@@ -1569,6 +2004,38 @@ export function buildMithila() {
   kiteB.userData.baseY = kiteB.position.y;
   kites.push(kiteB);
 
+  const toran = makeToranGate();
+  toran.position.set(7.9, GROUND_Y, 1.0);
+  toran.rotation.y = -0.32;
+  addMithilaProp(toran, 0.28);
+
+  const peacock = makePeacock();
+  peacock.position.set(-2.2, GROUND_Y, 7.2);
+  peacock.rotation.y = -0.7;
+  peacock.scale.setScalar(1.2);
+  addMithilaProp(peacock, 0.3);
+  peacocks.push({
+    group: peacock,
+    tail: peacock.userData.tail,
+    head: peacock.userData.head,
+    feathers: peacock.userData.feathers,
+    phase: 0.4,
+  });
+
+  const jhijhiya = makeJhijhiyaCircle();
+  jhijhiya.position.set(1.2, GROUND_Y, 4.8);
+  jhijhiyaCircle = jhijhiya;
+  addMithilaProp(jhijhiya, 0.32);
+
+  const paddy = makePaddyField();
+  paddy.position.set(-7.2, GROUND_Y, 9.9);
+  paddy.rotation.y = 0.02;
+  paddy.scale.setScalar(0.9);
+  addMithilaProp(paddy, 0.3);
+
+  const flock = makeParrotFlock();
+  addMithilaProp(flock, 0.34);
+
   const templeLight = new THREE.PointLight(0xffb347, 10, 11, 2);
   templeLight.position.set(0, GROUND_Y + 3.2, -2.0);
   mithilaGroup.add(templeLight);
@@ -1646,5 +2113,54 @@ export function updateMithila(progress, time, reduceMotion = false) {
       head.rotation.y = Math.sin(time * 0.5 + heron.phase) * 0.35;
       head.rotation.x = Math.sin(time * 0.7 + heron.phase) * 0.08;
     }
+  }
+
+  for (const hanging of hangings) {
+    hanging.group.rotation.z = Math.sin(time * 1.35 + hanging.phase) * hanging.amp;
+  }
+
+  for (const peacock of peacocks) {
+    if (peacock.tail) {
+      peacock.tail.rotation.z = Math.sin(time * 0.55 + peacock.phase) * 0.035;
+      const fan = 0.94 + Math.sin(time * 0.42 + peacock.phase) * 0.06;
+      peacock.tail.scale.set(fan, fan, 1);
+    }
+    for (const feather of peacock.feathers) {
+      feather.group.rotation.z = feather.baseAngle + Math.sin(time * 0.8 + feather.phase) * 0.018;
+    }
+    if (peacock.head) {
+      peacock.head.rotation.y = Math.sin(time * 0.6 + peacock.phase) * 0.25;
+      peacock.head.rotation.x = Math.sin(time * 0.9 + peacock.phase) * 0.06;
+    }
+  }
+
+  if (jhijhiyaCircle) jhijhiyaCircle.rotation.y = time * 0.07;
+
+  for (const dancer of dancers) {
+    dancer.group.position.y = Math.sin(time * 1.4 + dancer.phase) * 0.035;
+    dancer.group.rotation.y = dancer.baseRotY + Math.sin(time * 0.9 + dancer.phase) * 0.08;
+    if (dancer.arms) {
+      dancer.arms.leftArm.rotation.z = 0.7 + Math.sin(time * 1.5 + dancer.phase) * 0.12;
+      dancer.arms.rightArm.rotation.z = -0.7 - Math.sin(time * 1.5 + dancer.phase) * 0.12;
+    }
+  }
+
+  for (const crop of crops) {
+    crop.group.rotation.z = Math.sin(time * 1.25 + crop.phase) * 0.07;
+    crop.group.rotation.x = Math.cos(time * 0.95 + crop.phase) * 0.04;
+  }
+
+  for (const parrot of parrots) {
+    const angle = time * parrot.speed + parrot.phase;
+    parrot.group.position.set(
+      parrot.centerX + Math.cos(angle) * parrot.radius,
+      parrot.baseY + Math.sin(time * 0.7 + parrot.phase) * 0.25,
+      parrot.centerZ + Math.sin(angle) * parrot.radius,
+    );
+    parrot.group.rotation.y = -angle;
+    parrot.group.rotation.z = Math.sin(angle * 2) * 0.06;
+    const flap = 0.55 + Math.sin(time * 7 + parrot.phase) * 0.45;
+    parrot.wingL.rotation.z = -flap;
+    parrot.wingR.rotation.z = flap;
   }
 }
