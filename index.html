@@ -43,6 +43,10 @@
             <span class="qv__mode-swatch qv__mode-swatch--mithila" aria-hidden="true"></span>
             <span class="qv__mode-label">Mithila</span>
           </button>
+          <button class="qv__mode" type="button" data-mode="nepal" aria-pressed="false" aria-label="Nepal Atlas mode">
+            <span class="qv__mode-swatch qv__mode-swatch--nepal" aria-hidden="true"></span>
+            <span class="qv__mode-label">Nepal</span>
+          </button>
         </div>
         <button class="qv__studio-btn" id="open-studio" type="button" aria-label="Open QR Studio">
           <span class="qv__studio-btn-mark" aria-hidden="true">+</span>
@@ -95,6 +99,54 @@
             <button type="button" class="studio__preset" data-preset="auth">Authenticator</button>
           </div>
           <p class="studio__note" id="qr-note">A demo link. Works for websites, Google Sites, and any URL.</p>
+
+          <section class="studio__pay" aria-labelledby="nepal-pay-label">
+            <div class="studio__pay-head">
+              <div>
+                <span class="studio__label" id="nepal-pay-label">Nepal Pay builder</span>
+                <p class="studio__pay-sub">Bank, eSewa, or Khalti. Your data stays in this tab.</p>
+              </div>
+              <button class="studio__pay-demo" id="nepal-pay-demo" type="button">Use demo data</button>
+            </div>
+
+            <div class="studio__pay-tabs" id="nepal-pay-types" role="group" aria-label="Nepal Pay type">
+              <button type="button" class="studio__pay-tab is-active" data-pay-type="bank" aria-pressed="true">Bank</button>
+              <button type="button" class="studio__pay-tab" data-pay-type="esewa" aria-pressed="false">eSewa</button>
+              <button type="button" class="studio__pay-tab" data-pay-type="khalti" aria-pressed="false">Khalti</button>
+            </div>
+
+            <div class="studio__pay-fields" id="nepal-pay-bank">
+              <label class="studio__field studio__field--wide" for="nepal-bank-code">
+                <span>Bank</span>
+                <select id="nepal-bank-code"></select>
+              </label>
+              <label class="studio__field" for="nepal-account-number">
+                <span>Account number</span>
+                <input id="nepal-account-number" type="text" inputmode="numeric" autocomplete="off" spellcheck="false" maxlength="16" placeholder="16 digits">
+              </label>
+              <label class="studio__field" for="nepal-account-name">
+                <span>Account name</span>
+                <input id="nepal-account-name" type="text" autocomplete="off" spellcheck="false" maxlength="32" placeholder="NAME ON ACCOUNT">
+              </label>
+            </div>
+
+            <div class="studio__pay-fields" id="nepal-pay-wallet" hidden>
+              <label class="studio__field" for="nepal-wallet-phone">
+                <span>Mobile number</span>
+                <input id="nepal-wallet-phone" type="text" inputmode="numeric" autocomplete="off" spellcheck="false" maxlength="10" placeholder="10 digits">
+              </label>
+              <label class="studio__field" for="nepal-wallet-name">
+                <span>Wallet name</span>
+                <input id="nepal-wallet-name" type="text" autocomplete="off" spellcheck="false" maxlength="32" placeholder="NAME ON WALLET">
+              </label>
+            </div>
+
+            <div class="studio__pay-actions">
+              <button class="studio__secondary" id="nepal-pay-build" type="button">Build payment code</button>
+              <span class="studio__pay-count" id="nepal-pay-count">0 / 160</span>
+            </div>
+            <p class="studio__pay-note" id="nepal-pay-note">Demo only. Use your own details, then test the code in the official banking or wallet app before printing. This simple personal-payment format is not the NRB/EMVCo merchant QR standard.</p>
+          </section>
 
           <section class="studio__atelier" aria-labelledby="atelier-label">
             <div class="studio__atelier-head">

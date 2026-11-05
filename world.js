@@ -10,6 +10,13 @@ import {
   resolveArtStyle,
 } from './qr-art.js';
 import { createArtPlayground } from './qr-play.js';
+import {
+  NEPAL_BANKS,
+  NEPAL_PAY_DEMO,
+  buildNepalPayPayload,
+  nepalPayTypeLabel,
+  parseNepalPayPayload,
+} from './nepal-pay.js';
 import { initScene, sectionAt, sectionStart } from './scene.js';
 import { clamp } from './scene-world.js';
 
@@ -54,6 +61,7 @@ const MODE_THEME = {
   neon: '#070b16',
   minimal: '#f3f0e9',
   mithila: '#f7e3cd',
+  nepal: '#e7efe9',
 };
 
 const MODE_SECTION_COPY = {
@@ -64,6 +72,22 @@ const MODE_SECTION_COPY = {
       title: 'A courtyard at dusk.',
       body: 'White domes, painted walls, a pond full of lamps, and a festival arriving. Janakpur opens through the same code.',
       tags: ['Mithila', 'Janakpur'],
+    },
+  },
+  nepal: {
+    1: {
+      label: 'Atlas',
+      eyebrow: '02 · The Atlas',
+      title: 'The code becomes a country.',
+      body: 'The wall folds into a plaza, and a raised atlas rises behind it: one small country with a world of firsts.',
+      tags: ['Map', 'Route'],
+    },
+    2: {
+      label: 'Atlas',
+      eyebrow: '03 · The Atlas',
+      title: 'Six feats, one skyline.',
+      body: 'Everest, the birthplace of Buddha, the one-horned rhino, and the temple cities of Kathmandu, Pokhara, and Janakpur — all packed into 1,47,516 square kilometres.',
+      tags: ['Everest', 'Lumbini', 'Chitwan'],
     },
   },
 };
@@ -123,6 +147,19 @@ const qrTilt = document.getElementById('qr-tilt');
 const qrSpark = document.getElementById('qr-spark');
 const qrStageHint = document.getElementById('qr-stage-hint');
 const qrShuffleButton = document.getElementById('qr-shuffle');
+const payTypeButtons = [...document.querySelectorAll('.studio__pay-tab')];
+const payBankFields = document.getElementById('nepal-pay-bank');
+const payWalletFields = document.getElementById('nepal-pay-wallet');
+const payBankCode = document.getElementById('nepal-bank-code');
+const payAccountNumber = document.getElementById('nepal-account-number');
+const payAccountName = document.getElementById('nepal-account-name');
+const payWalletPhone = document.getElementById('nepal-wallet-phone');
+const payWalletName = document.getElementById('nepal-wallet-name');
+const payDemoButton = document.getElementById('nepal-pay-demo');
+const payBuildButton = document.getElementById('nepal-pay-build');
+const payCount = document.getElementById('nepal-pay-count');
+const payNote = document.getElementById('nepal-pay-note');
+const NEPAL_PAY_NOTE = payNote?.textContent ?? '';
 
 const STAGE_HINT = 'Tap or press Enter to seal.';
 const STAGE_HINT_INVALID = 'Add a destination to wake the card.';
@@ -149,6 +186,7 @@ let artTimer = null;
 let styleButtons = [];
 let paletteButtons = [];
 let motifButtons = [];
+let payType = 'bank';
 let artStyleId = DEFAULT_ART_OPTIONS.styleId;
 let artName = DEFAULT_ART_OPTIONS.name;
 let artCaption = DEFAULT_ART_OPTIONS.caption;
@@ -184,7 +222,7 @@ function readProgress() {
 function savedMode() {
   try {
     const value = window.localStorage.getItem('qrvolde-mode');
-    return ['dawn', 'neon', 'minimal', 'mithila'].includes(value) ? value : 'dawn';
+    return ['dawn', 'neon', 'minimal', 'mithila', 'nepal'].includes(value) ? value : 'dawn';
   } catch {
     return 'dawn';
   }
@@ -420,10 +458,13 @@ function shuffleArt() {
   }
 }
 
-function setPresetState(value) {
+function setPresetState(value, presetId = null) {
   for (const button of presetButtons) {
     const preset = PRESETS[button.dataset.preset];
-    button.classList.toggle('is-active', preset?.value === value);
+    const active = presetId
+      ? button.dataset.preset === presetId
+      : preset?.value === value;
+    button.classList.toggle('is-active', active);
   }
 }
 
@@ -635,7 +676,7 @@ function updatePreview(text, options = {}) {
     downloadPlainButton.disabled = false;
     setStageReady(true);
     setStageHint(STAGE_HINT);
-    setPresetState(result.text);
+    setPresetState(result.text, options.presetId ?? null);
     return result;
   } catch (error) {
     previewQR = null;
@@ -659,6 +700,131 @@ function ensureCurrentPreview() {
   return updatePreview(value);
 }
 
+function currentPayInput() {
+  if (payType === 'bank') {
+    return {
+      type: 'bank',
+      bankCode: payBankCode.value,
+      accountNumber: payAccountNumber.value,
+      accountName: payAccountName.value,
+    };
+  }
+  return {
+    type: payType,
+    phone: payWalletPhone.value,
+    accountName: payWalletName.value,
+  };
+}
+
+function updatePayCount() {
+  try {
+    const payload = buildNepalPayPayload(currentPayInput());
+    payCount.textContent = `${payload.length} / 160`;
+    payCount.classList.toggle('is-error', payload.length > 160);
+  } catch {
+    payCount.textContent = '— / 160';
+    payCount.classList.remove('is-error');
+  }
+}
+
+function setPayType(type) {
+  if (!['bank', 'esewa', 'khalti'].includes(type)) return;
+  payType = type;
+  for (const button of payTypeButtons) {
+    const active = button.dataset.payType === type;
+    button.classList.toggle('is-active', active);
+    button.setAttribute('aria-pressed', String(active));
+  }
+  if (payBankFields) payBankFields.hidden = type !== 'bank';
+  if (payWalletFields) payWalletFields.hidden = type === 'bank';
+  updatePayCount();
+}
+
+function buildPayCode() {
+  try {
+    const payload = buildNepalPayPayload(currentPayInput());
+    if (payload.length > 160) {
+      throw new Error('That payment code is too long. Shorten the account name.');
+    }
+    qrInput.value = payload;
+    updatePreview(payload, {
+      note: `${nepalPayTypeLabel(payType)} demo code. Test it in the official app before printing.`,
+    });
+    payNote.textContent = NEPAL_PAY_NOTE;
+    payNote.classList.remove('is-error');
+    updatePayCount();
+  } catch (error) {
+    payNote.textContent = error instanceof Error ? error.message : 'Could not build that payment code.';
+    payNote.classList.add('is-error');
+  }
+}
+
+function fillPayDemo() {
+  const demo = NEPAL_PAY_DEMO[payType];
+  if (!demo) return;
+  if (payType === 'bank') {
+    payBankCode.value = demo.bankCode;
+    payAccountNumber.value = demo.accountNumber;
+    payAccountName.value = demo.accountName;
+  } else {
+    payWalletPhone.value = demo.phone;
+    payWalletName.value = demo.accountName;
+  }
+  updatePayCount();
+  buildPayCode();
+}
+
+function syncPayFieldsFromQR(text) {
+  const parsed = parseNepalPayPayload(text);
+  if (!parsed) return;
+  setPayType(parsed.type);
+  if (parsed.type === 'bank') {
+    payBankCode.value = parsed.bankCode;
+    payAccountNumber.value = parsed.accountNumber;
+    payAccountName.value = parsed.accountName;
+  } else {
+    payWalletPhone.value = parsed.phone;
+    payWalletName.value = parsed.accountName;
+  }
+  updatePayCount();
+}
+
+function initNepalPay() {
+  if (!payBankCode) return;
+
+  const placeholder = document.createElement('option');
+  placeholder.value = '';
+  placeholder.textContent = 'Choose a bank';
+  payBankCode.append(placeholder);
+
+  const groups = {
+    commercial: document.createElement('optgroup'),
+    development: document.createElement('optgroup'),
+  };
+  groups.commercial.label = 'Commercial banks';
+  groups.development.label = 'Development banks';
+
+  for (const bank of NEPAL_BANKS) {
+    const option = document.createElement('option');
+    option.value = bank.code;
+    option.textContent = `${bank.name} (${bank.code})`;
+    (groups[bank.type] ?? groups.commercial).append(option);
+  }
+
+  payBankCode.append(groups.commercial, groups.development);
+
+  for (const button of payTypeButtons) {
+    button.addEventListener('click', () => setPayType(button.dataset.payType));
+  }
+  for (const field of [payBankCode, payAccountNumber, payAccountName, payWalletPhone, payWalletName]) {
+    field?.addEventListener('input', updatePayCount);
+    field?.addEventListener('change', updatePayCount);
+  }
+  payBuildButton?.addEventListener('click', buildPayCode);
+  payDemoButton?.addEventListener('click', fillPayDemo);
+  setPayType('bank');
+}
+
 function openStudio() {
   if (!studio) return;
   lastFocus = document.activeElement;
@@ -667,6 +833,7 @@ function openStudio() {
   qrNameInput.value = artName;
   qrCaptionInput.value = artCaption;
   updateArtControls();
+  syncPayFieldsFromQR(value);
   updatePreview(value, {
     note: sceneAPI
       ? 'This is the code currently in the world. Edit it to make a new one.'
@@ -676,8 +843,16 @@ function openStudio() {
   document.body.classList.add('has-dialog');
   document.documentElement.style.overflow = 'hidden';
   window.setTimeout(() => {
-    qrInput.focus();
-    qrInput.select();
+    // On a short screen the panel scrolls. Keep the header and close button in
+    // view instead of jumping straight down to the destination field.
+    if (window.matchMedia('(max-width: 760px)').matches) {
+      const panel = studio.querySelector('.studio__panel');
+      if (panel) panel.scrollTop = 0;
+      closeStudioButton?.focus({ preventScroll: true });
+    } else {
+      qrInput.focus();
+      qrInput.select();
+    }
   }, 30);
 }
 
@@ -706,6 +881,7 @@ function initStudio() {
 
   loadArtState();
   buildArtControls();
+  initNepalPay();
   playground = createArtPlayground({
     stage: qrStage,
     canvas: qrSpark,
@@ -853,7 +1029,7 @@ function boot() {
   const loop = (now) => {
     const dt = Math.min(0.05, (now - lastFrame) / 1000);
     lastFrame = now;
-    const time = (now - startTime) / 1000;
+    const time = Math.max(0, (now - startTime) / 1000);
     if (!frozen) {
       if (reduceMotion) {
         smoothProgress = targetProgress;

@@ -1,10 +1,10 @@
 # Research Notes
 
 **Project:** QR Volde  
-**Version:** v0.4.2  
-**Research date:** 2026-10-27; updated 2026-11-04
+**Version:** v0.5.0  
+**Research date:** 2026-10-27; updated 2026-11-05
 
-This document records the references and decisions behind the v0.1 vertical slice, the v0.2 QR Atelier, the v0.3 Living Atelier, the v0.4 Mithila Courtyard, and the v0.4.2 Mithila Festival. The goal is recognition, not reconstruction. All geometry, textures, signs, characters, and Atelier motifs are original procedural work; no photos, maps, stock models, third-party visual assets, or AI-generated images were copied into the project.
+This document records the references and decisions behind the v0.1 vertical slice, the v0.2 QR Atelier, the v0.3 Living Atelier, the v0.4 Mithila Courtyard, the v0.4.2 Mithila Festival, and the v0.5.0 Nepal Atlas with its Nepal Pay builder. The goal is recognition, not reconstruction. All geometry, textures, signs, characters, and Atelier motifs are original procedural work; no photos, maps, stock models, third-party visual assets, or AI-generated images were copied into the project.
 
 ## 1. Kathmandu Valley and Newar architecture
 
@@ -66,9 +66,10 @@ This document records the references and decisions behind the v0.1 vertical slic
 
 ### Decisions
 
-- No real bank, merchant, or wallet QR payload is generated or shown.
+- No real bank, merchant, or wallet payload is bundled or shown as a preset.
 - The “Payment demo” preset is a **URL demo**, clearly labelled as a demo.
-- The Studio note tells users to use their own merchant QR payload for a real payment code.
+- v0.5 adds a **Nepal Pay** builder for personal Bank, eSewa, and Khalti codes. It uses only details the user types in, labels the result as a demo, and points to section 9 for the payload mechanism and limits.
+- The Nepal Pay JSON is **not** the NRB/EMVCo merchant QR standard; users must test their own code in the official app before printing.
 - The scene does not imply that scanning the artwork pays anyone.
 
 ## 4. Authenticator QR context
@@ -103,7 +104,7 @@ This document records the references and decisions behind the v0.1 vertical slic
 - Keep touch targets at least 2rem where practical; rail controls use larger transparent hit areas.
 - Provide `aria-pressed` on visual mode buttons and `aria-current` on scene rail buttons.
 - Wrap the scroll hint in a complementary landmark so all base-page content sits inside a landmark.
-- Lighthouse v0.4.0: 100 accessibility, 100 best practices, 100 SEO. Axe-core reported no violations with QR Studio open at desktop and mobile widths, including Mithila mode. The v0.4.2 Mithila Festival QA re-ran Axe-core with the same result.
+- Lighthouse v0.4.0: 100 accessibility, 100 best practices, 100 SEO. Axe-core reported no violations with QR Studio open at desktop and mobile widths, including Mithila and Nepal modes. The v0.4.2 Mithila Festival and v0.5.0 Nepal QA re-ran Axe-core with the same result.
 
 ## 6. QR Atelier art and scannability
 
@@ -212,11 +213,83 @@ This document records the references and decisions behind the v0.1 vertical slic
 - **Cultural interpretation, not a survey.** The courtyard is a Janakpur-inspired composition. It is not a geographic reconstruction, and the temple is not a measured model of the Janaki Mandir.
 - **English UI, local accents.** Interface copy stays English; `Mithila` and `Janakpur` name the place and tradition without pretending to be a language lesson.
 
-## 9. Asset and originality statement
+## 9. Nepal Atlas and Nepal Pay
+
+### Sources reviewed
+
+- Natural Earth — 1:50m Admin 0 Countries: <https://www.naturalearthdata.com/downloads/50m-cultural-vectors/50m-admin-0-countries-2/>
+- Nepal (background): <https://en.wikipedia.org/wiki/Nepal>
+- Mount Everest and the 2020 China–Nepal height survey, **8,849 m**: <https://en.wikipedia.org/wiki/Mount_Everest>
+- UNESCO World Heritage Centre — Kathmandu Valley: <https://whc.unesco.org/en/list/121/>
+- UNESCO World Heritage Centre — Lumbini, the Birthplace of the Lord Buddha: <https://whc.unesco.org/en/list/666/>
+- UNESCO World Heritage Centre — Chitwan National Park: <https://whc.unesco.org/en/list/284/>
+- Pokhara (background): <https://en.wikipedia.org/wiki/Pokhara>
+- Indian rhinoceros / greater one-horned rhinoceros (background): <https://en.wikipedia.org/wiki/Indian_rhinoceros>
+- Janaki Mandir and Janakpur: see section 8.
+- Reference payment generator: <https://qrgenerator.sebak.com.np/>
+- eSewa: <https://esewa.com.np/>
+- Khalti: <https://khalti.com/>
+- Nepal Clearing House Ltd. (NCHL) / NepalQR: <https://nchl.com.np/>
+- Nepal Rastra Bank: <https://www.nrb.org.np/>
+- EMVCo QR Code specification: <https://www.emvco.com/emv-technologies/qr-codes/>
+- Nepal Bankers' Association (bank names and mergers, background): <https://www.nepalbankers.org.np/>
+
+### Visual language used
+
+- **Raised atlas plate:** a 16 x 6.5 dark-plum board with a gold rim, a 2048 x 832 Canvas 2D map, and a thin front cartouche. The plate sits behind the QR plaza and rises before the landmarks.
+- **Outline:** a simplified **74-point** derivation of the Natural Earth 1:50m Nepal boundary, projected into the plate with a small margin. It is deliberately generalised; the plate is not a survey or a navigational map.
+- **Map texture:** a cool high-altitude gradient from snow and rock in the north to green hills and Terai tan in the south, nine soft contour bands, three simplified river systems, seventeen small mountain marks, a dashed gold route linking the six feats, a compass rose, and a 0–200 km scale bar. All drawn with Canvas 2D, no tiles or heightmaps.
+- **Cartouche:** **NEPAL / THE GREATEST FEATS** on a dark plaque. Per-feature map labels were removed because the 3D vignettes sit on the markers and the labels collided with the models. The six names live in the scene copy instead.
+- **Everest:** three low-poly peaks with snow caps, a cairn, prayer flags, and a small summit marker. The scene copy uses the 2020 survey height, **8,849 m**.
+- **Kathmandu:** a tiered Newari pagoda with a gold finial, a small house, a hanging bell, and prayer flags — a symbolic temple-city vignette, not a replica of a specific monument.
+- **Pokhara:** a lake disc with a rocking boat, a snow-capped peak, and a paraglider circling overhead — a reference to Phewa Lake, the Annapurna panorama, and Pokhara's paragliding.
+- **Lumbini:** a white stupa, a gold finial, a lotus pond with bobbing flowers, a Bodhi-like tree, and prayer flags. The composition references Lumbini as the Buddha's birthplace without depicting a specific shrine interior.
+- **Chitwan:** a one-horned rhinoceros with a bird on its back, set in tall grass. The rhino's head and tail shift on a slow loop; reduced motion holds the pose.
+- **Janakpur:** a small painted gateway with crimson panels, a gold finial, a bell, and prayer flags, echoing the Janaki Mandir vocabulary already used in Mithila mode.
+- **Palette:** cool parchment and teal sky, pale hazy peaks, a deep-plum QR floor, crimson, gold, and teal accents.
+
+### Nepal Pay mechanism
+
+The reference site builds simple JSON strings for personal payment codes. Only the mechanism was studied; the Studio UI, copy, validation, bank list presentation, and art are original.
+
+| Type | Payload |
+|---|---|
+| Bank | `{"accountNumber":"16 digits","accountName":"NAME","bankCode":"CODE"}` |
+| eSewa | `{"eSewa_id":"10 digits","name":"NAME"}` |
+| Khalti | `{"Khalti_ID":"10 digits","name":"NAME"}` |
+
+- The builder normalises the account number and wallet number to digits, uppercases the account name, and requires a bank code.
+- Validation: 16-digit bank account, 10-digit wallet number, non-empty name. Errors appear inline in the Studio, and the QR note is restored after a failed build.
+- Demo payload lengths: bank **84**, eSewa **44**, Khalti **45** characters, all under the 160-character Studio limit.
+- The bank list holds **22** entries in commercial and development groups. Names and codes are reference data for the demo; mergers and code changes mean they should be confirmed with the bank before printing.
+- Reopening a payment payload parses it back into the matching tab and fields. The parser only recognises the three shapes above; anything else is treated as ordinary text.
+- Payment fields are never persisted or transmitted. Only `qrvolde-mode` and `qrvolde-art` are written to `localStorage`.
+
+### Decisions
+
+- **A fifth mode, not a Mithila variant.** Nepal has its own scene group, its own atlas plate, six landmarks, palette, and camera rig. Folding it into Mithila would have mixed two different regions and weakened both.
+- **The QR stays dominant.** The plate sits behind and above the plaza; the camera pulls back rather than cropping the code. The 3D QR remains artwork, not a scanning target.
+- **Symbolic landmarks, not replicas.** Each vignette is a small composition built from primitives. The project does not claim architectural accuracy, and no external models, photos, or map tiles are used.
+- **No per-feature labels on the map.** The vignettes and the front cartouche carry the names; the scene copy lists all six feats. This keeps the plate readable at desktop and mobile sizes.
+- **Simple JSON is labelled as a demo.** The payload shape is not the NRB/EMVCo merchant standard used by Fonepay, NepalQR, or bank terminals. The Studio says so and asks users to test with the official app before printing.
+- **No real payloads.** Demo data is fake. The user must type their own details; nothing is bundled, stored, or sent.
+- **English UI, Nepali accents.** Interface copy stays English; place names and the Nepal Pay labels carry the local context.
+
+### Verification
+
+- `npm run check` passes with `city-nepal.js` and `nepal-pay.js` included.
+- Desktop QA at 1440 x 1100: Nepal mode renders, no console errors, no horizontal overflow; the atlas plate and six landmarks are visible.
+- Mode-switch QA across all five modes: the correct scene group shows, switching back restores the chowk, and only `qrvolde-mode` is stored.
+- Mobile QA at 390 x 844 and 320 x 568: no horizontal overflow; the Studio and Nepal Pay panel fit; the five-swatch mode row clears the Studio button; Studio opens at the top with the close button focused.
+- Reduced motion: 172 visible Nepal meshes at 0.86, no errors, static plate and landmarks.
+- Payment QA: 22 banks in two optgroups plus a placeholder; bank/eSewa/Khalti demo payloads build; an invalid wallet number shows an inline error; **Use in world** updates the QR; reopening Studio parses the bank payload back into the fields.
+
+## 10. Asset and originality statement
 
 - All 3D geometry is generated in JavaScript with Three.js primitives and original code.
-- All textures are generated procedurally or with Canvas 2D (QR, signs, labels, glow sprites, Atelier paper, motifs, and plinths).
-- No external images, photography, maps, fonts, models, or stock assets are loaded.
+- All textures are generated procedurally or with Canvas 2D (QR, signs, labels, glow sprites, Atelier paper, motifs, plinths, and the Nepal atlas plate).
+- No external images, photography, map tiles, fonts, models, or stock assets are loaded.
+- The Nepal outline is a simplified 74-point derivation of **Natural Earth 1:50m Admin 0 Countries** boundary data, which is public domain. The coordinates are embedded in `city-nepal.js`; no map service or tile request is made.
 - No AI image/video generation was used.
 - No paid APIs, credits, or generation services were used.
 - Third-party software is limited to Three.js and `qrcode-generator`; see [`THIRD_PARTY_NOTICES.md`](./THIRD_PARTY_NOTICES.md).

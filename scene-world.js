@@ -86,6 +86,24 @@ export const PALETTES = {
     fogNear: 34, fogFar: 108, neonIntensity: 0.8, windowIntensity: 0.9,
     qrGlowIntensity: 0.3, qrDarkIntensity: 0,
   },
+  nepal: {
+    grass: '#7f9c6a', grassDark: '#5f7d52', soil: '#8a6a4f', rock: '#b9b6a6', rockDark: '#8f8b7c',
+    stone: '#d9cbb4', stoneDark: '#b3a48d', road: '#b9a98f',
+    wall: '#f0e4cf', wallWarm: '#e3cba6', brick: '#a8443a', brickDark: '#7e302c',
+    roof: '#b3543f', roofDark: '#83382f', wood: '#6f4a32', woodDark: '#3f2a1e',
+    gold: '#d9a441', glass: '#4f7f8a', window: '#ffd98a', accent: '#b23a48', accent2: '#2f6f6a',
+    neon: '#ffcf7a', white: '#fffaf0', cloud: '#f4f7f2', cloudShade: '#dbe4de',
+    mountainFar: '#cfdcd9', mountainMid: '#a9bfc0', mountainNear: '#7f9a9e', snow: '#fffaf0',
+    qrDark: '#2a2238', qrBg: '#f6ead6', qrPanel: '#efe3cf', qrGlow: '#d9a441', label: '#fffaf0',
+    water: '#4f8fa3', sky: '#dfeae6', fog: '#dfeae6', sun: '#fff1d0',
+    hemiSky: '#f4fbf7', hemiGround: '#7a6a55', fill: '#cfe4e8',
+    skin: '#b97a55', cloth: '#b23a48', cloth2: '#2f6f6a', cloth3: '#d9a441', dark: '#1d2a2f',
+    plaster: '#f0e4cf', mud: '#c9a87a', thatch: '#c9a24a', thatchDark: '#9a7634',
+    indigo: '#2f4a6a', marigold: '#e89a2b', lotus: '#e08a8a', leaf: '#5f7d52', leafDark: '#45633f',
+    exposure: 1.04, sunIntensity: 2.25, hemiIntensity: 1.45, fillIntensity: 0.55,
+    fogNear: 36, fogFar: 112, neonIntensity: 0.5, windowIntensity: 0.7,
+    qrGlowIntensity: 0.3, qrDarkIntensity: 0,
+  },
 };
 
 export const ctx = {
@@ -657,11 +675,11 @@ export function applyPalette(modeId) {
   ctx.hemi.intensity = palette.hemiIntensity;
   ctx.sun.color.set(palette.sun);
   ctx.sun.intensity = palette.sunIntensity;
-  ctx.sun.position.set(...(modeId === 'mithila' ? [-24, 16, 14] : [-18, 28, 18]));
+  ctx.sun.position.set(...(modeId === 'mithila' ? [-24, 16, 14] : modeId === 'nepal' ? [-20, 24, 16] : [-18, 28, 18]));
   ctx.fill.color.set(palette.fill);
   ctx.fill.intensity = palette.fillIntensity;
   ctx.rim.color.set(palette.accent);
-  ctx.rim.intensity = modeId === 'neon' ? 1.1 : modeId === 'mithila' ? 0.62 : 0.35;
+  ctx.rim.intensity = modeId === 'neon' ? 1.1 : modeId === 'mithila' ? 0.62 : modeId === 'nepal' ? 0.45 : 0.35;
 
   for (const [key, material] of ctx.materials) {
     const color = palette[key];
@@ -697,16 +715,16 @@ export function applyPalette(modeId) {
 
   if (ctx.skySprite) {
     ctx.skySprite.material.color.set(palette.sun);
-    ctx.skySprite.material.opacity = modeId === 'neon' ? 0.9 : modeId === 'minimal' ? 0.5 : modeId === 'mithila' ? 0.95 : 0.82;
-    ctx.skySprite.position.set(...(modeId === 'mithila' ? [-26, 9, -64] : [-20, 18, -62]));
-    const skyScale = modeId === 'mithila' ? 30 : 24;
+    ctx.skySprite.material.opacity = modeId === 'neon' ? 0.9 : modeId === 'minimal' ? 0.5 : modeId === 'mithila' ? 0.95 : modeId === 'nepal' ? 0.9 : 0.82;
+    ctx.skySprite.position.set(...(modeId === 'mithila' ? [-26, 9, -64] : modeId === 'nepal' ? [-22, 16, -64] : [-20, 18, -62]));
+    const skyScale = modeId === 'mithila' ? 30 : modeId === 'nepal' ? 26 : 24;
     ctx.skySprite.scale.set(skyScale, skyScale, 1);
   }
 
   const cloudMaterial = ctx.materials.get('cloud');
-  if (cloudMaterial) cloudMaterial.opacity = modeId === 'mithila' ? 0.52 : 0.9;
+  if (cloudMaterial) cloudMaterial.opacity = modeId === 'mithila' ? 0.52 : modeId === 'nepal' ? 0.78 : 0.9;
   const cloudShadeMaterial = ctx.materials.get('cloudShade');
-  if (cloudShadeMaterial) cloudShadeMaterial.opacity = modeId === 'mithila' ? 0.38 : 0.72;
+  if (cloudShadeMaterial) cloudShadeMaterial.opacity = modeId === 'mithila' ? 0.38 : modeId === 'nepal' ? 0.6 : 0.72;
 
   // Janakpur sits on the plains. Keep the low cloud sea, but clear the high
   // cloud shelf so the dusk sky belongs to the temple and the kites.
@@ -716,7 +734,7 @@ export function applyPalette(modeId) {
 
   if (ctx.qrHalo) {
     ctx.qrHalo.material.color.set(palette.qrGlow);
-    ctx.qrHalo.material.opacity = modeId === 'neon' ? 0.34 : modeId === 'mithila' ? 0.24 : modeId === 'minimal' ? 0.06 : 0.12;
+    ctx.qrHalo.material.opacity = modeId === 'neon' ? 0.34 : modeId === 'mithila' ? 0.24 : modeId === 'nepal' ? 0.18 : modeId === 'minimal' ? 0.06 : 0.12;
   }
 
   if (ctx.groundQR) {

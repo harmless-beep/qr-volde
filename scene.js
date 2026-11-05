@@ -11,6 +11,7 @@ import {
 import { buildQR, setQR, updateQRMorph, refreshGroundTexture } from './scene-qr.js';
 import { buildCity, updateCity, setCityVisible } from './scene-city.js';
 import { buildMithila, updateMithila, setMithilaVisible } from './city-mithila.js';
+import { buildNepal, updateNepal, setNepalVisible } from './city-nepal.js';
 
 /* -------------------------------------------------------------------------
    Camera choreography
@@ -80,6 +81,37 @@ const MITHILA_SECTIONS = [
 
 const MITHILA_OUTRO = [-7, 13, 31];
 
+// Nepal rises higher and pulls farther back so the atlas plate and its six
+// landmark vignettes stay in frame behind the QR plaza.
+const NEPAL_SECTIONS = [
+  {
+    approach: [0, 7.5, 20],
+    inside: [0, 7.5, 17],
+    depart: [0, 8.2, 15.5],
+    look: [0, 7.2, 0],
+  },
+  {
+    approach: [0, 10.5, 16.5],
+    inside: [0, 13, 15.5],
+    depart: [0, 15, 16.5],
+    look: [0, 5.2, -4.2],
+  },
+  {
+    approach: [0, 15.5, 17.5],
+    inside: [5.0, 17.2, 18.5],
+    depart: [8.2, 17.8, 20.5],
+    look: [0, 4.4, -5.5],
+  },
+  {
+    approach: [8.2, 17.8, 20.5],
+    inside: [6.0, 16.8, 23],
+    depart: [3, 15.2, 26.5],
+    look: [0, 3.8, -6],
+  },
+];
+
+const NEPAL_OUTRO = [0, 13.2, 30.5];
+
 function makeCameraRig(sections, outro) {
   const points = [];
   const looks = [];
@@ -102,6 +134,7 @@ function makeCameraRig(sections, outro) {
 const CAMERA_RIGS = {
   chowk: makeCameraRig(CHOWK_SECTIONS, CHOWK_OUTRO),
   mithila: makeCameraRig(MITHILA_SECTIONS, MITHILA_OUTRO),
+  nepal: makeCameraRig(NEPAL_SECTIONS, NEPAL_OUTRO),
 };
 
 let activeRig = CAMERA_RIGS.chowk;
@@ -175,9 +208,11 @@ function updateCamera(progress) {
 
 function setSceneMode(modeId) {
   const isMithila = modeId === 'mithila';
-  activeRig = isMithila ? CAMERA_RIGS.mithila : CAMERA_RIGS.chowk;
-  setCityVisible(!isMithila);
+  const isNepal = modeId === 'nepal';
+  activeRig = isNepal ? CAMERA_RIGS.nepal : isMithila ? CAMERA_RIGS.mithila : CAMERA_RIGS.chowk;
+  setCityVisible(!isMithila && !isNepal);
   setMithilaVisible(isMithila);
+  setNepalVisible(isNepal);
   applyPalette(modeId);
   refreshGroundTexture();
   updateQRMorph(currentProgress);
@@ -189,10 +224,12 @@ export function initScene(canvas, initialQR) {
   buildQR(initialQR);
   buildCity();
   buildMithila();
+  buildNepal();
   setSceneMode('dawn');
   updateQRMorph(0);
   updateCity(0, 0, false);
   updateMithila(0, 0, false);
+  updateNepal(0, 0, false);
 
   return {
     setMode(modeId) {
@@ -208,6 +245,7 @@ export function initScene(canvas, initialQR) {
       updateQRMorph(currentProgress);
       updateCity(currentProgress, time, reduceMotion);
       updateMithila(currentProgress, time, reduceMotion);
+      updateNepal(currentProgress, time, reduceMotion);
       updateBase(time, reduceMotion);
       ctx.renderer.render(ctx.scene, ctx.camera);
     },

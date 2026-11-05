@@ -1,6 +1,6 @@
 # Third-Party Notices
 
-QR Volde v0.4.0 includes the following third-party software. The original QR Volde code, procedural art, QR Atelier motifs, and Mithila courtyard art are separate from these components. v0.4.0 adds no new runtime dependencies.
+QR Volde v0.5.0 includes the following third-party software. The original QR Volde code, procedural art, QR Atelier motifs, Mithila courtyard art, and Nepal atlas art are separate from these components. v0.5.0 adds no new runtime dependencies.
 
 ## Three.js r186
 
@@ -80,6 +80,7 @@ The launch film and its editable composition are under `launch-film/`. They are 
 ## Other assets
 
 - All other 3D geometry, Canvas 2D textures, signs, copy, and art direction are original to this project.
-- The QR Volde app itself includes no stock images, photography, maps, 3D models, external fonts, or AI-generated assets.
+- The Nepal atlas outline is a simplified 74-point derivation of Natural Earth 1:50m Admin 0 Countries boundary data. Natural Earth is public domain: <https://www.naturalearthdata.com/about/terms-of-use/>. No map tiles or map services are used.
+- The QR Volde app itself includes no stock images, photography, map tiles, 3D models, external fonts, or AI-generated assets.
 - The app and launch page use system font stacks only; the launch film uses the licensed fonts listed above.
 - The launch film contains real captures of the project’s own UI and 3D scene. It does not contain stock footage.

@@ -2,6 +2,52 @@
 
 All notable changes to QR Volde are recorded here.
 
+## [0.5.0] — 2026-11-05
+
+**Nepal Atlas.** A fifth visual mode raises a map plate behind the QR plaza, with six landmark vignettes and a third camera flight. The Studio also gains a **Nepal Pay** builder for Bank, eSewa, and Khalti demo codes.
+
+### Added
+
+- **Nepal Atlas** visual mode: a 16 x 6.5 raised plate carrying a 2048 x 832 Canvas 2D map. The plate includes a simplified 74-point Natural Earth outline, terrain bands, three rivers, a dashed route, mountain marks, a compass rose, a scale bar, and a front cartouche reading **NEPAL / THE GREATEST FEATS**.
+- **Six landmark vignettes**, all original low-poly geometry: **Everest** with prayer flags and a cairn; **Kathmandu** with a tiered pagoda, house, and bell; **Pokhara** with a lake, boat, mountain, and circling paraglider; **Lumbini** with a white stupa, prayer flags, and a lotus pond; **Chitwan** with a one-horned rhino, oxpecker, and grass; and **Janakpur** with a painted temple gateway and bell.
+- **Nepal camera rig** (`CAMERA_RIGS.nepal`) that rises higher and pulls farther back than Dawn or Mithila so the atlas plate and QR plaza share the frame. Sections 2 and 3 become **The Atlas**, with new copy naming all six feats.
+- **Nepal Pay builder** in QR Studio: Bank, eSewa, and Khalti tabs; 22 banks grouped into commercial and development optgroups; account/phone and name fields; a live payload-length counter; **Use demo data**; and inline validation.
+- **Payload builders and parser** in `nepal-pay.js`: bank `{"accountNumber","accountName","bankCode"}`, eSewa `{"eSewa_id","name"}`, and Khalti `{"Khalti_ID","name"}`. Reopening a payment payload restores the matching tab and fields.
+- **Nepal theme**: cool high-altitude parchment and teal page background, crimson/gold/teal accents, mode swatch, theme colour, and a softer QR halo.
+- New scene module `city-nepal.js` and payment module `nepal-pay.js`, both added to `npm run check`.
+- New screenshots: `nepal-atlas.webp`, `nepal-pay.webp`, and `mobile-nepal.webp`.
+
+### Changed
+
+- The mode group now holds **five** swatches; the top bar was retuned so it still fits at 390px and 320px. At 360px and below the **QR Volde** wordmark hides to keep the mode row clear.
+- `scene.js` now builds and toggles three scene groups (`chowk`, `mithila`, `nepal`) and selects among three camera rigs.
+- `scene-world.js` adds the Nepal palette, sun position, rim light, sky/cloud treatment, and mountain haze.
+- `world.js` adds per-mode Atlas copy, the Nepal Pay UI controller, payload parsing on Studio open, and preset-state support for payment payloads.
+- The Studio scrolls independently on small screens; the Nepal Pay fields stack to one column below 600px.
+- On screens 760px and narrower, Studio opens at the top with focus on the close button instead of auto-scrolling down to the destination field, so the header and close control stay visible.
+- Payment fields are never written to `localStorage`. Only `qrvolde-mode` and `qrvolde-art` are stored.
+- The animation clock is clamped at zero so the first frame cannot sample a negative position on the Nepal route curve.
+- Version bumped to 0.5.0.
+
+### QA
+
+- `npm run check` passes.
+- Desktop QA at 1440 x 1100: Nepal mode renders, no console errors, no horizontal overflow, and the atlas plate and six landmarks are visible. Bank, eSewa, and Khalti demo payloads build as 84, 44, and 45 characters; an invalid wallet number shows an inline error.
+- Apply/reopen QA: **Use in world** updates the QR; reopening Studio parses the bank payload back into NMB Bank, the account number, and the name.
+- Mode-switch QA across `dawn`, `neon`, `minimal`, `mithila`, and `nepal`: the correct scene group shows each time, switching back restores the chowk, and only `qrvolde-mode` is stored.
+- Mobile QA at 390 x 844 and 320 x 568: no horizontal overflow; the Studio and Nepal Pay panel fit; the five-swatch mode row clears the Studio button after the 320px wordmark fix; Studio opens at the top with the close button focused.
+- Reduced motion: Nepal renders 172 visible meshes at 0.86 with no errors; the plate, landmarks, and QR stay static and readable.
+- Axe-core: no violations with QR Studio open at 1440 x 1100 and 390 x 844 in Nepal mode.
+- Existing Atelier, Mithila, no-WebGL, and launch-film checks remain unchanged.
+
+### Known limits
+
+- The Nepal plate is a stylised atlas, not a survey. The 74-point outline is simplified, and the six vignettes are symbolic compositions rather than measured models.
+- The Nepal Pay JSON is a simple personal-payment convention used by several Nepali QR generators. It is **not** the NRB/EMVCo merchant QR standard. Demo data is fake; users must test their own code in the official app before printing.
+- Bank names and codes are reference data for the demo, not an authoritative bank directory.
+- The 3D QR remains artwork, not a scanning target.
+- Final brand copy, CTA destination, verified bank-code data, and the original-code license remain open.
+
 ## [0.4.2] — 2026-11-04
 
 **Mithila Festival.** Five new animated props join the Janakpur courtyard, all original procedural geometry and Canvas 2D work.
