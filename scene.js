@@ -91,26 +91,26 @@ const NEPAL_SECTIONS = [
     look: [0, 7.2, 0],
   },
   {
-    approach: [0, 10.5, 16.5],
-    inside: [0, 13, 15.5],
-    depart: [0, 15, 16.5],
-    look: [0, 5.2, -4.2],
+    approach: [0, 9.5, 15],
+    inside: [0, 11.5, 13.5],
+    depart: [0, 12.5, 14.5],
+    look: [0, 4.2, -3.2],
   },
   {
-    approach: [0, 15.5, 17.5],
-    inside: [5.0, 17.2, 18.5],
-    depart: [8.2, 17.8, 20.5],
-    look: [0, 4.4, -5.5],
+    approach: [0, 12.5, 15.5],
+    inside: [4.2, 13.8, 16],
+    depart: [7.0, 14.5, 18],
+    look: [0, 3.6, -4.4],
   },
   {
-    approach: [8.2, 17.8, 20.5],
-    inside: [6.0, 16.8, 23],
-    depart: [3, 15.2, 26.5],
-    look: [0, 3.8, -6],
+    approach: [7.0, 14.5, 18],
+    inside: [5.2, 13.8, 20],
+    depart: [2.6, 12.8, 23],
+    look: [0, 3.2, -4.8],
   },
 ];
 
-const NEPAL_OUTRO = [0, 13.2, 30.5];
+const NEPAL_OUTRO = [0, 11.5, 26];
 
 function makeCameraRig(sections, outro) {
   const points = [];
@@ -184,8 +184,10 @@ function updateCamera(progress) {
 
   const aspect = ctx.camera.aspect;
   // Portrait screens need a longer lens and a higher composition so the QR
-  // clears both the top bar and the bottom copy card.
-  const fit = clamp(1 / aspect, 1, 1.5) * (aspect > 1.35 ? 1.04 : 1);
+  // clears both the top bar and the bottom copy card. Nepal sits a little
+  // farther back because its atlas plate now rests over the QR's far edge.
+  const nepalPullback = activeRig === CAMERA_RIGS.nepal && aspect < 0.75 ? 1.12 : 1;
+  const fit = clamp(1 / aspect, 1, 1.5) * (aspect > 1.35 ? 1.04 : 1) * nepalPullback;
   const lower = aspect < 0.7 ? 3.2 : aspect < 1.15 ? 2.0 : 0;
   tempLook.y -= lower;
 

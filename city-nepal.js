@@ -40,8 +40,8 @@ let routeGlow = null;
 
 const BOARD_WIDTH = 16;
 const BOARD_DEPTH = 6.5;
-const BOARD_Y = 0.6;
-const BOARD_Z = -12.7;
+const BOARD_Y = 1.3;
+const BOARD_Z = -9.2;
 const BOARD_TOP = 0.405;
 
 // A simplified Natural Earth outline, reduced to 74 points. The map is a
@@ -841,7 +841,7 @@ export function buildNepal() {
     if (!group) continue;
     const point = featPoint(feat);
     group.position.set(point.x, BOARD_TOP, point.z);
-    addNepalLandmark(group, 0.3 + index * 0.035);
+    addNepalLandmark(group, 0.16 + index * 0.03);
     index += 1;
   }
 
@@ -861,16 +861,16 @@ export function setNepalVisible(visible) {
 export function updateNepal(progress, time, reduceMotion = false) {
   if (!nepalGroup || !nepalGroup.visible) return;
 
-  const reveal = smoothstep(0.18, 0.45, progress);
+  const reveal = smoothstep(0.14, 0.4, progress);
   for (const prop of props) {
     const t = smoothstep(0, 1, clamp((reveal - prop.delay) / 0.36, 0, 1));
     prop.group.visible = t > 0.01;
     prop.group.scale.copy(prop.baseScale).multiplyScalar(t);
   }
 
-  const detail = smoothstep(0.22, 0.55, progress);
+  const detail = smoothstep(0.18, 0.44, progress);
   for (const landmark of landmarks) {
-    const t = smoothstep(0, 1, clamp((detail - landmark.delay) / 0.34, 0, 1));
+    const t = smoothstep(0, 1, clamp((detail - landmark.delay) / 0.3, 0, 1));
     landmark.group.visible = t > 0.01;
     landmark.group.scale.copy(landmark.baseScale).multiplyScalar(t);
   }

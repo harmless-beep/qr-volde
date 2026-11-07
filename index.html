@@ -92,27 +92,23 @@
         <div class="studio__form">
           <label class="studio__label" for="qr-input">Destination or text</label>
           <input class="studio__input" id="qr-input" type="text" value="https://example.com/qr-volde" spellcheck="false" autocomplete="off" maxlength="160">
-          <div class="studio__presets" id="qr-presets" role="group" aria-label="QR presets">
-            <button type="button" class="studio__preset is-active" data-preset="web">Website</button>
-            <button type="button" class="studio__preset" data-preset="video">Video</button>
-            <button type="button" class="studio__preset" data-preset="pay">Payment demo</button>
-            <button type="button" class="studio__preset" data-preset="auth">Authenticator</button>
+          <div class="studio__presets" id="qr-presets" role="group" aria-label="QR mechanisms">
+            <button type="button" class="studio__preset is-active" data-preset="web" aria-pressed="true">Website</button>
+            <button type="button" class="studio__preset" data-preset="video" aria-pressed="false">Video</button>
+            <button type="button" class="studio__preset" data-preset="bank" aria-pressed="false">Bank</button>
+            <button type="button" class="studio__preset" data-preset="esewa" aria-pressed="false">eSewa</button>
+            <button type="button" class="studio__preset" data-preset="khalti" aria-pressed="false">Khalti</button>
+            <button type="button" class="studio__preset" data-preset="auth" aria-pressed="false">Authenticator</button>
           </div>
           <p class="studio__note" id="qr-note">A demo link. Works for websites, Google Sites, and any URL.</p>
 
           <section class="studio__pay" aria-labelledby="nepal-pay-label">
             <div class="studio__pay-head">
               <div>
-                <span class="studio__label" id="nepal-pay-label">Nepal Pay builder</span>
+                <span class="studio__label" id="nepal-pay-label">Nepal Pay details</span>
                 <p class="studio__pay-sub">Bank, eSewa, or Khalti. Your data stays in this tab.</p>
               </div>
               <button class="studio__pay-demo" id="nepal-pay-demo" type="button">Use demo data</button>
-            </div>
-
-            <div class="studio__pay-tabs" id="nepal-pay-types" role="group" aria-label="Nepal Pay type">
-              <button type="button" class="studio__pay-tab is-active" data-pay-type="bank" aria-pressed="true">Bank</button>
-              <button type="button" class="studio__pay-tab" data-pay-type="esewa" aria-pressed="false">eSewa</button>
-              <button type="button" class="studio__pay-tab" data-pay-type="khalti" aria-pressed="false">Khalti</button>
             </div>
 
             <div class="studio__pay-fields" id="nepal-pay-bank">

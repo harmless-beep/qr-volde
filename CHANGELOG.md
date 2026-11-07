@@ -2,6 +2,31 @@
 
 All notable changes to QR Volde are recorded here.
 
+## [0.5.1] — 2026-11-07
+
+**Atlas in reach.** The Nepal atlas now sits over the QR plaza instead of far behind it, and Bank, eSewa, and Khalti are first-class QR mechanisms in the Studio rather than options nested under a generic payment demo.
+
+### Changed
+
+- Moved the Nepal atlas plate forward and raised it so it rests over the QR plaza's far edge. The six landmark vignettes now read as architecture on top of the code, not a distant backdrop.
+- Brought the Nepal camera closer and lower through sections 2–4, with a slightly longer portrait pullback so the plate, QR, and copy card fit at 390px and 320px.
+- Revealed the atlas and its landmarks earlier in the scroll, so section 2 no longer shows an empty map.
+- Replaced the **Payment demo** preset with **Bank**, **eSewa**, and **Khalti** mechanisms in the main QR mechanism row. Selecting one focuses the matching account or wallet field; the payment details remain available below.
+- Reopening a Bank, eSewa, or Khalti payload now activates the matching mechanism button and restores its fields.
+- Updated section copy to describe the atlas settling over the plaza and to name bank or wallet codes instead of a generic payment demo.
+- Removed the obsolete payment tab styles.
+- Version bumped to 0.5.1.
+
+### QA
+
+- `npm run check` passes.
+- Desktop QA at 1440 x 1100: the atlas plate and six landmarks are visible at section 2 and section 3, the plate sits over the QR's far edge, and the QR stays dominant. No console errors or horizontal overflow.
+- Studio QA: six mechanism buttons; Bank, eSewa, and Khalti select the matching fields, keep the current QR until **Build payment code**, and reopen with the correct mechanism active.
+- Mobile QA at 390 x 844 and 320 x 568: no horizontal overflow, the mechanism row wraps cleanly, the Studio opens at the top with the close button focused, and the Nepal plate and QR both remain visible above the copy card.
+- Reduced motion: the plate, landmarks, and QR stay static and readable.
+- Axe-core: no violations with QR Studio open at desktop and mobile widths.
+- Existing Atelier, Mithila, no-WebGL, and launch-film checks remain unchanged.
+
 ## [0.5.0] — 2026-11-05
 
 **Nepal Atlas.** A fifth visual mode raises a map plate behind the QR plaza, with six landmark vignettes and a third camera flight. The Studio also gains a **Nepal Pay** builder for Bank, eSewa, and Khalti demo codes.

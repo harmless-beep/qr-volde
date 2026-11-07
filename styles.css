@@ -936,38 +936,6 @@ body.no-webgl .qv__progress {
   border-color: var(--qv-accent);
 }
 
-.studio__pay-tabs {
-  display: flex;
-  gap: 0.3rem;
-  margin-bottom: 0.55rem;
-}
-
-.studio__pay-tab {
-  appearance: none;
-  flex: 1;
-  min-height: 2rem;
-  padding: 0.34rem 0.45rem;
-  border: 1px solid var(--qv-line);
-  border-radius: 0.55rem;
-  background: transparent;
-  color: var(--qv-muted);
-  font-size: 0.6rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: color 180ms ease, border-color 180ms ease, background 180ms ease;
-}
-
-.studio__pay-tab:hover {
-  color: var(--qv-ink);
-  border-color: var(--qv-line-strong);
-}
-
-.studio__pay-tab.is-active {
-  border-color: var(--qv-active-bg);
-  background: var(--qv-active-bg);
-  color: var(--qv-active-text);
-}
-
 .studio__pay-fields {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

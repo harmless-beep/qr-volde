@@ -2,17 +2,17 @@
 
 **A giant 3D QR code that unfolds into a living Nepalese courtyard.**
 
-[Live demo](https://harmless-beep.github.io/qr-volde/) · [Release v0.5.0](https://github.com/harmless-beep/qr-volde/releases/tag/v0.5.0) · [Research notes](./RESEARCH.md) · [Changelog](./CHANGELOG.md)
+[Live demo](https://harmless-beep.github.io/qr-volde/) · [Release v0.5.1](https://github.com/harmless-beep/qr-volde/releases/tag/v0.5.1) · [Research notes](./RESEARCH.md) · [Changelog](./CHANGELOG.md)
 
 [![QR Volde launch film — animated preview](launch-film/launch-film.gif)](https://harmless-beep.github.io/qr-volde/launch.html)
 
 ## Overview
 
-QR Volde is a scroll-driven 3D web experience. A dark-square QR monolith faces you, then breaks apart into a Kathmandu-style courtyard: a tiered pagoda, a shop row, a tea stall, a stone spout, a stupa, prayer flags, trees, people, a bus, a scooter, and the Himalayas behind it. Switch to **Mithila** and the same monolith unfolds into a Janakpur-inspired courtyard: a white domed temple, painted mud houses, a lamp-lit pond with ghats, a tulsi shrine, a painting pavilion, mango groves, and festival kites. The **Mithila Festival** layer adds a toran gateway with a **स्वागतम्** plaque, a displaying peacock, three jhijhiya dancers, a flooded paddy field with a scarecrow, and a flock of rose-ringed parakeets. Switch to **Nepal** and the plaza becomes a raised atlas plate with six landmark vignettes: Everest, Kathmandu, Pokhara, Lumbini, Chitwan, and Janakpur.
+QR Volde is a scroll-driven 3D web experience. A dark-square QR monolith faces you, then breaks apart into a Kathmandu-style courtyard: a tiered pagoda, a shop row, a tea stall, a stone spout, a stupa, prayer flags, trees, people, a bus, a scooter, and the Himalayas behind it. Switch to **Mithila** and the same monolith unfolds into a Janakpur-inspired courtyard: a white domed temple, painted mud houses, a lamp-lit pond with ghats, a tulsi shrine, a painting pavilion, mango groves, and festival kites. The **Mithila Festival** layer adds a toran gateway with a **स्वागतम्** plaque, a displaying peacock, three jhijhiya dancers, a flooded paddy field with a scarecrow, and a flock of rose-ringed parakeets. Switch to **Nepal** and a raised atlas plate settles over the plaza's far edge with six landmark vignettes: Everest, Kathmandu, Pokhara, Lumbini, Chitwan, and Janakpur.
 
 The 3D code is the artwork. **QR Studio** turns the flat code into a collectible, scan-tested art card, or a plain fallback QR when a printer needs the simplest possible mark. The **Nepal Pay** builder creates clearly labelled demo codes for a bank account, eSewa, or Khalti from details you type in yourself.
 
-**Status:** v0.5.0 Nepal Atlas, published 2026-11-05.  
+**Status:** v0.5.1 Atlas in reach, published 2026-11-07.  
 **Built with:** Three.js r186 · `qrcode-generator` 2.0.4 · vanilla ES modules · Canvas 2D · GitHub Pages.  
 **No build step, no backend, no analytics, no paid APIs.**
 
@@ -55,8 +55,8 @@ The film loops above. It is made from real captures of the scroll experience and
 
 | The Studio | QR Studio |
 |:--:|:--:|
-| ![The final city view with the Create your QR call to action](docs/screenshots/studio-desktop.webp) | ![The QR Studio dialog with the Nepal Pay builder, a collectible art QR preview, and seven Atelier style samples](docs/screenshots/qr-studio.webp) |
-| *Make your own way in.* | *The flat code becomes a collectible object. Nepal Pay sits above the Atelier styles.* |
+| ![The final city view with the Create your QR call to action](docs/screenshots/studio-desktop.webp) | ![The QR Studio dialog with six QR mechanisms, the Nepal Pay details, a collectible art QR preview, and seven Atelier style samples](docs/screenshots/qr-studio.webp) |
+| *Make your own way in.* | *The flat code becomes a collectible object. Six mechanisms sit above the Nepal Pay details and Atelier styles.* |
 
 ### Living Atelier preview
 
@@ -98,18 +98,18 @@ The art is generated locally from type, color, and procedural geometry. The QR s
 ### Nepal Atlas
 
 <p align="center">
-  <img src="docs/screenshots/nepal-atlas.webp" width="900" alt="Nepal Atlas mode with a raised map plate showing six landmark vignettes, a dark-plum QR plaza in front, and the copy 'Six feats, one skyline.'">
+  <img src="docs/screenshots/nepal-atlas.webp" width="900" alt="Nepal Atlas mode with a raised map plate resting over the QR plaza's far edge, six landmark vignettes, and the copy 'Six feats, one skyline.'">
 </p>
 
-<p align="center"><em>A raised atlas plate rises behind the QR plaza: Everest, Kathmandu, Pokhara, Lumbini, Chitwan, and Janakpur, linked by a dashed route. The map is a stylised 74-point outline, not a survey.</em></p>
+<p align="center"><em>A raised atlas plate settles over the QR plaza's far edge: Everest, Kathmandu, Pokhara, Lumbini, Chitwan, and Janakpur, linked by a dashed route. The closer, lower camera keeps the architecture and the code in one frame. The map is a stylised 74-point outline, not a survey.</em></p>
 
 ### Nepal Pay
 
 <p align="center">
-  <img src="docs/screenshots/nepal-pay.webp" width="640" alt="QR Studio with the Nepal Pay builder set to Bank, NMB Bank selected, a demo account number and name filled in, and a scannable art QR preview">
+  <img src="docs/screenshots/nepal-pay.webp" width="640" alt="QR Studio with the Bank mechanism selected, NMB Bank chosen, a demo account number and name filled in, and a scannable art QR preview">
 </p>
 
-<p align="center"><em>Bank, eSewa, and Khalti tabs build a personal-payment payload from your own details. Demo data is labelled, and the code is tested in the official app before printing.</em></p>
+<p align="center"><em>Bank, eSewa, and Khalti are top-level QR mechanisms. Each one opens the matching payment details; the current QR stays put until <strong>Build payment code</strong> is pressed. Demo data is labelled, and the code is tested in the official app before printing.</em></p>
 
 ### Mobile
 
@@ -130,12 +130,12 @@ The art is generated locally from type, color, and procedural geometry. The QR s
 
 ## The experience
 
-Four scenes share one continuous camera flight. Mithila takes a second, leftward flight over the pond and painting pavilion; Nepal takes a higher, farther flight so the raised atlas plate and the QR plaza both stay in frame.
+Four scenes share one continuous camera flight. Mithila takes a second, leftward flight over the pond and painting pavilion; Nepal takes a closer, lower flight so the raised atlas plate and the QR plaza share the frame.
 
 1. **The Signal** — the QR monolith. Every square is a door.
-2. **The Unfold** — modules lift from the wall and land as the city plan. In Nepal mode this scene becomes **The Atlas**: the plaza forms in front of a raised map plate.
+2. **The Unfold** — modules lift from the wall and land as the city plan. In Nepal mode this scene becomes **The Atlas**: the plaza forms beneath a raised map plate that settles over its far edge.
 3. **The Chowk** — the block assembles: Newari roofs, brick, timber, tea steam, prayer flags, and small errands. In Mithila mode this scene becomes **The Courtyard**: white domes, painted walls, oil lamps, festival kites, a toran gateway, jhijhiya dancers, a displaying peacock, a paddy field, and a flock of parakeets. In Nepal mode it stays **The Atlas**: six landmark vignettes rise from the map — Everest, Kathmandu, Pokhara, Lumbini, Chitwan, and Janakpur.
-4. **The Studio** — make a QR for a link, video, payment demo, or app, then export it as a collectible art card. Nepal mode also exposes the **Nepal Pay** builder for bank, eSewa, and Khalti demo codes.
+4. **The Studio** — make a QR for a link, video, bank or wallet code, or app, then export it as a collectible art card. The Studio's Nepal Pay details build bank, eSewa, and Khalti demo codes.
 
 Scroll progress is weighted by scene, so the QR reveal and the city reveal each get room to breathe. The camera adapts to portrait, tablet, and wide screens instead of simply cropping the artwork.
 
@@ -143,7 +143,7 @@ Scroll progress is weighted by scene, so the QR reveal and the city reveal each 
 
 - Client-side QR generation. Nothing leaves the browser.
 - Default payload: `https://example.com/qr-volde` (demo only).
-- Presets: **Website** (also works for Google Sites), **Video**, **Payment demo**, **Authenticator**.
+- Presets: **Website** (also works for Google Sites), **Video**, **Bank**, **eSewa**, **Khalti**, **Authenticator**.
 - **Atelier style** picker: **Everest Nocturne**, **Newari Heirloom**, **Lotus Rosé**, **Neon Bazaar**, **Pashmina Light**, **Tiger Guardian**, and **Custom Atelier**.
 - **Surprise me** picks a new finish: a different sample style, or the Custom Atelier with a new palette and motif. When Custom is already active it stays custom about half the time.
 - **Living Atelier** preview: move the pointer for gold dust and a soft glow, tilt the card gently, then click, tap, or press **Enter** / **Space** to seal it. The hint answers with the style and edition code.
@@ -151,7 +151,7 @@ Scroll progress is weighted by scene, so the QR reveal and the city reveal each 
 - **Download art PNG** exports a **2048 x 2560** collectible card with a gallery plinth, deterministic edition number, and a four-module quiet zone.
 - **Download plain QR fallback** exports a **1024 x 1024** high-contrast code.
 - **Use in world** updates the 3D matrix and the QR ground pattern.
-- **Nepal Pay builder**: Bank, eSewa, and Khalti tabs, a grouped bank list, account or wallet fields, a live payload-length counter, and a demo-data button. See [Nepal Pay](#nepal-pay).
+- **Nepal Pay details**: Bank, eSewa, and Khalti mechanisms, a grouped bank list, account or wallet fields, a live payload-length counter, and a demo-data button. See [Nepal Pay](#nepal-pay).
 - Error correction: **H (30%)**. The same matrix drives the 3D wall, the ground texture, the art card, and the plain fallback.
 - UTF-8 / Devanagari input supported.
 - Maximum input: 160 characters, so the 3D code stays readable.
@@ -172,7 +172,7 @@ The Studio includes a small **Nepal Pay** builder for personal bank and wallet c
 - The bank list is grouped into **commercial** and **development** banks. Codes are reference data for the demo; confirm the exact code with your bank before printing.
 - The counter shows the live payload length. All demo payloads fit comfortably under the **160-character** Studio limit: bank 84, eSewa 44, Khalti 45.
 - **Use demo data** fills a clearly fake account and name, then builds the code. No real account, phone number, or merchant payload is bundled.
-- When a Nepal Pay payload is reopened in the Studio, the builder parses it back into the matching tab and fields.
+- When a Nepal Pay payload is reopened in the Studio, the matching mechanism button activates and its fields are restored.
 - Payment fields are **never persisted**. Only `qrvolde-mode` and `qrvolde-art` are stored.
 
 > **Demo only.** This simple personal-payment JSON is **not** the NRB/EMVCo merchant QR standard used by Fonepay, NepalQR, or bank merchant terminals. Use your own details, then test the generated code in the official banking or wallet app before printing or sharing. The project does not process payments.
@@ -192,7 +192,8 @@ The Atelier turns the scannable code into a small edition object: a paper panel,
 
 ### Demo safety
 
-- The payment preset is a URL demo, **not** a real bank or merchant QR.
+- Selecting **Bank**, **eSewa**, or **Khalti** only focuses the matching fields. It does not change the current QR until **Build payment code** is pressed.
+- The payment mechanisms and Nepal Pay details are demos, **not** real bank or merchant QR codes.
 - The Nepal Pay builder only uses details you type in yourself; its demo button fills fake data.
 - The Nepal Pay JSON is a personal-payment convention, **not** the NRB/EMVCo merchant QR standard.
 - The authenticator preset is an educational link, **not** a TOTP secret.
@@ -220,11 +221,11 @@ The v0.3 preview is a small playable object, not a static mockup. It is built wi
 - **Mithila Courtyard** — a warm Terai dusk with a deep-plum QR floor, white temple domes, painted walls, teal pond water, festival kites, a toran gateway, a displaying peacock, jhijhiya dancers, a paddy field, and a flock of parakeets.
 - **Nepal Atlas** — a cool high-altitude parchment and teal sky over a raised atlas plate, a deep-plum QR floor, and crimson, gold, and teal accents.
 
-Dawn, Neon, and Gallery share the Newari chowk and its rightward camera orbit. **Mithila** is a different place, not a recolour: it builds a separate Janakpur-inspired courtyard and flies the camera left over the pond, the ghats, and the painting pavilion. Section 3 changes to **The Courtyard**. **Nepal** is a third place: a raised map plate with six landmark vignettes, a higher and farther camera flight, and two Atlas scenes. In every mode, the swatch, theme colour, copy, and page background follow.
+Dawn, Neon, and Gallery share the Newari chowk and its rightward camera orbit. **Mithila** is a different place, not a recolour: it builds a separate Janakpur-inspired courtyard and flies the camera left over the pond, the ghats, and the painting pavilion. Section 3 changes to **The Courtyard**. **Nepal** is a third place: a raised map plate over the QR's far edge, six landmark vignettes, a closer and lower camera flight, and two Atlas scenes. In every mode, the swatch, theme colour, copy, and page background follow.
 
 The v0.4.2 festival layer is procedural, animated, and original. The toran’s fringe and plaque sway, the peacock’s tail and head breathe, the jhijhiya dancers circle and lift their arms, the rice sways, and the parakeets wheel above the rooftops. Reduced motion keeps every prop in its build pose.
 
-The v0.5.0 Nepal layer is also procedural. Prayer flags flutter, temple bells sway, the Pokhara boat rocks, the paraglider circles, the rhino shifts its head and tail, lotuses bob, and a dashed route glows across the map. The atlas plate rises first, then the six vignettes, so the QR plaza is never hidden. Reduced motion keeps the plate, landmarks, and QR static and readable.
+The v0.5.1 Nepal layer is also procedural. The atlas plate settles over the QR's far edge before the six vignettes rise. Prayer flags flutter, temple bells sway, the Pokhara boat rocks, the paraglider circles, the rhino shifts its head and tail, lotuses bob, and a dashed route glows across the map. Reduced motion keeps the plate, landmarks, and QR static and readable.
 
 The mode persists in `localStorage` under `qrvolde-mode`. The 3D artwork is themed by mode; Atelier palettes are independent and always keep the QR on a high-contrast paper panel.
 
@@ -255,7 +256,7 @@ Opening `index.html` directly with `file://` will not work because the app uses 
 - **Wall-to-ground morph.** Modules lift, drift, and land as the QR plaza. City props fade in as the camera rises over the chowk.
 - **Three scene groups, three flights.** `chowk` and `chowk-road` hold the Newari block; `mithila` holds the Janakpur courtyard; `nepal` holds the atlas plate and six landmarks. Switching modes toggles the groups and swaps the active camera rig, so each place keeps its own architecture and flight path.
 - **Mithila as a cultural layer.** The QR plaza stays the ground pattern. The circular aripana painting sits just above the raised modules, so the code and the courtyard ornament remain visible together. The toran, peacock, dancers, paddy, and parakeets animate above and around the plaza without replacing the code.
-- **Nepal as a raised atlas.** A 74-point Natural Earth outline is drawn to a 2048 × 832 Canvas 2D plate with terrain bands, three simplified rivers, a dashed route, a compass rose, a scale bar, and a front cartouche. Six low-poly vignettes sit on the plate. The camera pulls higher and farther back than Dawn or Mithila so the plate and the QR plaza share the frame.
+- **Nepal as a raised atlas.** A 74-point Natural Earth outline is drawn to a 2048 × 832 Canvas 2D plate with terrain bands, three simplified rivers, a dashed route, a compass rose, a scale bar, and a front cartouche. The plate sits over the QR plaza's far edge, and six low-poly vignettes sit on the plate. The camera moves closer and lower than Dawn or Mithila, with a portrait pullback so the plate and the QR plaza share the frame.
 - **Nepal Pay payloads.** `nepal-pay.js` builds and parses the Bank, eSewa, and Khalti JSON shapes, validates the 16-digit account number and 10-digit wallet number, and keeps the bank list separate from the scene code.
 - **Responsive camera.** Portrait screens pull back and lower the look target; wide screens shift the artwork to make room for the copy card.
 - **Procedural Atelier.** A Canvas 2D renderer draws original motifs, paper texture, typography, and a gallery plinth around the high-contrast QR panel. No photos, external images, or fonts are loaded.
@@ -299,8 +300,8 @@ Opening `index.html` directly with `file://` will not work because the app uses 
 - Verified at **1440 x 1100**, **390 x 844**, and **320 x 568**. No horizontal overflow, no clipped Studio controls, and the preview stage stays inside the panel. The five-swatch mode group fits the mobile top bar; at 360px and below the wordmark hides so the mode row keeps its space. On narrow screens, Studio opens at the top with the close button focused, so the header stays visible.
 - Mithila mode: `chowk` and `chowk-road` hide while `mithila` shows its 35 scene groups, switching back restores the chowk, the mode survives reload, and section-3 copy and rail label reset when another mode is chosen.
 - Mithila Festival props: the toran plaque renders **स्वागतम्**, the peacock, dancers, crops, and parakeets animate, and reduced motion leaves all five props in their build poses. The paddy sits on the front-left grass, clear of the QR plaza and the front steps.
-- Nepal mode: the atlas plate and six landmarks render at 1440, 390, and 320 widths; `chowk`, `chowk-road`, and `mithila` hide while `nepal` shows; switching among all five modes restores the right group each time; section-2 and section-3 copy and the rail label follow the mode. No console errors.
-- Nepal Pay: 22 banks in two optgroups plus a placeholder; demo payloads build as bank 84, eSewa 44, and Khalti 45 characters; an invalid wallet number shows an inline error; **Use in world** updates the QR; reopening Studio parses the bank payload back into the fields; only `qrvolde-mode` is stored.
+- Nepal mode: the atlas plate and six landmarks render at 1440, 390, and 320 widths; the plate sits over the QR plaza's far edge and the landmarks are visible by section 2; `chowk`, `chowk-road`, and `mithila` hide while `nepal` shows; switching among all five modes restores the right group each time; section-2 and section-3 copy and the rail label follow the mode. No console errors.
+- Nepal Pay: 22 banks in two optgroups plus a placeholder; the mechanism row exposes **Bank**, **eSewa**, and **Khalti** with `aria-pressed`; selecting one focuses the matching field without changing the current QR; demo payloads build as bank 84, eSewa 44, and Khalti 45 characters; an invalid wallet number shows an inline error; **Use in world** updates the QR; reopening Studio activates the matching mechanism and restores its fields; only `qrvolde-mode` and `qrvolde-art` are stored.
 - Interaction QA: pointer dust and glow render outside the QR panel, the QR exclusion rectangle contains **zero overlay pixels**, tilt resets on pointer leave, keyboard **Enter** and **Space** both seal, touch tap seals, the hint cycles, and **Surprise me** kept Custom active 23 of 36 tries while producing 13 distinct palette/motif combinations.
 - The export canvas was byte-for-byte identical before and after pointer movement and sealing.
 - All six sample styles plus custom variants decoded with jsQR at **2048 x 2560** and **640 x 800**; the plain **1024 x 1024** fallback also decoded.
@@ -344,6 +345,7 @@ GitHub Pages serves the repository root from the `main` branch.
 - **v0.4.1** — Courtyard rail label sync: section 3 follows the active place. **Published.**
 - **v0.4.2** — Mithila Festival: toran gateway, displaying peacock, jhijhiya dancers, paddy field, and parakeet flock. **Published.**
 - **v0.5.0** — Nepal Atlas: raised map plate, six landmark vignettes, a third camera flight, and the Bank/eSewa/Khalti Nepal Pay builder. **Published.**
+- **v0.5.1** — Atlas in reach: the Nepal plate moves over the QR's far edge, the camera moves closer and lower, and Bank, eSewa, and Khalti become top-level QR mechanisms. **Published.**
 - **v0.6** — Districts: more switchable neighbourhoods, landmarks, and cultural layers.
 - **v0.7** — Launch: final brand copy, CTA destination, verified payment guidance.
 - **v1.0** — Stable release.

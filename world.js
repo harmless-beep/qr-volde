@@ -50,7 +50,7 @@ const SECTIONS = [
     label: 'Studio',
     eyebrow: '04 · The Studio',
     title: 'Make your own way in.',
-    body: 'Turn a link, a video, a payment demo, or an app into a QR. The city is the showcase; the code is the key.',
+    body: 'Turn a link, a video, a bank or wallet code, or an app into a QR. The city is the showcase; the code is the key.',
     tags: ['Free', 'Client-side'],
     cta: true,
   },
@@ -79,7 +79,7 @@ const MODE_SECTION_COPY = {
       label: 'Atlas',
       eyebrow: '02 · The Atlas',
       title: 'The code becomes a country.',
-      body: 'The wall folds into a plaza, and a raised atlas rises behind it: one small country with a world of firsts.',
+      body: 'The wall folds into a plaza, and a raised atlas settles over its far edge: one small country with a world of firsts.',
       tags: ['Map', 'Route'],
     },
     2: {
@@ -101,9 +101,17 @@ const PRESETS = {
     value: 'https://example.com/qr-volde/video',
     note: 'Paste a video URL. This demo points to a placeholder.',
   },
-  pay: {
-    value: 'https://example.com/qr-volde/pay-demo',
-    note: 'Demo only — not a real payment code. Use your own merchant QR payload for a real payment.',
+  bank: {
+    payType: 'bank',
+    note: 'Bank payment demo. Enter the account details below, then build the code.',
+  },
+  esewa: {
+    payType: 'esewa',
+    note: 'eSewa payment demo. Enter the wallet details below, then build the code.',
+  },
+  khalti: {
+    payType: 'khalti',
+    note: 'Khalti payment demo. Enter the wallet details below, then build the code.',
   },
   auth: {
     value: 'https://example.com/qr-volde/authenticator-guide',
@@ -147,7 +155,6 @@ const qrTilt = document.getElementById('qr-tilt');
 const qrSpark = document.getElementById('qr-spark');
 const qrStageHint = document.getElementById('qr-stage-hint');
 const qrShuffleButton = document.getElementById('qr-shuffle');
-const payTypeButtons = [...document.querySelectorAll('.studio__pay-tab')];
 const payBankFields = document.getElementById('nepal-pay-bank');
 const payWalletFields = document.getElementById('nepal-pay-wallet');
 const payBankCode = document.getElementById('nepal-bank-code');
@@ -465,6 +472,7 @@ function setPresetState(value, presetId = null) {
       ? button.dataset.preset === presetId
       : preset?.value === value;
     button.classList.toggle('is-active', active);
+    button.setAttribute('aria-pressed', String(active));
   }
 }
 
@@ -730,11 +738,6 @@ function updatePayCount() {
 function setPayType(type) {
   if (!['bank', 'esewa', 'khalti'].includes(type)) return;
   payType = type;
-  for (const button of payTypeButtons) {
-    const active = button.dataset.payType === type;
-    button.classList.toggle('is-active', active);
-    button.setAttribute('aria-pressed', String(active));
-  }
   if (payBankFields) payBankFields.hidden = type !== 'bank';
   if (payWalletFields) payWalletFields.hidden = type === 'bank';
   updatePayCount();
@@ -748,6 +751,7 @@ function buildPayCode() {
     }
     qrInput.value = payload;
     updatePreview(payload, {
+      presetId: payType,
       note: `${nepalPayTypeLabel(payType)} demo code. Test it in the official app before printing.`,
     });
     payNote.textContent = NEPAL_PAY_NOTE;
@@ -778,6 +782,7 @@ function syncPayFieldsFromQR(text) {
   const parsed = parseNepalPayPayload(text);
   if (!parsed) return;
   setPayType(parsed.type);
+  setPresetState(null, parsed.type);
   if (parsed.type === 'bank') {
     payBankCode.value = parsed.bankCode;
     payAccountNumber.value = parsed.accountNumber;
@@ -813,9 +818,6 @@ function initNepalPay() {
 
   payBankCode.append(groups.commercial, groups.development);
 
-  for (const button of payTypeButtons) {
-    button.addEventListener('click', () => setPayType(button.dataset.payType));
-  }
   for (const field of [payBankCode, payAccountNumber, payAccountName, payWalletPhone, payWalletName]) {
     field?.addEventListener('input', updatePayCount);
     field?.addEventListener('change', updatePayCount);
@@ -833,12 +835,12 @@ function openStudio() {
   qrNameInput.value = artName;
   qrCaptionInput.value = artCaption;
   updateArtControls();
-  syncPayFieldsFromQR(value);
   updatePreview(value, {
     note: sceneAPI
       ? 'This is the code currently in the world. Edit it to make a new one.'
       : 'The 3D world is unavailable, but this QR still works.',
   });
+  syncPayFieldsFromQR(value);
   if (!studio.open) studio.showModal();
   document.body.classList.add('has-dialog');
   document.documentElement.style.overflow = 'hidden';
@@ -937,6 +939,15 @@ function initStudio() {
     button.addEventListener('click', () => {
       const preset = PRESETS[button.dataset.preset];
       if (!preset) return;
+      if (preset.payType) {
+        setPayType(preset.payType);
+        setPresetState(null, button.dataset.preset);
+        qrNote.classList.remove('is-error');
+        qrNote.textContent = preset.note;
+        const field = preset.payType === 'bank' ? payAccountNumber : payWalletPhone;
+        field?.focus();
+        return;
+      }
       qrInput.value = preset.value;
       updatePreview(preset.value, { note: preset.note });
     });
