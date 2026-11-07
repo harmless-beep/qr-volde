@@ -2,7 +2,7 @@
 
 **A giant 3D QR code that unfolds into a living Nepalese courtyard.**
 
-[Live demo](https://harmless-beep.github.io/qr-volde/) · [Release v0.5.1](https://github.com/harmless-beep/qr-volde/releases/tag/v0.5.1) · [Research notes](./RESEARCH.md) · [Changelog](./CHANGELOG.md)
+[Live demo](https://harmless-beep.github.io/qr-volde/) · [Release v0.5.2](https://github.com/harmless-beep/qr-volde/releases/tag/v0.5.2) · [Research notes](./RESEARCH.md) · [Changelog](./CHANGELOG.md)
 
 [![QR Volde launch film — animated preview](launch-film/launch-film.gif)](https://harmless-beep.github.io/qr-volde/launch.html)
 
@@ -12,7 +12,7 @@ QR Volde is a scroll-driven 3D web experience. A dark-square QR monolith faces y
 
 The 3D code is the artwork. **QR Studio** turns the flat code into a collectible, scan-tested art card, or a plain fallback QR when a printer needs the simplest possible mark. The **Nepal Pay** builder creates clearly labelled demo codes for a bank account, eSewa, or Khalti from details you type in yourself.
 
-**Status:** v0.5.1 Atlas in reach, published 2026-11-07.  
+**Status:** v0.5.2 Payment details on demand, published 2026-11-07.  
 **Built with:** Three.js r186 · `qrcode-generator` 2.0.4 · vanilla ES modules · Canvas 2D · GitHub Pages.  
 **No build step, no backend, no analytics, no paid APIs.**
 
@@ -55,8 +55,8 @@ The film loops above. It is made from real captures of the scroll experience and
 
 | The Studio | QR Studio |
 |:--:|:--:|
-| ![The final city view with the Create your QR call to action](docs/screenshots/studio-desktop.webp) | ![The QR Studio dialog with six QR mechanisms, the Nepal Pay details, a collectible art QR preview, and seven Atelier style samples](docs/screenshots/qr-studio.webp) |
-| *Make your own way in.* | *The flat code becomes a collectible object. Six mechanisms sit above the Nepal Pay details and Atelier styles.* |
+| ![The final city view with the Create your QR call to action](docs/screenshots/studio-desktop.webp) | ![The QR Studio dialog with six QR mechanisms, a collectible art QR preview, and seven Atelier style samples](docs/screenshots/qr-studio.webp) |
+| *Make your own way in.* | *The flat code becomes a collectible object. Payment details appear only when Bank, eSewa, or Khalti is active.* |
 
 ### Living Atelier preview
 
@@ -151,7 +151,7 @@ Scroll progress is weighted by scene, so the QR reveal and the city reveal each 
 - **Download art PNG** exports a **2048 x 2560** collectible card with a gallery plinth, deterministic edition number, and a four-module quiet zone.
 - **Download plain QR fallback** exports a **1024 x 1024** high-contrast code.
 - **Use in world** updates the 3D matrix and the QR ground pattern.
-- **Nepal Pay details**: Bank, eSewa, and Khalti mechanisms, a grouped bank list, account or wallet fields, a live payload-length counter, and a demo-data button. See [Nepal Pay](#nepal-pay).
+- **Nepal Pay details** (shown only when **Bank**, **eSewa**, or **Khalti** is active): a grouped bank list, account or wallet fields, a live payload-length counter, and a demo-data button. See [Nepal Pay](#nepal-pay).
 - Error correction: **H (30%)**. The same matrix drives the 3D wall, the ground texture, the art card, and the plain fallback.
 - UTF-8 / Devanagari input supported.
 - Maximum input: 160 characters, so the 3D code stays readable.
@@ -170,6 +170,7 @@ The Studio includes a small **Nepal Pay** builder for personal bank and wallet c
 | **Khalti** | `{"Khalti_ID":"10 digits","name":"NAME"}` | 10-digit mobile number, wallet name |
 
 - The bank list is grouped into **commercial** and **development** banks. Codes are reference data for the demo; confirm the exact code with your bank before printing.
+- The details panel is only shown while **Bank**, **eSewa**, or **Khalti** is active. **Website**, **Video**, and **Authenticator** keep it hidden.
 - The counter shows the live payload length. All demo payloads fit comfortably under the **160-character** Studio limit: bank 84, eSewa 44, Khalti 45.
 - **Use demo data** fills a clearly fake account and name, then builds the code. No real account, phone number, or merchant payload is bundled.
 - When a Nepal Pay payload is reopened in the Studio, the matching mechanism button activates and its fields are restored.
@@ -301,7 +302,7 @@ Opening `index.html` directly with `file://` will not work because the app uses 
 - Mithila mode: `chowk` and `chowk-road` hide while `mithila` shows its 35 scene groups, switching back restores the chowk, the mode survives reload, and section-3 copy and rail label reset when another mode is chosen.
 - Mithila Festival props: the toran plaque renders **स्वागतम्**, the peacock, dancers, crops, and parakeets animate, and reduced motion leaves all five props in their build poses. The paddy sits on the front-left grass, clear of the QR plaza and the front steps.
 - Nepal mode: the atlas plate and six landmarks render at 1440, 390, and 320 widths; the plate sits over the QR plaza's far edge and the landmarks are visible by section 2; `chowk`, `chowk-road`, and `mithila` hide while `nepal` shows; switching among all five modes restores the right group each time; section-2 and section-3 copy and the rail label follow the mode. No console errors.
-- Nepal Pay: 22 banks in two optgroups plus a placeholder; the mechanism row exposes **Bank**, **eSewa**, and **Khalti** with `aria-pressed`; selecting one focuses the matching field without changing the current QR; demo payloads build as bank 84, eSewa 44, and Khalti 45 characters; an invalid wallet number shows an inline error; **Use in world** updates the QR; reopening Studio activates the matching mechanism and restores its fields; only `qrvolde-mode` and `qrvolde-art` are stored.
+- Nepal Pay: 22 banks in two optgroups plus a placeholder; the mechanism row exposes **Bank**, **eSewa**, and **Khalti** with `aria-pressed`; selecting one focuses the matching field without changing the current QR; the payment details are hidden for Website, Video, and Authenticator and shown for payment mechanisms; demo payloads build as bank 84, eSewa 44, and Khalti 45 characters; an invalid wallet number shows an inline error; **Use in world** updates the QR; reopening Studio activates the matching mechanism and restores its fields; only `qrvolde-mode` and `qrvolde-art` are stored.
 - Interaction QA: pointer dust and glow render outside the QR panel, the QR exclusion rectangle contains **zero overlay pixels**, tilt resets on pointer leave, keyboard **Enter** and **Space** both seal, touch tap seals, the hint cycles, and **Surprise me** kept Custom active 23 of 36 tries while producing 13 distinct palette/motif combinations.
 - The export canvas was byte-for-byte identical before and after pointer movement and sealing.
 - All six sample styles plus custom variants decoded with jsQR at **2048 x 2560** and **640 x 800**; the plain **1024 x 1024** fallback also decoded.
@@ -346,6 +347,7 @@ GitHub Pages serves the repository root from the `main` branch.
 - **v0.4.2** — Mithila Festival: toran gateway, displaying peacock, jhijhiya dancers, paddy field, and parakeet flock. **Published.**
 - **v0.5.0** — Nepal Atlas: raised map plate, six landmark vignettes, a third camera flight, and the Bank/eSewa/Khalti Nepal Pay builder. **Published.**
 - **v0.5.1** — Atlas in reach: the Nepal plate moves over the QR's far edge, the camera moves closer and lower, and Bank, eSewa, and Khalti become top-level QR mechanisms. **Published.**
+- **v0.5.2** — Payment details on demand: Nepal Pay details appear only for Bank, eSewa, and Khalti. **Published.**
 - **v0.6** — Districts: more switchable neighbourhoods, landmarks, and cultural layers.
 - **v0.7** — Launch: final brand copy, CTA destination, verified payment guidance.
 - **v1.0** — Stable release.

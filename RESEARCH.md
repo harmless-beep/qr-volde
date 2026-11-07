@@ -1,10 +1,10 @@
 # Research Notes
 
 **Project:** QR Volde  
-**Version:** v0.5.1  
+**Version:** v0.5.2  
 **Research date:** 2026-10-27; updated 2026-11-07
 
-This document records the references and decisions behind the v0.1 vertical slice, the v0.2 QR Atelier, the v0.3 Living Atelier, the v0.4 Mithila Courtyard, the v0.4.2 Mithila Festival, the v0.5.0 Nepal Atlas, and the v0.5.1 Atlas in reach update with its top-level Bank, eSewa, and Khalti mechanisms. The goal is recognition, not reconstruction. All geometry, textures, signs, characters, and Atelier motifs are original procedural work; no photos, maps, stock models, third-party visual assets, or AI-generated images were copied into the project.
+This document records the references and decisions behind the v0.1 vertical slice, the v0.2 QR Atelier, the v0.3 Living Atelier, the v0.4 Mithila Courtyard, the v0.4.2 Mithila Festival, the v0.5.0 Nepal Atlas, the v0.5.1 Atlas in reach update, and the v0.5.2 conditional Nepal Pay panel. The goal is recognition, not reconstruction. All geometry, textures, signs, characters, and Atelier motifs are original procedural work; no photos, maps, stock models, third-party visual assets, or AI-generated images were copied into the project.
 
 ## 1. Kathmandu Valley and Newar architecture
 
@@ -68,6 +68,7 @@ This document records the references and decisions behind the v0.1 vertical slic
 
 - No real bank, merchant, or wallet payload is bundled or shown as a preset.
 - The v0.5.1 Studio exposes **Bank**, **eSewa**, and **Khalti** as top-level mechanisms beside Website, Video, and Authenticator. Selecting one focuses the matching details and leaves the current QR untouched until **Build payment code** is pressed.
+- v0.5.2 shows the Nepal Pay details only while a payment mechanism is active. Website, Video, and Authenticator hide the panel entirely.
 - v0.5 adds a **Nepal Pay** builder for personal Bank, eSewa, and Khalti codes. It uses only details the user types in, labels the result as a demo, and points to section 9 for the payload mechanism and limits.
 - The Nepal Pay JSON is **not** the NRB/EMVCo merchant QR standard; users must test their own code in the official app before printing.
 - The scene does not imply that scanning the artwork pays anyone.
@@ -104,7 +105,7 @@ This document records the references and decisions behind the v0.1 vertical slic
 - Keep touch targets at least 2rem where practical; rail controls use larger transparent hit areas.
 - Provide `aria-pressed` on visual mode buttons and `aria-current` on scene rail buttons.
 - Wrap the scroll hint in a complementary landmark so all base-page content sits inside a landmark.
-- Lighthouse v0.4.0: 100 accessibility, 100 best practices, 100 SEO. Axe-core reported no violations with QR Studio open at desktop and mobile widths, including Mithila and Nepal modes. The v0.4.2 Mithila Festival, v0.5.0 Nepal, and v0.5.1 mechanism-row QA re-ran Axe-core with the same result.
+- Lighthouse v0.4.0: 100 accessibility, 100 best practices, 100 SEO. Axe-core reported no violations with QR Studio open at desktop and mobile widths, including Mithila and Nepal modes. The v0.4.2 Mithila Festival, v0.5.0 Nepal, v0.5.1 mechanism-row, and v0.5.2 conditional-panel QA re-ran Axe-core with the same result.
 
 ## 6. QR Atelier art and scannability
 
@@ -269,6 +270,7 @@ The reference site builds simple JSON strings for personal payment codes. Only t
 
 - **A fifth mode, not a Mithila variant.** Nepal has its own scene group, its own atlas plate, six landmarks, palette, and camera rig. Folding it into Mithila would have mixed two different regions and weakened both.
 - **The QR stays dominant.** The plate sits over the plaza's far edge; the camera moves closer and lower instead of cropping the code, with a portrait pullback so both the plate and the QR plaza fit. The 3D QR remains artwork, not a scanning target.
+- **Payment details stay contextual.** The Nepal Pay panel is hidden unless a payment mechanism is active, so Website, Video, and Authenticator keep the Studio focused on the QR itself.
 - **Symbolic landmarks, not replicas.** Each vignette is a small composition built from primitives. The project does not claim architectural accuracy, and no external models, photos, or map tiles are used.
 - **No per-feature labels on the map.** The vignettes and the front cartouche carry the names; the scene copy lists all six feats. This keeps the plate readable at desktop and mobile sizes.
 - **Simple JSON is labelled as a demo.** The payload shape is not the NRB/EMVCo merchant standard used by Fonepay, NepalQR, or bank terminals. The Studio says so and asks users to test with the official app before printing.
@@ -280,6 +282,7 @@ The reference site builds simple JSON strings for personal payment codes. Only t
 - `npm run check` passes with `city-nepal.js` and `nepal-pay.js` included.
 - v0.5.1 desktop QA at 1440 x 1100: the atlas plate sits over the QR plaza's far edge and the six landmarks are visible by section 2; the QR stays dominant; no console errors or horizontal overflow.
 - v0.5.1 Studio QA: six mechanism buttons; **Bank**, **eSewa**, and **Khalti** focus the matching fields, keep the current QR until **Build payment code**, and reopen with the correct mechanism active and `aria-pressed` set.
+- v0.5.2 panel QA: **Website**, **Video**, and **Authenticator** hide the Nepal Pay details; **Bank**, **eSewa**, and **Khalti** show it; building a demo keeps it visible; reopening a payment payload restores it; switching back to Website hides it again.
 - v0.5.1 mobile QA at 390 x 844 and 320 x 568: no horizontal overflow, the six mechanisms wrap to two rows, Studio opens at the top with the close button focused, and the Nepal plate and QR remain visible above the copy card.
 - Mode-switch QA across all five modes: the correct scene group shows, switching back restores the chowk, and only `qrvolde-mode` is stored.
 - Reduced motion: 172 visible Nepal meshes at 0.86, no errors, static plate and landmarks.

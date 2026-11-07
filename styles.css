@@ -896,6 +896,10 @@ body.no-webgl .qv__progress {
   background: color-mix(in srgb, var(--qv-panel-strong) 38%, transparent);
 }
 
+.studio__pay[hidden] {
+  display: none;
+}
+
 .studio__pay-head {
   display: flex;
   align-items: flex-start;

@@ -2,6 +2,24 @@
 
 All notable changes to QR Volde are recorded here.
 
+## [0.5.2] — 2026-11-07
+
+**Payment details on demand.** The Nepal Pay details panel now appears only when Bank, eSewa, or Khalti is selected. Website, Video, and Authenticator keep the Studio focused on the QR mechanism without the payment form.
+
+### Changed
+
+- The Nepal Pay details section is hidden for **Website**, **Video**, and **Authenticator**, and shown for **Bank**, **eSewa**, and **Khalti**.
+- The panel also stays hidden when the current QR is an ordinary link and no payment mechanism is active. Reopening a payment payload restores it with the matching mechanism.
+- Refreshed the QR Studio and mobile Atelier screenshots for the conditional panel.
+- Version bumped to 0.5.2.
+
+### QA
+
+- `npm run check` passes.
+- Mechanism QA: Website, Video, and Authenticator hide the payment details; Bank, eSewa, and Khalti show it; building a demo keeps it visible; reopening a payment payload restores it; switching back to Website hides it again.
+- No console errors or horizontal overflow at 1440 x 1100, 390 x 844, and 320 x 568.
+- Axe-core: no violations with QR Studio open at desktop and mobile widths.
+
 ## [0.5.1] — 2026-11-07
 
 **Atlas in reach.** The Nepal atlas now sits over the QR plaza instead of far behind it, and Bank, eSewa, and Khalti are first-class QR mechanisms in the Studio rather than options nested under a generic payment demo.

@@ -157,6 +157,7 @@ const qrStageHint = document.getElementById('qr-stage-hint');
 const qrShuffleButton = document.getElementById('qr-shuffle');
 const payBankFields = document.getElementById('nepal-pay-bank');
 const payWalletFields = document.getElementById('nepal-pay-wallet');
+const paySection = document.querySelector('.studio__pay');
 const payBankCode = document.getElementById('nepal-bank-code');
 const payAccountNumber = document.getElementById('nepal-account-number');
 const payAccountName = document.getElementById('nepal-account-name');
@@ -466,13 +467,18 @@ function shuffleArt() {
 }
 
 function setPresetState(value, presetId = null) {
+  let activePreset = null;
   for (const button of presetButtons) {
     const preset = PRESETS[button.dataset.preset];
     const active = presetId
       ? button.dataset.preset === presetId
       : preset?.value === value;
+    if (active) activePreset = button.dataset.preset;
     button.classList.toggle('is-active', active);
     button.setAttribute('aria-pressed', String(active));
+  }
+  if (paySection) {
+    paySection.hidden = !['bank', 'esewa', 'khalti'].includes(activePreset);
   }
 }
 
